@@ -1,299 +1,350 @@
-import React from 'react';
-import {TextField, Label,Input,FieldError, Select,ListBox , Button, } from "@heroui/react"
-import { ToastContainer, toast } from 'react-toastify';
+ "use client"
 
-const SellerAddProductsPage = () => {
+
+import React from 'react';
+ import {TextField, Label,Input,FieldError, Select,ListBox , Button, TextArea,Card, CardBody, Spinner} from "@heroui/react"
+ import { ToastContainer, toast } from 'react-toastify';
+import { useState } from "react";
+import Image from "next/image";
+import {authClient} from "@/lib/auth-client"
+
+
+
+ const SellerAddProductsPage = () => {
+//     // const [description, setDescription] = useState("");
+//   //  const [category, setCategory] = useState("");
+//   // const [condition, setCondition] = useState("");
+  
+     const [imageUrl, setImageUrl] = useState(null);
+   const [uploading, setUploading] = useState(false);
+   const [uploadError, setUploadError] = useState(null);
+
+   const handleImageChange = async (e) => {
+   const file = e.target.files[0];
+    if (!file) return;
+
+//         // Validate file type and size
+     if (!file.type.startsWith("image/")) {
+     setUploadError("Please select a valid image file.");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) { // 5 MB limit (ImageBB allows 16 MB)
+       setUploadError("Image size must be less than 5MB.");
+       return;
+    }
+
+     setUploading(true);
+     setUploadError(null);
+     setImageUrl(null); // clear previous preview
+
+     const formData = new FormData();
+     formData.append("image", file);
+
+     try {
+//       // ⚠️ For production, use a backend proxy (see note below)
+       const API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY; // store in .env.local
+       const response = await fetch(
+         `https://api.imgbb.com/1/upload?key=${API_KEY}`,
+         { method: "POST", body: formData }
+       );
+       const data = await response.json();
+
+       if (data.success) {
+         setImageUrl(data.data.url);
+      } else {
+        setUploadError(data.error?.message || "Image upload failed.");
+      }
+    } catch (error) {
+       console.error("Upload error:", error);
+      setUploadError("Network error. Please check your connection.");
+     } finally {
+       setUploading(false);
+     }
+   };
+
+const onSubmit = async(e) =>{
+     e.preventDefault()
+     const formData = new FormData(e.currentTarget)
+     // const allTutor = Object.fromEntries(formData.entries())
+     const formValues = Object.fromEntries(formData.entries());
+
+     console.log(formValues, "formvalues")
+
+//     // ক্লায়েন্ট সাইডে সেশন থেকে ইউজার আইডি নেওয়া (headers() ছাড়া)
+       const { data: session } = await authClient.getSession();
+     const userId = session?.user?.id;
+
+//      // ইউজার আইডি পেলোডে যুক্ত করা (কোনো কনফ্লিক্ট নেই)
+    const product = {
+      ...formValues,
+       title: formValues.title,
+       stock: Number(formValues.stock) || 0,
+       category: formValues.category,
+       price: Number(formValues.price) || 0,
+       condition: formValues.condition,
+       description: formValues.description,
+       image: imageUrl,
+       status:"available",
+       userId: userId,
+     };
+     console.log("product with userId", product );
+   
+
+ const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/seller/products`, {
+            method: 'POST',
+         headers: {
+             'content-type': 'application/json'
+            },
+            body: JSON.stringify(product)
+         })
+
+ const productData = await res.json();
+  console.log( 'data after post', productData);
+   
+  if (res.ok) {
+ toast.success('product added, see my-product-list ', {
+                 duration: 3000,
+                 position: 'top-center',
+     }); 
+   e.target.reset(); // Reset the form after successful submission
+     }
+   };
+
+
+
+
     return (
-        <div>
-            products form
-             <h1 className='text-2xl font-bold text-blue-800 text-center my-2'>Add Tutor </h1>
+         <div>
+      
+             <h1 className='text-2xl font-bold text-blue-800 text-center my-2'>Add Products </h1>
     <div className='formdata  border-0 shadow-lg w-3xl'>
-                <form onSubmit={onSubmit}
-            className="p-10 space-y-4 w-3xl " 
-          >
-             <ToastContainer />
-            <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
-              {/* Destination Name */}
-              <div className="md:col-span-2 ">
-                <TextField name="tutorName" isRequired>
-                  <Label>Tutor Name</Label>
-                  <Input placeholder="Enter your tutor name" className="rounded-2xl " />
-                  <FieldError />
-                </TextField>
-              </div>
+                 <form 
+                 onSubmit = {onSubmit}
+             className="p-10 space-y-4 w-3xl " 
+           >
+              <ToastContainer />
+             <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
+               {/* Destination Name */}
+               <div className="md:col-span-2 ">
+                 <TextField name="title" isRequired>
+                   <Label>Product Title</Label>
+                   <Input placeholder="Enter your tutor name" className="rounded-2xl " />
+                   <FieldError />
+                 </TextField>
+               </div>
 
             
 
 
-              {/* Country */}
-              <TextField name="availableSlots" type="number" isRequired>
-                <Label>Total Slots</Label>
-                <Input 
-                type="number"
-                placeholder="100" 
-                className="rounded-2xl w-full text-center" />
-                <FieldError />
-              </TextField>
-              <br />
-              <br />
+        {/* stock */}
+          <TextField name="stock" type="number" isRequired>
+             <Label>Stock Quantity</Label>
+               <Input 
+               type="number"
+               placeholder="100" 
+               className="rounded-2xl w-full text-center" />
+               <FieldError />
+             </TextField>
+             <br />
+             <br />
 
-              {/* Subject - Updated Select Component */}
+  {/* Categpry - Updated Select Component */}
                <div> 
-                <Select
-                name="subject"
-                  isRequired
-                  placeholder="Select subject"
-                  className="w-full"
-                  >
-                  <Label className='p-3'>Subject</Label>  
-                   <Select.Trigger > 
-                     <Select.Value />
-                     <Select.Indicator /> 
-                 </Select.Trigger> 
-                  <Select.Popover>
-                    <ListBox>
-                      <ListBox.Item id="Computer Science" textValue="Computer Science">
-                    Computer Science
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
+                 <Select
+                 name="category"
+                   isRequired
+                   placeholder="Select category"
+className="w-full rounded-2xl"
+                   >
+                   <Label className='p-3'>Category</Label>  
+                    <Select.Trigger > 
+                      <Select.Value />
+                      <Select.Indicator /> 
+                  </Select.Trigger> 
+                   <Select.Popover>
+                     <ListBox>
+                       <ListBox.Item id="laptops" textValue="laptops">
+                   Laptops
+                         <ListBox.ItemIndicator />
+                       </ListBox.Item>
                      
-                      <ListBox.Item id="Biology" textValue="Biology">
-                      Biology
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
+                       <ListBox.Item id="mobile phones" textValue="mobile phones">
+                      Mobile Phones
+                         <ListBox.ItemIndicator />
+                       </ListBox.Item>
                     
-                      <ListBox.Item id="Economics" textValue="Economics">
-                      Economics
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      <ListBox.Item id="Mathematics" textValue="Mathematics">
-                        Mathematics
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      <ListBox.Item id="History" textValue="History">
-                      History
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      <ListBox.Item id="Chemistry" textValue="Chemistry">
-                        Chemistry
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      <ListBox.Item id="English Literature" textValue="English Literature">
-                        English Literature
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      <ListBox.Item id="Physics" textValue="Physics">
-                        Physics
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                    </ListBox>
-                  </Select.Popover>
-                </Select>
-              </div>
-              <br />
-              <br />
+                       <ListBox.Item id="vehicles" textValue="vehicles">
+                      Vehicles
+                         <ListBox.ItemIndicator />
+                       </ListBox.Item>
+                       <ListBox.Item id="home appliances" textValue="home appliances">
+                        Home Appliances
+                         <ListBox.ItemIndicator />
+                       </ListBox.Item>
+                       <ListBox.Item id="furniture" textValue="furniture">
+                  Furniture
+                         <ListBox.ItemIndicator />
+                       </ListBox.Item>
+                       <ListBox.Item id="sports" textValue="sports">
+                Sports
+                      <ListBox.ItemIndicator />
+                       </ListBox.Item>
+                      
+                     </ListBox>
+                   </Select.Popover>
+                 </Select>
+               </div>
+               <br />
+               <br />
 
 
-              {/* Price */}
-              <TextField name="hourlyFee" type="number" isRequired>
-                <Label>hourlyFee (USD)</Label>
+ {/* Price */}
+              <TextField name="price" type="number" isRequired>
+                 <Label>Price(USD)</Label>
                 <Input
-                  type="number"
+                   type="number"
                   placeholder="1000"
                   className="rounded-2xl"
                 />
                 <FieldError />
               </TextField>
               
-              {/* Duration */}
-              {/* <TextField name="duration" isRequired>
-                <Label>Duration</Label>
-                <Input
-                  placeholder="7 Days / 6 Nights"
-                  className="rounded-2xl"
-                />
-                <FieldError />
-              </TextField> */}
+ <br />
+ <br />
 
-              {/* Departure Date */}
-              <div className="md:col-span-2">
-                <TextField name="sessionStartDate" type="date" isRequired>
-                  <Label>Session Start Date</Label>
-                  <Input type="date" className="rounded-2xl" />
-                  <FieldError />
-                </TextField>
-              </div>
-
-              {/* Image URL - Removed preview */}
-              <div className="md:col-span-2">
-                <TextField name="image" isRequired>
-                  <Label>Image</Label>
-                  <Input
-                    type="url"
-                    placeholder="Enter your photo url"
-                    className="rounded-2xl"
-                  />
-                  <FieldError />
-                </TextField>
-              </div>
-
-           {/* status */}
-              <div>
-                 <Select
-                  name="status"
-                  isRequired
-                  className="rounded-2xl"
-                  placeholder="Select Status"
-                >
-                  <Label>Status</Label> 
-                  <Select.Trigger className="rounded-2xl flex">
-                    <Select.Value />
-                    <Select.Indicator /> 
-                  </Select.Trigger>
-                  <Select.Popover>
-                    <ListBox>
-                  <ListBox.Item id="active" textValue="active">
-                        active
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      {/* <ListBox.Item id="In-person" textValue="In-person">
-                        In-person
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      <ListBox.Item id="Both" textValue="Both">
-                        Both
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item> */}
-                    </ListBox>
-                  </Select.Popover>
-                </Select>
-              </div> 
+        {/* condition */}
+               <div>
+                  <Select
+                   name="condition"
+                   isRequired
+                   className="rounded-2xl"
+                   placeholder="Select condition"
+                 >
+                   <Label>Condition</Label> 
+                   <Select.Trigger className="rounded-2xl flex">
+                     <Select.Value />
+                     <Select.Indicator /> 
+                   </Select.Trigger>
+                   <Select.Popover>
+                     <ListBox>
+                   <ListBox.Item id="used" textValue="used">
+                         Used
+                         <ListBox.ItemIndicator />
+                       </ListBox.Item>
+                       <ListBox.Item id="like new" textValue="like new">
+                         Like New
+                         <ListBox.ItemIndicator />
+                       </ListBox.Item>
+                       <ListBox.Item id="refurbished" textValue="refurbished">
+                         Refurbished
+                         <ListBox.ItemIndicator />
+                       </ListBox.Item> 
+                     </ListBox>
+                   </Select.Popover>
+                 </Select>
+               </div> 
               <br />
               <br />    
 
-              {/* teaching mode */}
-         <div>
-              <Select
-                  name="teachingMode"
+               {/* teaching mode */}
+          <div>
+                   <TextField name="description" isRequired>
+                   <Label>Product Description</Label>
+                    <TextArea
+       placeholder="Enter your product description"
+       className="rounded-2xl"
+       rows={4}                 // optional: set the visible number of lines
+     />
+                 
+                   <FieldError />
+                 </TextField>
+                 <br />
+                 <br />
+                 <br />
+          </div>
+
+                       {/* Image URL - Removed preview */}
+               <div className="md:col-span-2">
+                 {/* <TextField name="image" isRequired>
+                   <Label>Upload Product Photo</Label>
+                   <Input
+                     type="url"
+                     placeholder="Enter product photo url"
+                     className="rounded-2xl"
+                   />
+                   <FieldError />
+                 </TextField> */}
+ <div className="space-y-2">
+
+                   <Label>Upload Product Photo</Label> 
+                <Input
+                  type="file"
+                  accept="image/*"
+                 label="Upload Product Photo"
+                   onChange={handleImageChange}
+                isDisabled={uploading}
+                   className={{
+                    label: "text-sm font-medium",
+                }}
                   isRequired
-                  className="rounded-2xl"
-                  placeholder="Select teaching mode"
-                >
-               <Label>Teaching Mode</Label> 
-                  <Select.Trigger className="rounded-2xl flex">
-                    <Select.Value />
-                    <Select.Indicator /> 
-                  </Select.Trigger>
-                  <Select.Popover>
-                    <ListBox>
-                  <ListBox.Item id="Online" textValue="Online">
-                        Online
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      <ListBox.Item id="In-person" textValue="In-person">
-                        In-person
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      <ListBox.Item id="Both" textValue="Both">
-                        Both
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                    </ListBox>
-                  </Select.Popover>
-                </Select>
-         </div>
+                />
+
+                 {uploading && (
+                 <div className="flex items-center gap-2 text-sm text-default-500">
+                    <Spinner size="sm" />
+                  Uploading to ImageBB...
+                 </div>
+                )}
+
+                {uploadError && (
+                <p className="text-sm text-danger">{uploadError}</p>
+               )}
+                <FieldError />
+               
+             </div>
+
+   {/* Image Preview */}
+            {/* {imageUrl && !uploading && (
+                <Card className="border-none shadow-sm mt-3">
+                <div className="flex flex-col items-start gap-2">
+                    <p className="text-sm font-semibold">Uploaded Preview:</p>
+                    <Image
+                      src={imageUrl}
+                      alt="Product preview"
+                      width={50}
+                      height={20}
+                       className="object-cover rounded-lg border"
+                     />
+                   <p className="text-xs text-default-400 break-all">{imageUrl}</p>
+                   </div>
+                 </Card>
+             )} */}
+
+             </div> 
          <br />
          <br />
 
+ <div>
 
+ </div>
+  </div> 
 
-{/* put timeslot */}
-<div>
-  <Select
-                  name="timeSlot"
-                  isRequired
-                  className="rounded-2xl"
-                  placeholder="Select timeSlot"
-                >
-                  <Label>Time Slot</Label> 
-                  <Select.Trigger className="rounded-2xl flex">
-                    <Select.Value />
-                    <Select.Indicator /> 
-                  </Select.Trigger>
-                  <Select.Popover>
-                    <ListBox>
-                  <ListBox.Item id="4:00 PM - 8:00 PML" textValue="4:00 PM - 8:00 PM">
-                       4:00 PM - 8:00 PM
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      <ListBox.Item id="2:00 PM - 6:00 PM" textValue="2:00 PM - 6:00 PM">
-                   2:00 PM - 6:00 PM
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      <ListBox.Item id="10:00 AM - 2:00 PM" textValue="10:00 AM - 2:00 PM">
-                  10:00 AM - 2:00 PM
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      <ListBox.Item id="3:00 PM - 7:00 PM" textValue="3:00 PM - 7:00 PM">
-                   3:00 PM - 7:00 PM
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      
-                    </ListBox>
-                  </Select.Popover>
-                </Select>
-</div>
-<br />
-
-         {/* Location */}
-<div>
- <Select
-                  name="location"
-                  isRequired
-                  className="rounded-2xl"
-                  placeholder="Select location"
-                >
-                  <Label>Location</Label> 
-                  <Select.Trigger className="rounded-2xl flex">
-                    <Select.Value />
-                    <Select.Indicator /> 
-                  </Select.Trigger>
-                  <Select.Popover>
-                    <ListBox>
-                  <ListBox.Item id="Miami,FL" textValue="Miami, FL">
-                        Miami, FL
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      <ListBox.Item id="chicago" textValue="Chicago, IL">
-                       Chicago, IL
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      <ListBox.Item id="Baltimore" textValue="Baltimore, MD">
-                      Baltimore, MD
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                    </ListBox>
-                  </Select.Popover>
-                </Select>
-</div>
-
-          </div> 
-
-            {/* Buttons */}
+  {/* Buttons */}
 
             <Button
-              type="submit"
-              variant="outline"
+               type="submit"
+               variant="outline"
              
               className=" rounded-2xl w-full bg-cyan-500 text-white font-bold"
             >
-          Add Tutor
-               </Button> 
+          Add Product
+                </Button> 
              
           </form>
-            </div>
+             </div>
         </div>
     );
 };
 
-export default SellerAddProductsPage;
+ export default SellerAddProductsPage;
+

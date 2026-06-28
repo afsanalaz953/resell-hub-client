@@ -15,7 +15,7 @@ export default function DashboardLayout({ children }) {
 <div className=' flex flex-1 overflow-y-auto'>
       
  {/* sidebar */}
- <div className="border-2 "  > <DashboardSidebar />  </div>
+ <div className="border-2 h-screen bg-[#0F172B] px-4 "  > <DashboardSidebar />  </div>
  <main  className='p-10'> {children} </main>
 </div>
 
