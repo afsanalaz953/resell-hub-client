@@ -6,11 +6,34 @@ import { Table } from '@heroui/react';
  import CancelledButton from "@/components/shared/CancelledButton";
 
 
-const ManageOrderPage = () => {
+const ManageOrderPage = async() => {
+const session = await auth.api.getSession({
+     headers: await headers(), // you need to pass the headers object.
+ });
+ const user = session?.user;
+console.log(session)
+
+// const tokenObjData = await auth.api.getToken({
+//         headers: await headers()
+//     })
+//      console.log(tokenObjData, "objData")
+
+// user id dhore ante hobe
+const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/seller/orders/${user?.id}`,{
+   cache: 'no-store',
+  // headers:{
+  //   authorization: `Bearer ${tokenObjData.token}`
+  //    }    
+});
+const orders = await res.json();
+ console.log(orders, "bookings orders")
+
+
+
     return (
         <div>
            ManageOrderPage 
-           <h1 className='font-bold text-3xl m-10'> My Bookings List</h1>
+           <h1 className='font-bold text-3xl m-10'> My Orders</h1>
         {/* ✅ Empty state check – put it here */}
       {!bookings || bookings.length === 0 ? (
         <div className="text-center m-6 p-10 bg-gray-100 rounded-lg shadow">
@@ -25,10 +48,10 @@ const ManageOrderPage = () => {
   <Table.ScrollContainer>
     <Table.Content aria-label="Team members" className='p-4'>
       <Table.Header>
-        <Table.Column className= "font-bold text-lg">Photo</Table.Column>
-        <Table.Column className= "font-bold text-lg"  isRowHeader>Tutor Name</Table.Column>
-        <Table.Column className= "font-bold text-lg">Student Name</Table.Column>
-        <Table.Column className= "font-bold text-lg">User Email</Table.Column>
+        <Table.Column className= "font-bold text-lg">Product Name</Table.Column>
+        <Table.Column className= "font-bold text-lg"  isRowHeader>Buyer</Table.Column>
+        <Table.Column className= "font-bold text-lg">Category</Table.Column>
+        <Table.Column className= "font-bold text-lg">Price</Table.Column>
         {/* <Table.Column>booking Id</Table.Column> */}
         <Table.Column className= "font-bold text-lg" >Status</Table.Column>
         <Table.Column className= "font-bold text-lg" >Action</Table.Column>
@@ -46,10 +69,10 @@ const ManageOrderPage = () => {
                 className="rounded-full object-cover"
               />
             </Table.Cell>
-            <Table.Cell>{bookedData.tutorName}</Table.Cell>
-            <Table.Cell>{bookedData.userName}</Table.Cell>
+            <Table.Cell>{bookedData.buyer}</Table.Cell>
+            <Table.Cell>{bookedData.category}</Table.Cell>
             {/* <Table.Cell>{bookedData._id}</Table.Cell> */}
-            <Table.Cell>{bookedData.userEmail}</Table.Cell>
+            <Table.Cell>{bookedData.price}</Table.Cell>
             <Table.Cell className="" > {bookedData.tutorStatus}</Table.Cell> 
             {/* <Table.Cell className="" > {Success || Cancelled}</Table.Cell> */}
             {/* <Table.Cell> <Button bookingId = {bookedData._id} /> </Table.Cell> */}

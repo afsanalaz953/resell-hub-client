@@ -27,20 +27,20 @@ const dashboardItems={
 
  ],
 buyer: [
-  {icon: House, label: "Overview"},
-    {icon: Magnifier, label: "My Orders"},
-    {icon: Bell, label: "Wishlist"},
-    {icon: Envelope, label: "Payments"},
-    {icon: Person, label: "Profile"},
+  {icon: House, label: "Overview", link:'/dashboard/buyer'},
+    {icon: Magnifier, label: "My Orders", link:'/dashboard/buyer/myorders'},
+    {icon: Bell, label: "Wishlist",link:'/dashboard/buyer/wishlist' },
+    {icon: Envelope, label: "Payments", link:'/dashboard/buyer/payments'},
+    {icon: Person, label: "Profile",link:'/dashboard/buyer/profile' },
     // {icon: Gear, label: "Settings"},
 
  ],
  admin:[
-  {icon: House, label: "Overview"},
-    {icon: Magnifier, label: "Manage User"},
-    {icon: Bell, label: "Manage Products"},
-    {icon: Envelope, label: "All Orders"},
-    {icon: Person, label: "Analytics"},
+  {icon: House, label: "Overview", link:'/dashboard/admin'},
+    {icon: Magnifier, label: "Manage User", link:'/dashboard/admin/manageuser'},
+    {icon: Bell, label: "Manage Products", link:'/dashboard/admin/,manageproducts'},
+    {icon: Envelope, label: "All Orders", link:'/dashboard/admin/allorders'},
+    {icon: Person, label: "Analytics", link:'/dashboard/admin/analytics'},
     // {icon: Gear, label: "Settings"},
 
  ],
