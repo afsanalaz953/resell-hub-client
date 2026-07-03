@@ -1,9 +1,9 @@
 import React from 'react';
 import Image from "next/image";
 import Link from "next/link";
-import { Button, Chip } from "@heroui/react";
+import { Button, Chip, Input } from "@heroui/react";
 // import { BookOpen, Clock } from "lucide-react";
- import BuyModal from "@/components/shared/BuyModal"
+//  import BuyModal from "@/components/shared/BuyModal"
 // import { auth } from '@/lib/auth';
 // import { headers } from 'next/headers';
 
@@ -121,7 +121,19 @@ const {_id, title, category, condition, price, status,
              
             )} */}
             <div>
-  <BuyModal singleProduct = {singleProduct} />   
+  {/* <BuyModal singleProduct = {singleProduct} />    */}
+  <form action={"/api/payment"} method="POST">
+                  <input type="hidden" name="price" value={price} />
+                  <input type="hidden" name="title" value={title} />
+                  <input type="hidden" name="productId" value={_id} />
+
+                  <button
+                    type="submit"
+                    className="w-full border-2 border-blue-600 text-blue-600 py-3 px-6 rounded-lg hover:bg-blue-50 transition-colors duration-200 font-semibold"
+                  >
+                    Buy Now
+                  </button>
+                </form>
             </div>
  
 
