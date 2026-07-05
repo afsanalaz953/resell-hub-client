@@ -65,3 +65,6 @@ console.log(price, title, "modalformdata")
  export async function GET(){
    return NextResponse.json({message: "hello from resell hub"})
 }
+
+ // paymentIntentId: payment_intent?.id,
+      // lineItems: line_items?.data || [],

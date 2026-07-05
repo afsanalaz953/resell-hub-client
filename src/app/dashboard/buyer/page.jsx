@@ -2,10 +2,10 @@ import React from 'react';
 import { FaRegHeart } from "react-icons/fa";
 import { TbPrism } from "react-icons/tb";
 import { CiMoneyCheck1 } from "react-icons/ci";
-const BuyerDashboardPage = () => {
+const BuyerOverviewPage = () => {
     return (
          <div className='container mx-auto w-full bg-[#EFF6FF]'>
-                buyer dashboard overview
+                buyer overview
                   <div className='grid md:grid-cols-2 lg:grid-cols-3  gap-4 mt-4 px-20 py-10'> 
                    {/* card1 */}
         {/* <div className="card bg-slate-100 w-70 h-70 shadow-md border-0 rounded-2xl justify-start items-left" /> */}
@@ -50,4 +50,4 @@ const BuyerDashboardPage = () => {
     );
 };
 
-export default BuyerDashboardPage;
+export default BuyerOverviewPage;

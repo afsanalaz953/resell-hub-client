@@ -30,7 +30,7 @@ buyer: [
   {icon: House, label: "Overview", link:'/dashboard/buyer'},
     {icon: Magnifier, label: "My Orders", link:'/dashboard/buyer/myorders'},
     {icon: Bell, label: "Wishlist",link:'/dashboard/buyer/wishlist' },
-    {icon: Envelope, label: "Payments", link:'/dashboard/buyer/payments'},
+    {icon: Envelope, label: "Payments", link:'/dashboard/buyer/payment'},
     {icon: Person, label: "Profile",link:'/dashboard/buyer/profile' },
     // {icon: Gear, label: "Settings"},
 
