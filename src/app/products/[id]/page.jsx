@@ -27,7 +27,7 @@ if (!res.ok) {
 const singleProduct = await res.json();
 console.log(singleProduct,"buy product")
 const {_id, title, category, condition, price, status, 
-    description, image } = singleProduct;
+    description, image, stock } = singleProduct;
     // console.log( id,"Details", tutorDetails); 
 // const safeImage = image && image.trim() !== "" ? image : null;
 
@@ -37,8 +37,6 @@ const {_id, title, category, condition, price, status,
 //   const startDate = new Date(sessionStartDate);
 //   startDate.setHours(0, 0, 0, 0);
 //   const isBookingAllowed = isSlotAvailable && (today >= startDate);
-
-
 
     return (
         <div className="container "> 
@@ -86,8 +84,8 @@ const {_id, title, category, condition, price, status,
                     </span>
                 </div>
          <div className=" grid grid-cols-2 mt-auto border-t border-slate-100  gap-3 items-center">
-                    {/* <span className="text-sm  bg-purple-100 p-4 rounded-2xl font-black text-blue-600">
-                         Hourly Fee: ${singleProduct.hourlyFee}</span> */}
+                    <span className="text-sm  bg-purple-100 p-4 rounded-2xl font-black text-blue-600">
+                         Instock: {stock} </span> 
                <p className="text-sm  bg-sky-100 p-4 rounded-2xl text-slate-500 font-medium flex items-center gap-1">
                        <span className="text-slate-900">{status}</span>
                     </p>

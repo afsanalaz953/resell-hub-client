@@ -9,7 +9,7 @@ const ProductCard = ({allProducts}) => {
         return null;
     }
 
-    const { _id, title, category, condition, price, status, description, image} = allProducts;
+    const { _id, title, category, condition, price, stock, status, description, image} = allProducts;
     return (
         <div >
  <div
@@ -17,7 +17,7 @@ const ProductCard = ({allProducts}) => {
         >
             <div className="container  mx-auto overflow-hidden aspect-12/10"> 
                 <Image
-                    alt="Tutor Image"
+                    alt="Product Image"
                     className="mt-6 cover w-fit object-cover group-hover:scale-110 transition-transform duration-700"
                     src={image|| "/placeholder-image.jpg"}
                     width={300}
@@ -52,19 +52,17 @@ const ProductCard = ({allProducts}) => {
                     
                 </div>
 
+                 <span>
+                        <p className=" text-xs text-slate-500 font-bold"> Condition: {condition} </p>
+                          <p className="text-xs text-slate-500 font-bold"> Instock: {stock} </p>
+                    </span>
                 <div className="flex items-center gap-4 text-xs text-slate-500 font-bold">
-                    {/* <span className="flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5" /> {condition}
-                    </span> */}
-                    <span className="flex items-center gap-1">
+                  <span className="flex items-center gap-1">
                         {/* <BookOpen className="w-3.5 h-3.5" /> 24 Lessons */}
                         <p>Description: {description}</p>
                     </span>
                    
-                </div>
-                 <span>
-                        <p className=" text-xs text-slate-500 font-bold"> Condition: {condition} </p>
-                    </span>
+                </div>    
 
                 <div className="pt-6 mt-auto border-t border-slate-100 flex justify-between items-center">
                     <span className="text-2xl font-black text-orange-600">${price}</span>

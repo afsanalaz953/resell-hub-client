@@ -38,7 +38,7 @@ const PaymentTable = ({payments}) => {
        <Table.Column className= "font-bold text-lg">Price</Table.Column>
         {/* <Table.Column>booking Id</Table.Column> */}
         <Table.Column className= "font-bold text-lg" >Status</Table.Column>
-          <Table.Column className= "font-bold text-lg">Buyer Email</Table.Column>
+          <Table.Column className= "font-bold text-lg">Date</Table.Column>
         {/* <Table.Column className= "font-bold text-lg" >Action</Table.Column> */}
       </Table.Header>
       <Table.Body>

@@ -31,6 +31,8 @@ const customerEmail = checkoutSession.customer_details?.email
 // 🎯 এটিই আপনার মূল Transaction ID (Payment Intent ID)
 const transactionId = checkoutSession.payment_intent?.id
 
+const dbDate = "2026-07-05T18:41:18.305Z";
+const onlyDate = dbDate.split('T')[0];
 const paymentData = {
   sessionId: session_id,
   paymentStatus: checkoutSession.payment_status, 
@@ -40,7 +42,7 @@ const paymentData = {
   customerEmail,
   metadata,
   // createdAt: new Date().toISOString(),
-   createdAt: new Date(dbDate).toLocaleString("en-US", { timeZone: "Asia/Dhaka" }),
+   createdAt: onlyDate,
 };
 
   if (status === 'open') {
