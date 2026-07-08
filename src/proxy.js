@@ -28,6 +28,6 @@ if (session?.user?.role == "seller" && session?.user?.plan == "free"){
 
 
  
-  export const config = {
-    matcher: [ '/profile'], 
-   }
+//   export const config = {
+//     matcher: [ '/profile'], 
+//    }

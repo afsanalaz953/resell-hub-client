@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth"; // path to your Better Auth server instance
 import { headers } from "next/headers";
 import Image from "next/image";
 import { Table } from '@heroui/react';
- import CancelledButton from "@/components/shared/CancelledButton";
+ import CancelledButton from "@/components/dashboard/CancelledButton";
 
 
 const ManageOrderPage = async() => {

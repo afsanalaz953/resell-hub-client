@@ -27,6 +27,7 @@ const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/buyer/myorder
 const bookings = await res.json();
 
  console.log(bookings, "bookings")
+  
 
 
     return (

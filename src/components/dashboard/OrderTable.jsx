@@ -8,13 +8,16 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Chip
+  Chip,
+  Button
 } from "@heroui/react";
 import { div } from "framer-motion/client";
+ import CancelledButton from "@/components/dashboard/CancelledButton";
 
 
 const OrderTable = ({bookings}) => {
-  
+
+
 
   return (
     <div>
@@ -34,11 +37,11 @@ const OrderTable = ({bookings}) => {
       <Table.Header>
         {/* <Table.Column className= "font-bold text-lg">Photo</Table.Column> */}
         <Table.Column className= "font-bold text-lg"  isRowHeader>Product Name</Table.Column>
-        <Table.Column className= "font-bold text-lg">Buyer Email</Table.Column>
+        <Table.Column className= "font-bold text-lg">Date</Table.Column>
         <Table.Column className= "font-bold text-lg">Price</Table.Column>
-        {/* <Table.Column>booking Id</Table.Column> */}
+        {/* <Table.Column>booking Id</Table.Column>  */}
         <Table.Column className= "font-bold text-lg" >Status</Table.Column>
-        {/* <Table.Column className= "font-bold text-lg" >Action</Table.Column> */}
+        <Table.Column className= "font-bold text-lg" >Action</Table.Column> 
       </Table.Header>
       <Table.Body>
          {bookings && bookings.map((bookedData) => ( 
@@ -54,11 +57,18 @@ const OrderTable = ({bookings}) => {
               />
             </Table.Cell> */}
             <Table.Cell>{bookedData.title}</Table.Cell>
-            <Table.Cell>{bookedData.userEmail}</Table.Cell>
-            {/* <Table.Cell>{bookedData._id}</Table.Cell> */}
+            <Table.Cell>{bookedData.createdAt}</Table.Cell>
+             {/* <Table.Cell>{bookedData._id}</Table.Cell>  */}
             <Table.Cell>{bookedData.price}</Table.Cell>
             <Table.Cell className="" > {bookedData.status}</Table.Cell> 
-            {/* <Table.Cell className="" > {Success || Cancelled}</Table.Cell> */}
+           
+              <Table.Cell className="flex gap-3 bg-white p-8">
+                <CancelledButton bookingId = {bookedData._id} status={bookedData.status} />
+                      
+                       </Table.Cell>
+              
+          
+            {/* <Table.Cell className="" > {bookedData.status|| Cancelled}</Table.Cell>  */}
             {/* <Table.Cell> <Button bookingId = {bookedData._id} /> </Table.Cell> */}
             {/* <Table.Cell> <CancelledButton bookingId = {bookedData._id} status={bookedData.tutorStatus}  /> </Table.Cell> */}
           </Table.Row>
