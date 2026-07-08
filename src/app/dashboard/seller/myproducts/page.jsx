@@ -2,7 +2,7 @@
 import React from 'react';
 import { Table } from '@heroui/react';
 import {Button} from "@heroui/react"
- import SellerProductDeleteButton  from "@/components/shared/SellerDeleteButton";
+ import SellerProductDeleteButton from "@/components/shared/SellerDeleteButton";
 import { auth } from "@/lib/auth"; // path to your Better Auth server instance
 import { headers } from "next/headers";
 import Image from "next/image";
@@ -45,16 +45,16 @@ console.log(productList, "tutorlist")
                      <h1 className='font-bold m-6 text-left lg:text-3xl'>My Products List</h1>
    {/* ✅ Empty state check – put it here */}
      {!productList || productList.length === 0 ? (
-        <div className="text-center p-10 m-6 bg-gray-100 rounded-lg shadow">
-          <p className="text-gray-600 text-lg"> No tutors available yet.</p>
-          <p className="text-gray-500">Click “Add Tutor” to get started.</p>
+        <div className="text-center   bg-gray-100 rounded-lg shadow">
+          <p className="text-gray-600 text-lg"> No products available yet.</p>
+          <p className="text-gray-500">Click “Add Products” to get started.</p>
         </div>
-      ) :( <div className='shadow-lg'> 
+      ) :( <div className=' lg:w-full md:`w-[760px]` shadow-lg'> 
         {/* <div className='shadow-lg'> */}
               {/* <Table className=' w-min-700  bg-green-200'> */}
-              <Table className="lg:w-full md:`w-[760px] bg-gray-200">
+              <Table   isCompact   layout="fixed"  className=" bg-gray-200">
                 <Table.ScrollContainer>
-                  <Table.Content aria-label="Team members" className='p-3'>
+                  <Table.Content aria-label="Team members" className=''>
                     <Table.Header className= "rounded ">
                       {/* 1 */}
                       <Table.Column className="text-lg font-bold">Photo</Table.Column>
@@ -74,7 +74,7 @@ console.log(productList, "tutorlist")
                       
                      
                       {/* 8 */}
-                      <Table.Column className="text-lg font-bold text-center"> Action</Table.Column>
+                      <Table.Column className="text-lg font-bold text-center w-0.5"> Action</Table.Column>
                     </Table.Header>
                     <Table.Body>
                    {productList && productList.map((formProduct) => ( 
@@ -105,7 +105,7 @@ console.log(productList, "tutorlist")
                            {/* 7 */}
                             <Table.Cell>{formProduct.status}</Table.Cell>
                           {/* 8 */}
-                         <Table.Cell className="flex gap-3 bg-white p-8">
+                         <Table.Cell className="flex gap-2 bg-white p-2">
                           <UpdateModal product = {formProduct} />
                         <SellerProductDeleteButton  productId = {formProduct._id} />
                            

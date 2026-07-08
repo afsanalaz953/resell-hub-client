@@ -35,7 +35,7 @@ window.location.reload();
             >
                 Cancel
             </Button> */}
-               <Button variant="danger" type= "submit"><RiDeleteBin3Line /></Button>
+ <Button variant="danger" type= "submit"> <RiDeleteBin3Line  />  </Button>
 
             <AlertDialog.Backdrop>
                 <AlertDialog.Container>
