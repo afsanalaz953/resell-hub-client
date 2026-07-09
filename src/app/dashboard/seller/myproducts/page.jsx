@@ -117,7 +117,8 @@ console.log(productList, "tutorlist")
                   </Table.Content>
                 </Table.ScrollContainer>
               </Table>
-              
+
+         
  {/**/}
  {/* <Table.Column>product Id</Table.Column>    */}
             </div> ) 

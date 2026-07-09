@@ -44,7 +44,7 @@ const paymentData = {
   // createdAt: new Date().toISOString(),
    createdAt: onlyDate,
 };
-
+console.log(paymentData, "payment")
   if (status === 'open') {
     return redirect('/')
   }
@@ -90,6 +90,7 @@ const bookingData = {
   productId:paymentData. metadata?.productId,
   title: paymentData.metadata?.title,
   price: paymentData.metadata?.price,
+  buyerName: paymentData.name,
   status,
   createdAt: new Date().toISOString(),
 };

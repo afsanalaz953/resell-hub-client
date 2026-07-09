@@ -12,6 +12,29 @@ const session = await auth.api.getSession({
  });
  const user = session?.user;
 console.log(session)
+// from buyer manageorders
+const customerEmail = user?.email; // session থেকে ইমেইল
+console.log(customerEmail, "email")
+  let orders = [];
+
+  // if (customerEmail) {
+  //   try {
+  //     const res = await fetch(
+  //       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/buyer/payment?customerEmail=${encodeURIComponent(customerEmail)}`,
+  //       { cache: 'no-store' }
+  //     );
+
+  //     if (!res.ok) {
+  //       console.error(`API Error: ${res.status}`);
+  //     } else {
+  //       orders = await res.json();
+  //       console.log('✅ Fetched bookings:', orders);
+  //     }
+  //   } catch (error) {
+  //     console.error('❌ Fetch error:', error.message);
+  //   }
+  // }
+
 
 // const tokenObjData = await auth.api.getToken({
 //         headers: await headers()
@@ -19,14 +42,14 @@ console.log(session)
 //      console.log(tokenObjData, "objData")
 
 // user id dhore ante hobe
-const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/seller/orders/${user?.id}`,{
-   cache: 'no-store',
-  // headers:{
-  //   authorization: `Bearer ${tokenObjData.token}`
-  //    }    
-});
-const orders = await res.json();
- console.log(orders, "bookings orders")
+// const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/buyer/payment?customerEmail=${encodeURIComponent(customerEmail)}`,{
+//    cache: 'no-store',
+//   // headers:{
+//   //   authorization: `Bearer ${tokenObjData.token}`
+//   //    }    
+// });
+// const orders = await res.json();
+//  console.log(orders, "bookings orders")
 
 
 
@@ -35,7 +58,7 @@ const orders = await res.json();
            ManageOrderPage 
            <h1 className='font-bold text-3xl m-10'> My Orders</h1>
         ✅ Empty state check – put it here
-      {!bookings || bookings.length === 0 ? (
+      {!orders || orders.length === 0 ? (
         <div className="text-center m-6 p-10 bg-gray-100 rounded-lg shadow">
           <p className="text-gray-600 text-lg"> No bookings available yet.</p>
           <p className="text-gray-500">Click “Book Tutors” to get started.</p>
@@ -57,23 +80,23 @@ const orders = await res.json();
         <Table.Column className= "font-bold text-lg" >Action</Table.Column>
       </Table.Header>
       <Table.Body>
-         {bookings && bookings.map((bookedData) => ( 
+         {orders && orders.map((orderedData) => ( 
       
-          <Table.Row key={bookedData?._id}>
+          <Table.Row key={orderedData?._id}>
             <Table.Cell>
               <Image
-                src={bookedData.tutorImage}
-                alt={bookedData.tutorName}
+                src={orderedData.tutorImage}
+                alt={orderedData.tutorName}
                 width={50}
                 height={50}
                 className="rounded-full object-cover"
               />
             </Table.Cell>
-            <Table.Cell>{bookedData.buyer}</Table.Cell>
-            <Table.Cell>{bookedData.category}</Table.Cell>
+            <Table.Cell>{orderedData.buyer}</Table.Cell>
+            <Table.Cell>{orderedData.category}</Table.Cell>
             {/* <Table.Cell>{bookedData._id}</Table.Cell> */}
-            <Table.Cell>{bookedData.price}</Table.Cell>
-            <Table.Cell>{bookedData.price}</Table.Cell>
+            <Table.Cell>{orderedData.price}</Table.Cell>
+            <Table.Cell>{orderedData.price}</Table.Cell>
             <Table.Cell className="" > {bookedData.tutorStatus}</Table.Cell> 
             {/* <Table.Cell className="" > {Success || Cancelled}</Table.Cell> */}
             {/* <Table.Cell> <Button bookingId = {bookedData._id} /> </Table.Cell> */}
