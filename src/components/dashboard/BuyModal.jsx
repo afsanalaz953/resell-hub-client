@@ -7,7 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 
-export function BuyModal({singleProduct }) {
+export function BuyModal({singleProduct, action, method }) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false); // ← মডাল ওপেন/ক্লোজ কন্ট্রোল
   const { data: session } = authClient.useSession();
@@ -22,7 +22,7 @@ export function BuyModal({singleProduct }) {
   const handleBuying = async (e) => {
     e.preventDefault();
     if (isLoading) return;
-
+ 
     // if (allTutor.availableSlots <= 0) {
     //   toast.error("No available slots left.", { position: "top-center" });
     //   return;
@@ -103,9 +103,8 @@ export function BuyModal({singleProduct }) {
             </Modal.Header>
             <Modal.Body className="p-6"> 
               <Surface variant="default">
-                 <form onSubmit={handleBuying}
-                           className="flex flex-col gap-4"                        
-                         >
+                 {/* <form onSubmit={handleBuying} className="flex flex-col gap-4" > */}
+                  <form action={action} method={method} className="flex flex-col gap-4">
                        
                             {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> */}
                              {/* Destination Name */}
@@ -130,12 +129,12 @@ export function BuyModal({singleProduct }) {
                  <Label> Buyer Phone</Label>
                    <Input placeholder="Enter your phone number" />
                 </TextField>
-              <TextField   defaultValue={title}  className="w-full" name="name">
+              <TextField   defaultValue={title}  className="w-full" name="title">
                   <Label>product </Label>
                  <Input 
                   placeholder="product" />
           </TextField> 
-          <TextField   defaultValue={price}  className="w-full" name="name">
+          <TextField   defaultValue={price}  className="w-full" name="price">
                   <Label>Price </Label>
                  <Input 
                   placeholder="product" />

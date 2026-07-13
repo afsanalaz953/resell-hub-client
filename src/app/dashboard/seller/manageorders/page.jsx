@@ -13,27 +13,27 @@ const session = await auth.api.getSession({
  const user = session?.user;
 console.log(session)
 // from buyer manageorders
-const customerEmail = user?.email; // session থেকে ইমেইল
-console.log(customerEmail, "email")
-  let orders = [];
+const buyerEmail = user?.email; // session থেকে ইমেইল
+console.log(buyerEmail, "email")
+   let orders = [];
 
-  // if (customerEmail) {
-  //   try {
-  //     const res = await fetch(
-  //       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/buyer/payment?customerEmail=${encodeURIComponent(customerEmail)}`,
-  //       { cache: 'no-store' }
-  //     );
+  if (buyerEmail) {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?buyerEmail=${encodeURIComponent(buyerEmail)}`,
+        { cache: 'no-store' }
+      );
 
-  //     if (!res.ok) {
-  //       console.error(`API Error: ${res.status}`);
-  //     } else {
-  //       orders = await res.json();
-  //       console.log('✅ Fetched bookings:', orders);
-  //     }
-  //   } catch (error) {
-  //     console.error('❌ Fetch error:', error.message);
-  //   }
-  // }
+      if (!res.ok) {
+        console.error(`API Error: ${res.status}`);
+      } else {
+        orders = await res.json();
+        console.log('✅ Fetched bookings:', orders);
+      }
+    } catch (error) {
+      console.error('❌ Fetch error:', error.message);
+    }
+  }
 
 
 // const tokenObjData = await auth.api.getToken({
@@ -48,8 +48,14 @@ console.log(customerEmail, "email")
 //   //   authorization: `Bearer ${tokenObjData.token}`
 //   //    }    
 // });
-// const orders = await res.json();
-//  console.log(orders, "bookings orders")
+
+// const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/${userId}`,{
+// cache:"no-store",
+// // headers:{
+// //       authorization: `Bearer ${tokenObj.token}`
+// //    }
+// });
+
 
 
 
@@ -67,7 +73,7 @@ console.log(customerEmail, "email")
 
        ( <div className='shadow-lg'>
 
- <Table className='lg:w-min-700 bg-yellow-200 my-10 md:`w-[760px]` '>
+ <Table className='lg:w-min-700 bg-yellow-200 my-10 md:w-[760px] '>
   <Table.ScrollContainer>
     <Table.Content aria-label="Team members" className='p-4'>
       <Table.Header>
@@ -85,19 +91,35 @@ console.log(customerEmail, "email")
           <Table.Row key={orderedData?._id}>
             <Table.Cell>
               <Image
-                src={orderedData.tutorImage}
-                alt={orderedData.tutorName}
+                src={orderedData.image}
+                alt={orderedData.title}
                 width={50}
                 height={50}
                 className="rounded-full object-cover"
               />
+              {/* _id
+6a54c662927b898e5033f5ea
+buyerName
+"nuri"
+buyerEmail
+"lazafsana72@gmail.com"
+productId
+"6a4c72d4b41f7b7d5d339e70"
+productName
+"Used Suzuki Alto 2010"
+productImage
+"https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600"
+productStatus
+"available"
+status
+"PENDING" */}
             </Table.Cell>
-            <Table.Cell>{orderedData.buyer}</Table.Cell>
-            <Table.Cell>{orderedData.category}</Table.Cell>
+            <Table.Cell>{orderedData.productName}</Table.Cell>
+            <Table.Cell>{orderedData.buyerName}</Table.Cell>
             {/* <Table.Cell>{bookedData._id}</Table.Cell> */}
-            <Table.Cell>{orderedData.price}</Table.Cell>
-            <Table.Cell>{orderedData.price}</Table.Cell>
-            <Table.Cell className="" > {bookedData.tutorStatus}</Table.Cell> 
+            <Table.Cell>{orderedData.buyerEmail}</Table.Cell>
+            <Table.Cell>{orderedData.productId}</Table.Cell>
+            <Table.Cell className="" > {orderedData.status}</Table.Cell> 
             {/* <Table.Cell className="" > {Success || Cancelled}</Table.Cell> */}
             {/* <Table.Cell> <Button bookingId = {bookedData._id} /> </Table.Cell> */}
             {/* <Table.Cell> <CancelledButton bookingId = {bookedData._id} status={bookedData.tutorStatus}  /> </Table.Cell> */}
