@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { auth } from "@/lib/auth"; // path to your Better Auth server instance
 import { headers } from "next/headers";
@@ -11,16 +12,18 @@ const session = await auth.api.getSession({
      headers: await headers(), // you need to pass the headers object.
  });
  const user = session?.user;
-console.log(session)
+const sellerId = user?.id;
+console.log(session, sellerId, "sellerId")
 // from buyer manageorders
-const buyerEmail = user?.email; // session থেকে ইমেইল
-console.log(buyerEmail, "email")
+// const buyerEmail = user?.email; // session থেকে ইমেইল
+// console.log(buyerEmail, "email")
    let orders = [];
 
-  if (buyerEmail) {
+  if (sellerId) {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?buyerEmail=${encodeURIComponent(buyerEmail)}`,
+        // `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?buyerEmail=${encodeURIComponent(buyerEmail)}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?sellerId=${sellerId}`,
         { cache: 'no-store' }
       );
 
@@ -28,7 +31,7 @@ console.log(buyerEmail, "email")
         console.error(`API Error: ${res.status}`);
       } else {
         orders = await res.json();
-        console.log('✅ Fetched bookings:', orders);
+        console.log('✅ Fetched ordersbookings:', orders);
       }
     } catch (error) {
       console.error('❌ Fetch error:', error.message);
@@ -62,12 +65,12 @@ console.log(buyerEmail, "email")
     return (
         <div>
            ManageOrderPage 
-           <h1 className='font-bold text-3xl m-10'> My Orders</h1>
-        ✅ Empty state check – put it here
+           <h1 className='font-bold text-3xl m-10'> My Orders List</h1>
+      
       {!orders || orders.length === 0 ? (
         <div className="text-center m-6 p-10 bg-gray-100 rounded-lg shadow">
-          <p className="text-gray-600 text-lg"> No bookings available yet.</p>
-          <p className="text-gray-500">Click “Book Tutors” to get started.</p>
+          <p className="text-gray-600 text-lg"> No Orders available yet.</p>
+          <p className="text-gray-500">Click “Book Products” to get started.</p>
         </div>
       ) : 
 
@@ -77,9 +80,10 @@ console.log(buyerEmail, "email")
   <Table.ScrollContainer>
     <Table.Content aria-label="Team members" className='p-4'>
       <Table.Header>
+        {/* <Table.Column className= "font-bold text-lg">Photo</Table.Column> */}
         <Table.Column className= "font-bold text-lg">Product Name</Table.Column>
         <Table.Column className= "font-bold text-lg"  isRowHeader>Buyer</Table.Column>
-        <Table.Column className= "font-bold text-lg">Category</Table.Column>
+        <Table.Column className= "font-bold text-lg">Buyer Email</Table.Column>
         <Table.Column className= "font-bold text-lg">Price</Table.Column>
         {/* <Table.Column>booking Id</Table.Column> */}
         <Table.Column className= "font-bold text-lg" >Status</Table.Column>
@@ -89,7 +93,7 @@ console.log(buyerEmail, "email")
          {orders && orders.map((orderedData) => ( 
       
           <Table.Row key={orderedData?._id}>
-            <Table.Cell>
+            {/* <Table.Cell>
               <Image
                 src={orderedData.image}
                 alt={orderedData.title}
@@ -97,29 +101,16 @@ console.log(buyerEmail, "email")
                 height={50}
                 className="rounded-full object-cover"
               />
-              {/* _id
-6a54c662927b898e5033f5ea
-buyerName
-"nuri"
-buyerEmail
-"lazafsana72@gmail.com"
-productId
-"6a4c72d4b41f7b7d5d339e70"
-productName
-"Used Suzuki Alto 2010"
-productImage
-"https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600"
-productStatus
-"available"
-status
-"PENDING" */}
-            </Table.Cell>
+    
+            </Table.Cell> */}
             <Table.Cell>{orderedData.productName}</Table.Cell>
             <Table.Cell>{orderedData.buyerName}</Table.Cell>
             {/* <Table.Cell>{bookedData._id}</Table.Cell> */}
             <Table.Cell>{orderedData.buyerEmail}</Table.Cell>
-            <Table.Cell>{orderedData.productId}</Table.Cell>
+            <Table.Cell>{orderedData.price}</Table.Cell>
             <Table.Cell className="" > {orderedData.status}</Table.Cell> 
+            <Table.Cell className="" > {orderedData.status}</Table.Cell> 
+           
             {/* <Table.Cell className="" > {Success || Cancelled}</Table.Cell> */}
             {/* <Table.Cell> <Button bookingId = {bookedData._id} /> </Table.Cell> */}
             {/* <Table.Cell> <CancelledButton bookingId = {bookedData._id} status={bookedData.tutorStatus}  /> </Table.Cell> */}

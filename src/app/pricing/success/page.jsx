@@ -38,7 +38,8 @@ const paymentData = {
   paymentStatus: checkoutSession.payment_status, 
   amount: metadata?.amount,                     
   quantity: metadata?.quantity,
-  transactionId: transactionId,                  
+  transactionId: transactionId, 
+  sellerId: metadata?.sellerId,              
   customerEmail,
   metadata,
   // createdAt: new Date().toISOString(),
@@ -86,13 +87,16 @@ console.log(paymentData, "payment")
 const bookingData = {
   sessionId: session_id,
   customerEmail,
-  userId:paymentData.metadata?.userId,
+   buyerId: paymentData.metadata?.userId,      // মেটাডেটা থেকে
+  sellerId: paymentData.metadata?.sellerId,
+  // userId:paymentData.metadata?.userId,
   productId:paymentData. metadata?.productId,
   title: paymentData.metadata?.title,
   price: paymentData.metadata?.price,
   buyerName: paymentData.name,
   status,
   createdAt: new Date().toISOString(),
+  sellerId: paymentData.metadata?.sellerId,
 };
 
       const resdata = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/bookings`, {

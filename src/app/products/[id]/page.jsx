@@ -27,7 +27,7 @@ if (!res.ok) {
 const singleProduct = await res.json();
 console.log(singleProduct,"buy product")
 const {_id, title, category, condition, price, status, 
-    description, image, stock } = singleProduct;
+    description, image, stock, sellerInfo } = singleProduct;
     // console.log( id,"Details", tutorDetails); 
 // const safeImage = image && image.trim() !== "" ? image : null;
 
@@ -107,6 +107,9 @@ const {_id, title, category, condition, price, status,
                   <p className='font-bold text-black text-xl'> Price: </p>
                       <p className='text-orange-800 font-bold, text-3xl' > {price} </p> 
                 </div>
+                {/* <div>
+                  <p> {sellerInfo.name} </p>
+                </div> */}
                 {/* ----- */}
                 <div>
  {/* {!isSlotAvailable && (

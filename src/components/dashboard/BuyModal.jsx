@@ -20,8 +20,11 @@ export function BuyModal({singleProduct, action, method }) {
   });
 
   const handleBuying = async (e) => {
-    e.preventDefault();
-    if (isLoading) return;
+    // e.preventDefault();
+    if (isLoading){
+      e.preventDefault();
+      return;
+    } 
  
     // if (allTutor.availableSlots <= 0) {
     //   toast.error("No available slots left.", { position: "top-center" });
@@ -45,7 +48,10 @@ export function BuyModal({singleProduct, action, method }) {
       productName: singleProduct.title,
       productImage: singleProduct.image,
       productStatus: singleProduct.status,
+      price : formData.price,
         status: 'PENDING',
+         buyerId: user?.id,   
+      sellerId: singleProduct.userId, 
     };
 
   
@@ -104,8 +110,8 @@ export function BuyModal({singleProduct, action, method }) {
             <Modal.Body className="p-6"> 
               <Surface variant="default">
                  {/* <form onSubmit={handleBuying} className="flex flex-col gap-4" > */}
-                  <form action={action} method={method} className="flex flex-col gap-4">
-                       
+                  <form action={action} method={method} onSubmit={handleBuying}  className="flex flex-col gap-4">
+                       <input type="hidden" name="sellerId" value={singleProduct.userId} />
                             {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> */}
                              {/* Destination Name */}
                              {/* <div className="md:col-span-2">  */}
@@ -117,7 +123,7 @@ export function BuyModal({singleProduct, action, method }) {
                            
                
                              {/* Country */}
-                             <TextField className="w-full"  name="email" type="email" isRequired>
+                             <TextField  className="w-full"  name="email" type="email" isRequired>
                                <Label>Customer Email</Label>
                                <Input 
                           

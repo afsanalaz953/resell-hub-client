@@ -21,8 +21,9 @@ export async function POST(request) {
     const price = formData.get ('price')
     const title = formData.get ('title')
     const productId = formData.get ('productId')
+    const sellerId = formData.get('sellerId')
    
-console.log(price, title, "modalformdata")
+console.log(price, title, sellerId, "modalformdata")
     // Create Checkout Sessions from body params.
     const session = await stripe.checkout.sessions.create({
       customer_email:user.email,
@@ -41,10 +42,14 @@ console.log(price, title, "modalformdata")
       ],
       metadata:{
         price: Number (price),
-        userId: user.id,
-        userEmail: user.email,
+        // userId: user.id,
+        //  userEmail: user.email,
+         buyerId: user.id,
+        buyerEmail: user.email,
         title,
-        productId
+        productId,
+        sellerId: sellerId, 
+        
       },
       mode: 'payment',
       success_url: `${origin}/pricing/success?session_id={CHECKOUT_SESSION_ID}`,

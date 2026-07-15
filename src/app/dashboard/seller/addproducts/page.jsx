@@ -128,7 +128,7 @@ const onSubmit = async(e) =>{
                <div className="md:col-span-2 ">
                  <TextField name="title" isRequired>
                    <Label>Product Title</Label>
-                   <Input placeholder="Enter your tutor name" className="rounded-2xl " />
+                   <Input placeholder="Enter your Product name" className="rounded-2xl " />
                    <FieldError />
                  </TextField>
                </div>
