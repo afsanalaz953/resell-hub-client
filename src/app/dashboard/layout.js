@@ -1,14 +1,16 @@
 import React from 'react';
 import DashboardSidebar from "@/components/dashboard/DashboardSidebar"
-import Logo from "@/components/shared/Logo"
+import DashboardNavbar from "@/components/dashboard/DashboardNavbar";
+
 
 export default function DashboardLayout({ children }) {
   return (
     
      <div className="  h-full bg-background container mx-auto " >
       <div className=''>
-        <Logo />
-             <div className="border-2" >Navbar</div>
+        {/* <Logo />
+             <div className="border-2" >Navbar</div> */}
+             <DashboardNavbar />
          </div>
      
 

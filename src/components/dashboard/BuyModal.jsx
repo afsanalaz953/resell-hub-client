@@ -48,7 +48,7 @@ export function BuyModal({singleProduct, action, method }) {
       productName: singleProduct.title,
       productImage: singleProduct.image,
       productStatus: singleProduct.status,
-      price : formData.price,
+      price : singleProduct.price,
         status: 'PENDING',
          buyerId: user?.id,   
       sellerId: singleProduct.userId, 
