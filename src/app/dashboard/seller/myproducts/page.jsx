@@ -6,7 +6,8 @@ import {Button} from "@heroui/react"
 import { auth } from "@/lib/auth"; // path to your Better Auth server instance
 import { headers } from "next/headers";
 import Image from "next/image";
- import UpdateModal from "@/components/shared/UpdateModal"
+ import UpdateModal from "@/components/shared/UpdateModal";
+ import Link from "next/link"
 
 
 const SellerMyproductPage = async() => {
@@ -93,7 +94,12 @@ console.log(productList, "tutorlist")
                             />
                           </Table.Cell>
                           {/* 2 */}
-                          <Table.Cell>{formProduct.title}</Table.Cell>
+                          <Table.Cell>
+                            <Link href={`/products/${formProduct._id}`}
+                            className='hover:text-blue-800 hover:underline'>
+                            {formProduct.title}
+                            </Link>
+                            </Table.Cell>
                           {/* 3 */}
                           <Table.Cell>{formProduct.category}</Table.Cell>
                             {/* 4 */}
