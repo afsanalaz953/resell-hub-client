@@ -37,9 +37,9 @@ buyer: [
  ],
  admin:[
   {icon: House, label: "Overview", link:'/dashboard/admin'},
-    {icon: Magnifier, label: "Manage User", link:'/dashboard/admin/manageuser'},
-    {icon: Bell, label: "Manage Products", link:'/dashboard/admin/,manageproducts'},
-    {icon: Envelope, label: "All Orders", link:'/dashboard/admin/allorders'},
+    {icon: Magnifier, label: "Manage User", link:'/dashboard/admin/users'},
+    {icon: Bell, label: "Manage Products", link:'/dashboard/admin/products'},
+    {icon: Envelope, label: "All Orders", link:'/dashboard/admin/orders'},
     {icon: Person, label: "Analytics", link:'/dashboard/admin/analytics'},
     // {icon: Gear, label: "Settings"},
 

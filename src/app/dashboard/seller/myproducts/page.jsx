@@ -109,7 +109,9 @@ console.log(productList, "tutorlist")
                           {/* 6 */}
                            <Table.Cell>{formProduct.condition}</Table.Cell>
                            {/* 7 */}
-                            <Table.Cell>{formProduct.status}</Table.Cell>
+                           {/* dynamic status */}
+                          {formProduct.status !== 'Approved' && <div>Pending</div>}
+                           {formProduct.status === 'Approved' && <Table.Cell>{formProduct.status}</Table.Cell>} 
                           {/* 8 */}
                          <Table.Cell className="flex gap-2 bg-white p-2">
                           <UpdateModal product = {formProduct} />

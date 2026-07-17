@@ -73,6 +73,8 @@ const onSubmit = async(e) =>{
 //     // ক্লায়েন্ট সাইডে সেশন থেকে ইউজার আইডি নেওয়া (headers() ছাড়া)
        const { data: session } = await authClient.getSession();
      const userId = session?.user?.id;
+     const userName = session?.user?.name;
+     const userEmail = session?.user?.email;
 
 //      // ইউজার আইডি পেলোডে যুক্ত করা (কোনো কনফ্লিক্ট নেই)
     const product = {
@@ -84,8 +86,11 @@ const onSubmit = async(e) =>{
        condition: formValues.condition,
        description: formValues.description,
        image: imageUrl,
-       status:"available",
+       status:"Pending",
        userId: userId,
+       userName: userName,
+       userEmail: userEmail,
+
      };
      console.log("product with userId", product );
    
@@ -118,7 +123,7 @@ const onSubmit = async(e) =>{
       
              <h1 className='text-2xl font-bold text-blue-800 text-center my-2'>Add Products </h1>
     <div className='formdata  border-0 shadow-lg w-3xl'>
-                 <form 
+                <form 
                  onSubmit = {onSubmit}
              className="p-10 space-y-4 w-3xl " 
            >

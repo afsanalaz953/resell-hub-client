@@ -107,7 +107,7 @@ if (error) {
 <label className='font-medium '>Role Selection</label>
       <select {...register("role", {required: "role is required",
   })} className='rounded border-2 font-bold mr-20 p-2'>
-        <option value="admin">admin</option>
+        {/* <option value="admin">admin</option> */}
         <option value="buyer">buyer</option>
         <option value="seller">seller</option>
       </select>
