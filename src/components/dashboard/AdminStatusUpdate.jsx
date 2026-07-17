@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { AlertDialog, Button, Chip } from "@heroui/react";
 import { useRouter } from "next/navigation";
 
-const AdminStatusUpdate = ({adminproductid, status}) => {
+const AdminStatusUpdate = ({adminproductid, status, }) => {
    const router = useRouter(); 
   const normalizedStatus = status?.toLowerCase();
    

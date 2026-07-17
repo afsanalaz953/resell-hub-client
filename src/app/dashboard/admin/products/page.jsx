@@ -4,6 +4,7 @@ import Image from "next/image";
 //  import UpdateModal from "@/components/shared/UpdateModal";
  import Link from "next/link";
  import AdminStatusUpdate  from "@/components/dashboard/AdminStatusUpdate";
+ import AdminRejected from "@/components/dashboard/RejectedProduct"
 
 
 const ProductManagePage = async() => {
@@ -86,7 +87,7 @@ console.log(adminProductsData, "adminproducts");
                                         <AdminStatusUpdate adminproductid = {adminProducts._id} 
                                         status={adminProducts.status} />
                                         {/* {adminProducts.status} */}
-                                         
+                                         <AdminRejected rejectedproductid = {adminProducts._id} />
                                        </Table.Cell>
                                         </Table.Row>
                                         
