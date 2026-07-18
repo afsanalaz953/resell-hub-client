@@ -44,7 +44,7 @@ if (res.ok)  {
 }
 
 if (normalizedStatus === "pending") {
-    return <Chip onPress={handleApprove} className='bg-orange-300'>Pending</Chip>;
+    return <Chip as="button"  onClick={handleApprove} className='bg-orange-300'>Pending</Chip>;
   }
 
   if (normalizedStatus === "approved") {

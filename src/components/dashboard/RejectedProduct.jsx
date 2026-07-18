@@ -58,7 +58,7 @@ router.refresh();
                                 slot="close"
                                 variant="tertiary"
                             >
-                               keep Tutor
+                               keep Product
                             </Button>
                             <Button
 
