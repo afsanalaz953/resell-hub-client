@@ -7,31 +7,7 @@ import Image from "next/image";
 
 const ManageUserPage = async() => {
       
-//     const session = await auth.api.getSession({
-//         headers: await headers() // you need to pass the headers object.
-//      });
-//    const user = session?.user
-//    const userId = user._id
-    //  console.log(session, "formproducts")
-    // /api/admin/:userId
-    // User	Email	Role	Status	Joined	Actions
-    // 
-// _id
-// 6a4bba348d7e691b06bd1789
-// name
-// "elu"
-// email
-// "lazafsana75@gmail.com"
-// emailVerified
-// false
-// image
-// "https://img.freepik.com/free-psd/3d-render-avatar-character_23-2150611…"
-// createdAt
-// 2026-07-06T14:22:44.463+00:00
-// updatedAt
-// 2026-07-06T14:22:44.463+00:00
-// role
-// "buyer"
+
     const res = await fetch (`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/user`,{
   cache: 'no-store',
 // //    headers:{
@@ -48,10 +24,12 @@ const ManageUserPage = async() => {
 
 const userList = await res.json()
 console.log(userList, "userlist")
+// const createdAt = new Date();
+// console.log(createdAt)
 
     return (
         <div>
-            Manage Users by admin
+            <h1 className='m-10 text-3xl font-bold text-orange-700'>All Users </h1>
 
             {/* ✅ Empty state check – put it here */}
                 {!userList || userList.length === 0 ? (
@@ -115,7 +93,7 @@ console.log(userList, "userlist")
                                      <Table.Cell>{adUser.role}</Table.Cell>   
                                      <Table.Cell>Active </Table.Cell>  
                                      {/* 5 */}
-                                     <Table.Cell>$ {adUser.createdAt}</Table.Cell>
+                                     <Table.Cell>{new Date(adUser.createdAt).toLocaleDateString()}</Table.Cell>
                                      {/* 6 */}
                                       {/* <Table.Cell>{formProduct.condition}</Table.Cell> */}
                                       {/* 7 */}

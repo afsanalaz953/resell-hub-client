@@ -36,7 +36,7 @@ console.log (user, "user");
 
 
     return (
-        <nav className='flex justify-between container mx-auto p-2 gap-35 bg-[#0F172B] '>
+        <nav className='flex justify-between container mx-auto p-2 gap-20 bg-[#0F172B] '>
             <div className='m-6'>  <Logo /> logo </div>
             {/* linkpage */}
             <div className='flex gap-2  items-center'>
@@ -48,13 +48,18 @@ console.log (user, "user");
                {/* user part */}
                <div className='rounded-full flex gap-2 '> 
          <DropDownHober />
-        <h2 className='text-orange-600'>{user?.name}</h2> 
+         <div className='flex flex-col '>
+<h2 className='text-orange-600'>{user?.name}</h2> 
          <span className= {`font-bold ${role === "seller" ? "text-orange-400" : 
         role === "buyer" ? "text-orange-400" : "text-orange-600"}`}> {role} </span>
-         <ThemeToggle />
+         </div>
+
+         <div className='m-6'>
+            <ThemeToggle />
+         </div>  
       </div>
             
-                  <div></div>
+                  {/* there was the extra div */}
                     {/* login part */}
                         
                     

@@ -23,6 +23,21 @@ additionalFields:{
   role:{
     defaultValue:"buyer"
   },
+   isBlocked: {
+        type: "boolean",
+        required: false,
+        defaultValue: false,
+      },
+      status: {
+        type: "string",
+        required: false,
+        defaultValue: "active",
+      },
+      phone: {
+        type: "string",
+        required: false,
+        // defaultValue: "" // চাইলে দিতে পারেন
+      },
   // plan:{
   //   defaultValue: "free"
   // }
