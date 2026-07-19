@@ -4,6 +4,8 @@ import {Button} from "@heroui/react"
 import { auth } from "@/lib/auth"; // path to your Better Auth server instance
 import { headers } from "next/headers";
 import Image from "next/image";
+import UserActionButton from "@/components/dashboard/UserBlockedButton";
+
 
 const ManageUserPage = async() => {
       
@@ -103,6 +105,7 @@ console.log(userList, "userlist")
                                      {/* 8 */}
                                     <Table.Cell className="flex gap-2 bg-white p-2">
                                         approved
+                                        <UserActionButton />
                                      {/* <UpdateModal product = {adUser} />
                                    <SellerProductDeleteButton  productId = {formProduct._id} /> */}
                                       
