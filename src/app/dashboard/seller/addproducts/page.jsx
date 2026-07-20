@@ -87,9 +87,9 @@ const onSubmit = async(e) =>{
        description: formValues.description,
        image: imageUrl,
        status:"Pending",
-       userId: userId,
-       userName: userName,
-       userEmail: userEmail,
+       sellerId: userId,
+       sellerName: userName,
+       sellerEmail: userEmail,
 
      };
      console.log("product with userId", product );

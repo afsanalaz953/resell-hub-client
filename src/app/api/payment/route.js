@@ -46,6 +46,7 @@ console.log(price, title, sellerId, "modalformdata")
         //  userEmail: user.email,
          buyerId: user.id,
         buyerEmail: user.email,
+        buyername : user.name,
         title,
         productId,
         sellerId: sellerId, 

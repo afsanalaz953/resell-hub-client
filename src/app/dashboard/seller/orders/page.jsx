@@ -13,7 +13,8 @@ const session = await auth.api.getSession({
  });
  const user = session?.user;
 const sellerId = user?.id;
-console.log(session, sellerId, "sellerId")
+const sellerName = user?.name
+console.log(session, sellerId, sellerName, "sellerId")
 // from buyer manageorders
 // const buyerEmail = user?.email; // session থেকে ইমেইল
 // console.log(buyerEmail, "email")
@@ -23,7 +24,7 @@ console.log(session, sellerId, "sellerId")
     try {
       const res = await fetch(
         // `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?buyerEmail=${encodeURIComponent(buyerEmail)}`,
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?sellerId=${sellerId}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders`,
         { cache: 'no-store' }
       );
 
@@ -107,7 +108,7 @@ console.log(session, sellerId, "sellerId")
             <Table.Cell>{orderedData.buyerName}</Table.Cell>
             {/* <Table.Cell>{bookedData._id}</Table.Cell> */}
             <Table.Cell>{orderedData.buyerEmail}</Table.Cell>
-            <Table.Cell>{orderedData.price}</Table.Cell>
+            <Table.Cell>$ {orderedData.price}</Table.Cell>
             <Table.Cell className="" > {orderedData.status}</Table.Cell> 
             <Table.Cell className="" > {orderedData.status}</Table.Cell> 
            
