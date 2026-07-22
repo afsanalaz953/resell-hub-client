@@ -22,6 +22,9 @@ export async function POST(request) {
     const title = formData.get ('title')
     const productId = formData.get ('productId')
     const sellerId = formData.get('sellerId')
+    const sellerName = formData.get('sellerName')
+    const sellerEmail = formData.get('sellerEmail')
+  
    
 console.log(price, title, sellerId, "modalformdata")
     // Create Checkout Sessions from body params.
@@ -50,6 +53,8 @@ console.log(price, title, sellerId, "modalformdata")
         title,
         productId,
         sellerId: sellerId, 
+        sellerName,
+        sellerEmail,
         
       },
       mode: 'payment',

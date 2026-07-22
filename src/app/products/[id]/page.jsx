@@ -25,9 +25,9 @@ if (!res.ok) {
   throw new Error(`Failed to fetch tutor: ${res.status}`);
 }
 const singleProduct = await res.json();
-console.log(singleProduct,"buy product")
+console.log(singleProduct,"buy single product")
 const {_id, title, category, condition, price, status, 
-    description, image, stock, sellerInfo } = singleProduct;
+    description, image, stock} = singleProduct;
     // console.log( id,"Details", tutorDetails); 
 // const safeImage = image && image.trim() !== "" ? image : null;
 

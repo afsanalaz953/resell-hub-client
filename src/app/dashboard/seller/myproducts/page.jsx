@@ -14,28 +14,59 @@ const SellerMyproductPage = async() => {
   const session = await auth.api.getSession({
     headers: await headers() // you need to pass the headers object.
  });
-//  const user = session?.user
- console.log(session, "formproducts")
+ const user = session?.user;
+// const userId = user.id;
+ const sellerId = session?.user?.id;
+// const sellerEmail = user?.email;
+
+ console.log(session, sellerId, "formproducts")
     // const formProduct = { title, stock, category, price,condition, description, image, userId }
 // const res = await fetch('/api/seller/products', {
 //   method: 'GET',
 // });
-const res = await fetch (`${process.env.NEXT_PUBLIC_SERVER_URL}/api/seller/products`,{
-  cache: 'no-store',
-// //    headers:{
-// //      authorization: `Bearer ${tokenObj.token}`
-      
-//  }
-});
- if (!res.ok) {
-    const errorText = await res.text();
-    console.error(`API error ${res.status}: ${errorText}`);
-    return <div>Failed to load products</div>;
+
+  let productList = [];
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/seller/products?sellerId=${sellerId}`, {
+      cache: 'no-store',
+    });
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error(`API error ${res.status}: ${errorText}`);
+      // productList already empty
+    } else {
+      productList = await res.json();
+      // যদি রেসপন্স null হয়, তাহলে অ্যারে সেট করুন
+      if (!productList) productList = [];
+    }
+  } catch (error) {
+    console.error('Fetch error:', error);
+    // productList খালি থাকবে
   }
 
 
-const productList = await res.json()
-console.log(productList, "tutorlist")
+
+
+
+
+
+
+// const res = await fetch (`${process.env.NEXT_PUBLIC_SERVER_URL}/api/seller/products/${userId}`,{
+//   cache: 'no-store',
+// // //    headers:{
+// // //      authorization: `Bearer ${tokenObj.token}`
+      
+// //  }
+// });
+//  if (!res.ok) {
+//     const errorText = await res.text();
+//     console.error(`API error ${res.status}: ${errorText}`);
+//     return <div>Failed to load products</div>;
+//   }
+
+
+// const productList = await res.json()
+// console.log(productList, "sellermyproductslist")
 
 
 
@@ -53,12 +84,12 @@ console.log(productList, "tutorlist")
       ) :( <div className=' lg:w-full md:`w-[760px]` shadow-lg'> 
         {/* <div className='shadow-lg'> */}
               {/* <Table className=' w-min-700  bg-green-200'> */}
-              <Table   isCompact   layout="fixed"  className=" bg-gray-200">
+              <Table    layout="fixed"  className=" bg-gray-200">
                 <Table.ScrollContainer>
                   <Table.Content aria-label="Team members" className=''>
                     <Table.Header className= "rounded ">
                       {/* 1 */}
-                      <Table.Column className="text-lg font-bold">Photo</Table.Column>
+                      {/* <Table.Column className="text-lg font-bold">Photo</Table.Column> */}
                       {/* 2 */}
                       <Table.Column   isRowHeader className="text-lg font-bold">Product Name</Table.Column>
                   
@@ -83,16 +114,7 @@ console.log(productList, "tutorlist")
                         
                           <Table.Row key={formProduct?._id} >
                             {/* 1 */}
-                          <Table.Cell>
-                            <Image
-                              src={formProduct.image|| ""}
-                              alt={formProduct.title}
-                              width={70}
-                              height={70}
-                              className="rounded-full object-cover"
-                              unoptimized={true} 
-                            />
-                          </Table.Cell>
+                          
                           {/* 2 */}
                           <Table.Cell>
                             <Link href={`/products/${formProduct._id}`}
@@ -110,8 +132,10 @@ console.log(productList, "tutorlist")
                            <Table.Cell>{formProduct.condition}</Table.Cell>
                            {/* 7 */}
                            {/* dynamic status */}
+                           
                           {formProduct.status !== 'Approved' && <div>Pending</div>}
                            {formProduct.status === 'Approved' && <Table.Cell>{formProduct.status}</Table.Cell>} 
+                            
                           {/* 8 */}
                          <Table.Cell className="flex gap-2 bg-white p-2">
                           <UpdateModal product = {formProduct} />

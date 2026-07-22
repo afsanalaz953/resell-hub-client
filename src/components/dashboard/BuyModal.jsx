@@ -52,12 +52,12 @@ export function BuyModal({singleProduct, action, method }) {
       price : singleProduct.price,
         status: 'PENDING',
          buyerId: user?.id,   
-      sellerId: singleProduct.sellerId, 
-      sellerName: singleProduct.sellerName,
-      sellerEmail: singleProduct.sellerEmail
+      sellerId: singleProduct.userId, 
+      sellerName: singleProduct.userName,
+      sellerEmail: singleProduct.userEmail,
     };
 
-  
+console.log(buyingData , "data for orderpage")
       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders`, {
         method: "POST",
         headers: { 'content-type': 'application/json' },
@@ -80,8 +80,8 @@ export function BuyModal({singleProduct, action, method }) {
 //       setIsLoading(false);
 //     }
   };
-//  const defaultName = user?.name || '';
-//   const defaultEmail = user?.email || '';
+ const defaultName = user?.name || '';
+  const defaultEmail = user?.email || '';
  const { title} = singleProduct;
  const { price} = singleProduct;
 
@@ -115,10 +115,12 @@ export function BuyModal({singleProduct, action, method }) {
                  {/* <form onSubmit={handleBuying} className="flex flex-col gap-4" > */}
                   <form action={action} method={method} onSubmit={handleBuying}  className="flex flex-col gap-4">
                        <input type="hidden" name="sellerId" value={singleProduct.userId} />
+                       <input type="hidden" name="sellerName" value={singleProduct.userName} />
+                       <input type="hidden" name="sellerEmail" value={singleProduct.userEmail} />
                             {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> */}
                              {/* Destination Name */}
                              {/* <div className="md:col-span-2">  */}
-                               <TextField className="w-full" name="name" isRequired>
+                               <TextField defaultValue = {defaultName } className="w-full" name="name" isRequired>
                                  <Label>Buyer name</Label>
                                  <Input   placeholder="Enter your name" className="rounded-2xl" />
                                 
@@ -126,8 +128,8 @@ export function BuyModal({singleProduct, action, method }) {
                            
                
                              {/* Country */}
-                             <TextField  className="w-full"  name="email" type="email" isRequired>
-                               <Label>Customer Email</Label>
+                             <TextField defaultValue = {defaultEmail }  className="w-full"  name="email" type="email" isRequired>
+                               <Label>Buyer Email</Label>
                                <Input 
                           
                                placeholder="Email" 
