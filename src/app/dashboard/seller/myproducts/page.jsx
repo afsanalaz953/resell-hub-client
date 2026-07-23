@@ -8,6 +8,7 @@ import { headers } from "next/headers";
 import Image from "next/image";
  import UpdateModal from "@/components/shared/UpdateModal";
  import Link from "next/link"
+import { color } from 'framer-motion';
 
 
 const SellerMyproductPage = async() => {
@@ -89,7 +90,7 @@ const SellerMyproductPage = async() => {
                   <Table.Content aria-label="Team members" className=''>
                     <Table.Header className= "rounded ">
                       {/* 1 */}
-                      {/* <Table.Column className="text-lg font-bold">Photo</Table.Column> */}
+                      <Table.Column className="text-lg font-bold">Photo</Table.Column>
                       {/* 2 */}
                       <Table.Column   isRowHeader className="text-lg font-bold">Product Name</Table.Column>
                   
@@ -114,7 +115,17 @@ const SellerMyproductPage = async() => {
                         
                           <Table.Row key={formProduct?._id} >
                             {/* 1 */}
-                          
+                            <Table.Cell >
+<Image
+ src={formProduct.image}
+                alt={formProduct.title}
+                width={50}
+                height={50}
+                className="rounded-full object-cover"
+/>
+                            </Table.Cell>
+                       
+               
                           {/* 2 */}
                           <Table.Cell>
                             <Link href={`/products/${formProduct._id}`}
@@ -133,8 +144,8 @@ const SellerMyproductPage = async() => {
                            {/* 7 */}
                            {/* dynamic status */}
                            
-                          {formProduct.status !== 'Approved' && <div>Pending</div>}
-                           {formProduct.status === 'Approved' && <Table.Cell>{formProduct.status}</Table.Cell>} 
+                          {formProduct.status !== 'Approved' && <Table.Cell className= "text-orange-700 font-bold">Pending</Table.Cell>}
+                           {formProduct.status === 'Approved' && <Table.Cell className="text-green-700 font-bold">{formProduct.status}</Table.Cell>} 
                             
                           {/* 8 */}
                          <Table.Cell className="flex gap-2 bg-white p-2">

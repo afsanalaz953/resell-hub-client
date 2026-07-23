@@ -7,7 +7,7 @@ import ProductCard from "@/components/shared/ProductCard"
 
 
 const AllProducts = async() => {
-const res = await fetch (`${process.env.NEXT_PUBLIC_SERVER_URL}/api/seller/products`);
+const res = await fetch (`${process.env.NEXT_PUBLIC_SERVER_URL}/api/seller/products/all`);
 const allProductsData = await res.json();
   
 
@@ -23,7 +23,7 @@ console.log(allProductsData, "allproducts");
 
     return (
         <div className='container mx-auto '> 
-            <h1 className='font-bold text-3xl text-center m-4'>All Tutors</h1>
+            <h1 className='font-bold text-3xl text-center m-4'>All Products</h1>
             {/* <div className='flex lg:flex-2  md: flex-1 gap-2'>
               <SearchBar />
               <SearchStartDate />

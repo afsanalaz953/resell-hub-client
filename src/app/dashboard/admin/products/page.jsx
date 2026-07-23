@@ -10,7 +10,7 @@ import Image from "next/image";
 const ProductManagePage = async() => {
 
 // const AllProducts = async() => {
-const res = await fetch (`${process.env.NEXT_PUBLIC_SERVER_URL}/api/seller/products`,
+const res = await fetch (`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/products/all`,
  { cache: 'no-store' }
 )
 const adminProductsData = await res.json();
@@ -23,7 +23,7 @@ console.log(adminProductsData, "adminproducts");
         <div>
             <h1 className='text-orange-600 text-3xl font-bold'> Managed Products </h1> 
             <div className='my-10 rounded  lg:w-full md:`w-[760px]` shadow-lg'>
-                 <Table   isCompact   layout="fixed"  className=" bg-gray-200">
+                 <Table  layout="fixed"  className=" bg-gray-200">
                                 <Table.ScrollContainer>
                                   <Table.Content aria-label="Team members" className=''>
                                     <Table.Header className= "rounded ">
@@ -78,8 +78,8 @@ console.log(adminProductsData, "adminproducts");
                                           {/* 5 */}
                                           <Table.Cell className='text-orange-600 font-bold'>$ {adminProducts.price}</Table.Cell>
                                           {/* 6 */}
-                                           <Table.Cell>{adminProducts.userName}</Table.Cell>
-                                           <Table.Cell>{adminProducts.userEmail}</Table.Cell>
+                                           <Table.Cell>{adminProducts.sellerName}</Table.Cell>
+                                           <Table.Cell>{adminProducts.sellerEmail}</Table.Cell>
                                            {/* 7 */}
                        {/* 8 */}
                                          <Table.Cell className="flex gap-2 bg-white p-2">

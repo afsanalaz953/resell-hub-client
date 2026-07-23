@@ -33,7 +33,7 @@ const adminorders = await res.json();
                                                   <Table.Column  className="text-lg font-bold">Buyer Name</Table.Column>
                                                   
                                                   {/* 4 */}
-                                                   <Table.Column  className="text-lg font-bold">Buyer Email</Table.Column>
+                                                   <Table.Column  className="text-lg font-bold">Seller Name</Table.Column>
                                                 
                                                   {/* 5 */}
                                                   <Table.Column className="text-lg font-bold" >Price</Table.Column>
@@ -70,7 +70,7 @@ const adminorders = await res.json();
                                                         </Table.Cell>
                                                       {/* 3 */}
                                                        <Table.Cell>{adorders.buyerName}</Table.Cell>
-                                                       <Table.Cell>{adorders.buyerEmail}</Table.Cell>
+                                                       <Table.Cell>{adorders.sellerName}</Table.Cell>
                                                      
                                                         {/* 4 */}
                                                         <Table.Cell>$ {adorders.price}</Table.Cell> 
