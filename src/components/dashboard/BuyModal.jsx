@@ -50,11 +50,11 @@ export function BuyModal({singleProduct, action, method }) {
       productImage: singleProduct.image,
       productStatus: singleProduct.status,
       price : singleProduct.price,
-        status: 'PENDING',
+        status: 'pending',
          buyerId: user?.id,   
-      sellerId: singleProduct.userId, 
-      sellerName: singleProduct.userName,
-      sellerEmail: singleProduct.userEmail,
+      sellerId: singleProduct.sellerId, 
+      sellerName: singleProduct.sellerName,
+      sellerEmail: singleProduct.sellerEmail,
     };
 
 console.log(buyingData , "data for orderpage")
@@ -114,9 +114,9 @@ console.log(buyingData , "data for orderpage")
               <Surface variant="default">
                  {/* <form onSubmit={handleBuying} className="flex flex-col gap-4" > */}
                   <form action={action} method={method} onSubmit={handleBuying}  className="flex flex-col gap-4">
-                       <input type="hidden" name="sellerId" value={singleProduct.userId} />
-                       <input type="hidden" name="sellerName" value={singleProduct.userName} />
-                       <input type="hidden" name="sellerEmail" value={singleProduct.userEmail} />
+                       <input type="hidden" name="sellerId" value={singleProduct.sellerId} />
+                       <input type="hidden" name="sellerName" value={singleProduct.sellerName} />
+                       <input type="hidden" name="sellerEmail" value={singleProduct.sellerEmail} />
                             {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> */}
                              {/* Destination Name */}
                              {/* <div className="md:col-span-2">  */}

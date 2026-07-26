@@ -27,8 +27,9 @@ const SellerMyproductPage = async() => {
 // });
 
   let productList = [];
+  // const {data} = productList
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/seller/products?sellerId=${sellerId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/seller/productlist?sellerId=${sellerId}`, {
       cache: 'no-store',
     });
     if (!res.ok) {

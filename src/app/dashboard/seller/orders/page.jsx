@@ -1,10 +1,16 @@
 
+
+
+
+
 import React from 'react';
 import { auth } from "@/lib/auth"; // path to your Better Auth server instance
 import { headers } from "next/headers";
 import Image from "next/image";
 import { Table } from '@heroui/react';
-//  import CancelledButton from "@/components/dashboard/CancelledButton";
+import OrderStatusBadge from "@/components/dashboard/OrderStatusBadge"
+import SellerOrderAction from "@/components/dashboard/SellerOrderAction"
+ import SellerOrderRejectButton from "@/components/dashboard/SellerOrderRejectButton";
 
 
 const ManageSellerOrderPage = async() => {
@@ -24,7 +30,7 @@ console.log(session, sellerId, sellerName, "sellerId")
     try {
       const res = await fetch(
         // `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?buyerEmail=${encodeURIComponent(buyerEmail)}`,
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?sellerId=${sellerId}`,
         { cache: 'no-store' }
       );
 
@@ -77,7 +83,7 @@ console.log(session, sellerId, sellerName, "sellerId")
 
        ( <div className='shadow-lg'>
 
- <Table className='lg:w-min-700 bg-yellow-200 my-10 md:w-[760px] '>
+ <Table className='lg:w-full bg-yellow-200 my-10 md:w-[760px] '>
   <Table.ScrollContainer>
     <Table.Content aria-label="Team members" className='p-4'>
       <Table.Header>
@@ -87,12 +93,12 @@ console.log(session, sellerId, sellerName, "sellerId")
         <Table.Column className= "font-bold text-lg">Buyer Email</Table.Column>
         <Table.Column className= "font-bold text-lg">Price</Table.Column>
         {/* <Table.Column>booking Id</Table.Column> */}
-        <Table.Column className= "font-bold text-lg" >Status</Table.Column>
-        <Table.Column className= "font-bold text-lg" >Action</Table.Column>
+        <Table.Column className= "font-bold text-lg" >Status(pending/delivered/cancelled)  </Table.Column>
+        <Table.Column className= "font-bold text-lg" >Action </Table.Column>
       </Table.Header>
       <Table.Body>
          {orders && orders.map((orderedData) => ( 
-      
+       
           <Table.Row key={orderedData?._id}>
             {/* <Table.Cell>
               <Image
@@ -109,8 +115,12 @@ console.log(session, sellerId, sellerName, "sellerId")
             {/* <Table.Cell>{bookedData._id}</Table.Cell> */}
             <Table.Cell>{orderedData.buyerEmail}</Table.Cell>
             <Table.Cell>$ {orderedData.price}</Table.Cell>
-            <Table.Cell className="" > {orderedData.status}</Table.Cell> 
-            <Table.Cell className="" > {orderedData.status}</Table.Cell> 
+            <Table.Cell className="" >  <OrderStatusBadge  orderId={orderedData._id}
+    currentStatus={orderedData.status}  /> </Table.Cell> 
+            {/* <Table.Cell className="" > {orderedData.status}</Table.Cell>  */}
+           <Table.Cell className='flex gap-2'> <SellerOrderAction orderId={orderedData._id} status={orderedData.status} />  
+           <SellerOrderRejectButton />
+            </Table.Cell> 
            
             {/* <Table.Cell className="" > {Success || Cancelled}</Table.Cell> */}
             {/* <Table.Cell> <Button bookingId = {bookedData._id} /> </Table.Cell> */}
