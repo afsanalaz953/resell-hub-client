@@ -71,7 +71,7 @@ console.log(session, sellerId, sellerName, "sellerId")
 
     return (
         <div>
-           ManageOrderPage 
+          
            <h1 className='font-bold text-3xl m-10'> My Orders List</h1>
       
       {!orders || orders.length === 0 ? (
