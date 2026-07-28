@@ -2,14 +2,16 @@
 import { AlertDialog, Button, Chip } from "@heroui/react";
 import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
-
-const SellerOrderRejectButton = ({id}) => {
+// rejectedorderid
+const AdminOrderRejected = ({id}) => {
      const router = useRouter(); 
-    console.log(id, "sellerfrejectedorderid")
+    console.log(id, "rejectedordersid")
 const handleDeleteButton = async () =>{
 
 
-const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/${id}`,{
+
+const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/allorders/${id}`,{
+  
 method: "DELETE",
 headers:{
     "content-type" : "application/json"
@@ -19,11 +21,12 @@ headers:{
 const data = await res.json ();
 console.log( "delete response", data);
 
- toast.success('adding product deleted ', {
-                duration: 4000,
-                position: 'top-center',
-    }); 
 
+    // ✅ সফল হলে টোস্ট
+    toast.success('✅ Order deleted successfully!', {
+      duration: 4000,
+      position: 'top-center',
+    });
 
 // window.location.reload();
 router.refresh(); 
@@ -81,4 +84,4 @@ router.refresh();
     );
 };
 
-export default  SellerOrderRejectButton;
+export default  AdminOrderRejected;

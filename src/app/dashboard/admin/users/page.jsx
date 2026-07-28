@@ -35,20 +35,21 @@ console.log(userList, "userlist")
 
             {/* ✅ Empty state check – put it here */}
                 {!userList || userList.length === 0 ? (
-                   <div className="text-center   bg-gray-100 rounded-lg shadow">
+                   <div className="text-center   bg-orange-100 rounded-lg shadow">
                      <p className="text-gray-600 text-lg"> No products available yet.</p>
                      <p className="text-gray-500">Click “Add Products” to get started.</p>
                    </div>
                  ) :( <div className=' lg:w-full md:`w-[760px]` shadow-lg'> 
                    {/* <div className='shadow-lg'> */}
-                         {/* <Table className=' w-min-700  bg-green-200'> */}
-                         <Table     layout="fixed"  className=" bg-gray-200">
+                         {/* <Table className=' w-full    bg-green-200'> */}
+                         <Table      className=" w-full bg-gray-200">
                            <Table.ScrollContainer>
                              <Table.Content aria-label="Team members" className=''>
                                <Table.Header className= "rounded ">
                                  {/* 1 */}
                                  <Table.Column className="text-lg font-bold">Photo</Table.Column>
                                  {/* 2 */}
+                                  <Table.Column> User Id </Table.Column>
                                  <Table.Column   isRowHeader className="text-lg font-bold">User</Table.Column>
                              
                                 {/* 3 */}
@@ -56,7 +57,7 @@ console.log(userList, "userlist")
                                  {/* 4 */}
                                  <Table.Column className="text-lg font-bold" >Role</Table.Column>
                                  {/* 5 */}
-                                 <Table.Column className="text-lg font-bold" >Status</Table.Column>
+                                 {/* <Table.Column className="text-lg font-bold" >Status</Table.Column> */}
                                  {/* 6 */}
                                  <Table.Column  className="text-lg font-bold">Joined</Table.Column>
                                  {/* 7 */}
@@ -64,7 +65,7 @@ console.log(userList, "userlist")
                                  
                                 
                                  {/* 8 */}
-                                 <Table.Column className="text-lg font-bold text-center w-0.5"> Action</Table.Column>
+                                 <Table.Column className="text-lg font-bold text-center w-0.5"> Status</Table.Column>
                                </Table.Header>
                                <Table.Body>
                               {userList && userList.map((adUser) => ( 
@@ -82,6 +83,7 @@ console.log(userList, "userlist")
                                          unoptimized={true} 
                                        />
                                      </Table.Cell>
+                                     <Table.Cell> {adUser._id }</Table.Cell>
                                      {/* 2 */}
                                      <Table.Cell
                                        
@@ -93,7 +95,7 @@ console.log(userList, "userlist")
                                      <Table.Cell>{adUser.email}</Table.Cell>
                                        {/* 4 */}
                                      <Table.Cell>{adUser.role}</Table.Cell>   
-                                     <Table.Cell>Active </Table.Cell>  
+                                     {/* <Table.Cell>Active </Table.Cell>   */}
                                      {/* 5 */}
                                      <Table.Cell>{new Date(adUser.createdAt).toLocaleDateString()}</Table.Cell>
                                      {/* 6 */}
@@ -104,8 +106,9 @@ console.log(userList, "userlist")
                                       {formProduct.status === 'Approved' && <Table.Cell>{formProduct.status}</Table.Cell>}  */}
                                      {/* 8 */}
                                     <Table.Cell className="flex gap-2 bg-white p-2">
-                                        approved
-                                        <UserActionButton />
+                                      
+                                        <UserActionButton userId={adUser._id} 
+  isBlocked={adUser.isBlocked}    />
                                      {/* <UpdateModal product = {adUser} />
                                    <SellerProductDeleteButton  productId = {formProduct._id} /> */}
                                       

@@ -119,7 +119,7 @@ console.log(session, sellerId, sellerName, "sellerId")
     currentStatus={orderedData.status}  /> </Table.Cell> 
             {/* <Table.Cell className="" > {orderedData.status}</Table.Cell>  */}
            <Table.Cell className='flex gap-2'> <SellerOrderAction orderId={orderedData._id} status={orderedData.status} />  
-           <SellerOrderRejectButton />
+           <SellerOrderRejectButton  id={orderedData._id} />
             </Table.Cell> 
            
             {/* <Table.Cell className="" > {Success || Cancelled}</Table.Cell> */}

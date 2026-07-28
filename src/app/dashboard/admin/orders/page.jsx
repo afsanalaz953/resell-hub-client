@@ -2,8 +2,8 @@ import React from 'react';
 import { Table,Chip } from '@heroui/react';
 import Image from "next/image";
 import Link from "next/link";
- import AdminStatusUpdate  from "@/components/dashboard/AdminStatusUpdate";
- import AdminRejected from "@/components/dashboard/RejectedProduct"
+ import AdminOrderStatusUpdate  from "@/components/dashboard/AdminOrderStatus";
+ import AdminOrderRejected from "@/components/dashboard/AdminOrderRejected"
 
 
 const AdminOrderManagePage = async() => {
@@ -76,17 +76,17 @@ const adminorders = await res.json();
                                                         <Table.Cell>$ {adorders.price}</Table.Cell> 
                                                       <Table.Cell>{adorders.productStatus}</Table.Cell>   
                                                       {/* 5 */}
-                                                      <Table.Cell className='text-orange-600 font-bold'>{adorders.productId}</Table.Cell>
+                                                      <Table.Cell className='text-orange-600 font-bold'>{adorders._id}</Table.Cell>
                                                       {/* 6 */}
                                                        <Table.Cell>{adorders.status}</Table.Cell>
                                                        {/* 7 */}
                                    {/* 8 */}
                                                      <Table.Cell className="flex gap-2 bg-white p-2">
                                                       {/* <UpdateModal product = {formProduct} /> */}
-                                                    <AdminStatusUpdate adordersid = {adorders._id} 
+                                                    <AdminOrderStatusUpdate adminorderid = {adorders._id} 
                                                     status={adorders.status} />
                                                     {/* {adminProducts.status} */}
-                                                     <AdminRejected rejectedproductid = {adorders._id} />
+                                                     <AdminOrderRejected id = {adorders._id} />
                                                    </Table.Cell>
                                                     </Table.Row>
                                                     

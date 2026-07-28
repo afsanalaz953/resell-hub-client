@@ -3,7 +3,7 @@
 // import { subscription } from '@/lib/action/payment'
 import { stripe } from '@/lib/stripe'
 import { redirect } from 'next/navigation'
-
+import { Button, Card, Divider } from "@heroui/react";
 
 
 export default async function Success({ searchParams }) {
@@ -144,6 +144,100 @@ console.log(paymentData, 'paymentData');
            If you have any questions, please email{' '}
           <a href="mailto:orders@example.com">orders@example.com</a>.
         </p>
+ <Card className="max-w-2xl w-full shadow-lg border border-gray-100">
+        <Card.Header className="flex flex-col items-center pb-0 pt-8">
+          <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-4">
+            <CheckCircleIcon className="w-12 h-12 text-green-600" />
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Payment Successful!
+          </h1>
+          <p className="text-gray-500 mt-1 text-center">
+            Thank you for your purchase. Your order has been confirmed.
+          </p>
+        </Card.Header>
+
+        <Card.Body className="px-6 py-6">
+          <Divider className="my-2" />
+
+          {/* Order Summary */}
+          <div className="space-y-4 mt-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-500">Order Number</span>
+              <span className="font-medium text-gray-900">
+                {orderDetails.orderId}
+              </span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-500">Date</span>
+              <span className="font-medium text-gray-900">
+                {orderDetails.date}
+              </span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-500">Total</span>
+              <span className="font-medium text-gray-900">
+                {orderDetails.total}
+              </span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-500">Confirmation Sent To</span>
+              <span className="font-medium text-gray-900">
+                {orderDetails.email}
+              </span>
+            </div>
+          </div>
+
+          <Divider className="my-4" />
+
+          {/* Items List */}
+          <div className="space-y-2">
+            <h3 className="text-sm font-semibold text-gray-700">Order Items</h3>
+            {orderDetails.items.map((item, index) => (
+              <div
+                key={index}
+                className="flex justify-between text-sm py-1"
+              >
+                <span className="text-gray-600">
+                  {item.name} × {item.quantity}
+                </span>
+                <span className="font-medium text-gray-900">
+                  {item.price}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <Divider className="my-4" />
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 mt-2">
+            <Button
+              as={Link}
+              href="/"
+              color="primary"
+              className="flex-1 font-medium"
+              size="lg"
+            >
+              Continue Shopping
+            </Button>
+            <Button
+              as={Link}
+              href={`/orders/${orderDetails.orderId}`}
+              variant="bordered"
+              className="flex-1 font-medium"
+              size="lg"
+            >
+              View Order
+            </Button>
+          </div>
+
+          <p className="text-xs text-gray-400 text-center mt-6">
+            A confirmation email has been sent to your registered email address.
+          </p>
+        </Card.Body>
+      </Card>
+        
       </section>
     )
   }

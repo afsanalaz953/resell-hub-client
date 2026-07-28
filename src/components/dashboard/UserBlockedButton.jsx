@@ -11,7 +11,7 @@ const UserActionButton = ({ userId, isBlocked }) => {
   const handleToggleBlock = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/user/block/${userId}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/user/${userId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isBlocked: !isBlocked }), // টগল করো
@@ -26,12 +26,21 @@ const UserActionButton = ({ userId, isBlocked }) => {
       alert("Something went wrong!");
     } finally {
       setLoading(false);
-    }
+    } 
+
+
+    
   };
+  
+
+
+
+  
 
   return (
     <Button
-      color={isBlocked ? "success" : "danger"} // আনব্লক হলে সবুজ, ব্লক হলে লাল
+      // color={isBlocked ? "bg-green" : "danger"} // আনব্লক হলে সবুজ, ব্লক হলে লাল
+        className={isBlocked ? "bg-green-500 text-white" : "bg-red-500 text-white"}
       variant="flat"
       size="sm"
       isLoading={loading}
