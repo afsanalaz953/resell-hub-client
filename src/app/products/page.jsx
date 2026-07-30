@@ -30,22 +30,16 @@ console.log(allProductsData, "allproducts");
     return (
         <div className='container mx-auto '> 
             <h1 className='font-bold text-3xl text-center m-4'>All Products</h1>
-            {/* <div className='flex lg:flex-2  md: flex-1 gap-2'>
-              <SearchBar />
-              <SearchStartDate />
-              <SearchEndDate />
-              <ResetFilter />
-            </div> */}
+           
           
             <div className='container mx-auto grid md:grid-cols-2  lg:grid-cols-4 gap-6'>
                 
-           {data?.map(allProducts =>  < ProductCard key = {allProducts?._id} allProducts = {allProducts} />
+           {data?.map(allProducts =>  < ProductCard key = {allProducts?._id}
+            allProducts = {allProducts} 
+            
+            />
            
-    //        key = {allTutor?._id}>
-    // <h2  >  {allTutor.tutorName} </h2>
-
-          
-        //    < TutorCard key = {allTutor?._id} allTutor = {allTutor} />
+   
 
     
               

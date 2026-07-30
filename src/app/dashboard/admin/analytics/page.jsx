@@ -1,11 +1,11 @@
 import React from 'react';
 
-const AdminAnalyticsPage = () => {
+const page = () => {
     return (
         <div>
-            Analytics
+            
         </div>
     );
 };
 
-export default AdminAnalyticsPage;
+export default page;

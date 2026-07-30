@@ -39,7 +39,7 @@ const adminorders = await res.json();
                                                   <Table.Column className="text-lg font-bold" >Price</Table.Column>
                                                   {/* 6 */}
                                                  <Table.Column className="text-lg font-bold" >ProductStatus</Table.Column>
-                                                   <Table.Column className="text-lg font-bold" >Date</Table.Column>
+                                                   {/* <Table.Column className="text-lg font-bold" >Date</Table.Column> */}
                                                   {/* 7 */}
                                                  <Table.Column  className="text-lg font-bold">Status</Table.Column>
                                                   {/* 8 */}
@@ -76,7 +76,7 @@ const adminorders = await res.json();
                                                         <Table.Cell>$ {adorders.price}</Table.Cell> 
                                                       <Table.Cell>{adorders.productStatus}</Table.Cell>   
                                                       {/* 5 */}
-                                                      <Table.Cell className='text-orange-600 font-bold'>{adorders._id}</Table.Cell>
+                                                      {/* <Table.Cell className='text-orange-600 font-bold'>{adorders.createdAt}</Table.Cell> */}
                                                       {/* 6 */}
                                                        <Table.Cell>{adorders.status}</Table.Cell>
                                                        {/* 7 */}

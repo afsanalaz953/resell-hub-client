@@ -2,9 +2,15 @@ import { Button, Chip } from "@heroui/react";
 import { BookOpen, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import WishlistButton from "@/components/shared/WishlistButton";
 
 
-const ProductCard = ({allProducts}) => {
+
+const ProductCard = async({allProducts}) => {
+
+
+
+
  if (!allProducts) {
         return null;
     }
@@ -66,6 +72,7 @@ const ProductCard = ({allProducts}) => {
 
                 <div className="pt-6 mt-auto border-t border-slate-100 flex justify-between items-center">
                     <span className="text-2xl font-black text-orange-600">${price}</span>
+                    <span>  <WishlistButton productData={allProducts} />  </span>
                 </div>
                  <Button
                         

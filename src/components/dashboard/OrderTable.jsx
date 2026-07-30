@@ -16,7 +16,9 @@ import { div } from "framer-motion/client";
 
 
 const OrderTable = ({bookings}) => {
-
+// const date = new Date(bookedData.createdAt);
+// const formattedDate = date.toLocaleDateString
+// console.log(formattedDate, "date");
 
 
   return (
@@ -57,7 +59,7 @@ const OrderTable = ({bookings}) => {
               />
             </Table.Cell> */}
             <Table.Cell>{bookedData.title}</Table.Cell>
-            <Table.Cell>{bookedData.createdAt}</Table.Cell>
+            <Table.Cell> {new Date(bookedData.createdAt).toLocaleDateString('en-GB')}  </Table.Cell>
              {/* <Table.Cell>{bookedData._id}</Table.Cell>  */}
             <Table.Cell>{bookedData.price}</Table.Cell>
             <Table.Cell className="" > {bookedData.status}</Table.Cell> 

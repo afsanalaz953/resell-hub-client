@@ -4,6 +4,7 @@ import Link from "next/link"
 import { usePathname } from 'next/navigation';
 import Image from "next/image"
 import { authClient } from "@/lib/auth-client"
+import { role } from "better-auth/plugins";
 
 
 const DropDownHober = () => {
@@ -11,8 +12,9 @@ const DropDownHober = () => {
     console.log (session, "session")
     
     const user = session?.user;
-    console.log (user, "user");
-    
+   const role = user?.role || 'buyer'
+ console.log (user, role, "user");
+
      const pathname = usePathname();
         console.log (pathname, "pathname");
     
@@ -31,7 +33,15 @@ const DropDownHober = () => {
           />
     </div>
   <ul tabIndex="-1" className="dropdown-content menu bg-base-100 rounded-box z-2 w-25 shadow-sm">
-    <li className='text-blue-800 font-bold'><Link href={"/profile"} className={`${isActive ("/profile") ? " border-b-4 border-b-green-600" : ""}`} >Profile</Link></li>
+    {/* <li className='text-blue-800 font-bold'><Link href={`/dashboard/${role}`} className={isActive(`/dashboard/${role}`)  ? " border-b-4 border-b-green-600" : ""}`} >Profile</Link></li> */}
+    <li className='text-blue-800 font-bold'>
+  <Link 
+    href={`/dashboard/${role}`} 
+    className={isActive(`/dashboard/${role}`) ? " border-b-4 border-b-green-600" : ""}
+  >
+    Dashboard
+  </Link>
+</li>
     <li> 
                     <button className='btn btn-primary text-sm' 
                     onClick={async () => {

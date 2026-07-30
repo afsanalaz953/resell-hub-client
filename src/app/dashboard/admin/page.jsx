@@ -1,115 +1,165 @@
-import React from 'react';
-import Image from "next/image"
-import { HiUsers } from "react-icons/hi";
-import { SlCalender } from "react-icons/sl";
-import { FaArrowUpRightFromSquare } from "react-icons/fa6";
-// import { Table } from '@heroui/react';
+'use client';
 
+import { Card } from '@heroui/react';
+import {
+  AreaChart,
+  BarChart,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Area,
+  Bar,
+  CartesianGrid,
+  ResponsiveContainer,
+} from 'recharts';
 
-const AdminDashboardHomepage = () => {
-    return (
-    <div className='container mx-auto w-full bg-[#EFF6FF]'>
-    
-          <div className='grid md:grid-cols-2 lg:grid-cols-3  gap-4 mt-4 px-20 py-10'> 
-           {/* card1 */}
-{/* <div className="card bg-slate-100 w-70 h-70 shadow-md border-0 rounded-2xl justify-start items-left" /> */}
-                       
-<div className="card bg-white w-50 h-40 shadow-md border-0 rounded-2xl justify-start items-left "> 
-  
-  <figure className="px-10 pt-10">
-    <FaArrowUpRightFromSquare  className='w-6 h-6'/>
-  </figure>
- 
- 
-  <div className="card-body items-center text-center ">
-    <h2 className="card-title  ">Total Products </h2>
-    <p className='text-2xl text-orange-800'>100 </p>
-   </div>
- 
-  
-</div>
-          {/* card2 */}
-        <div className="card text-left bg-white w-50 h-40 shadow-md border-0 rounded-2xl">
-<figure className="px-10 pt-10">
- <SlCalender className='w-6 h-6'  />
-   </figure>  
-   <div className="card-body items-center text-center">
-     <h2 className="card-title">Total Orders</h2>
-     <p className='text-2xl text-orange-800'>234$</p>
-   </div>
- </div>
-           {/* card3 */}
- <div className="card bg-white w-50 h-40 shadow-md border-0 rounded-2xl items-center text-center">
-  <figure className="px-10 pt-10  ">
-    <HiUsers className='w-6 h-4' />
-   </figure>
-   <div className="card-body items-center text-center">
-     <h2 className="card-title">Total Users</h2>
-    <p className='text-2xl text-orange-800'>$10000</p>
-   </div>
- </div>
-           {/* card4 */}
-{/* <div className="card bg-white w-50 h-40 shadow-md border-0 rounded-2xl items-center text-center">
-  <figure className="px-10 pt-10  ">
-    <FaArrowUpRightFromSquare  className='w-6 h-6'/>
-   </figure>
-   <div className="card-body items-center text-center">
-     <h2 className="card-title text-md p-0 m-0">
-      <span> Pending</span>
-      <span>Orders </span>
-       </h2>
-    <span className='text-2xl text-orange-800'>50</span>
-   </div>
- </div> */}
- </div> 
-
- 
-
- </div>
-
-        
-    );
+// ---------- Static Mock Data ----------
+const summary = {
+  totalSales: 41250,
+  totalOrders: 1050,
+  averageOrderValue: 39,
 };
 
-export default AdminDashboardHomepage;
+const trend = [
+  { month: 'Jan', sales: 12000 },
+  { month: 'Feb', sales: 9000 },
+  { month: 'Mar', sales: 15000 },
+  { month: 'Apr', sales: 11000 },
+  { month: 'May', sales: 18000 },
+  { month: 'Jun', sales: 14000 },
+  { month: 'Jul', sales: 16000 },
+  { month: 'Aug', sales: 13000 },
+  { month: 'Sep', sales: 19000 },
+  { month: 'Oct', sales: 21000 },
+  { month: 'Nov', sales: 17000 },
+  { month: 'Dec', sales: 25000 },
+];
 
-// //  <Table className='lg:w-min-700 bg-yellow-200 my-10 md:`w-[760px]` '>
-//   <Table.ScrollContainer>
-//     <Table.Content aria-label="Team members" className='p-4'>
-//       <Table.Header>
-//         <Table.Column className= "font-bold text-lg">Photo</Table.Column>
-//         <Table.Column className= "font-bold text-lg"  isRowHeader>Tutor Name</Table.Column>
-//         <Table.Column className= "font-bold text-lg">Student Name</Table.Column>
-//         <Table.Column className= "font-bold text-lg">User Email</Table.Column>
-//         {/* <Table.Column>booking Id</Table.Column> */}
-//         <Table.Column className= "font-bold text-lg" >Status</Table.Column>
-//         <Table.Column className= "font-bold text-lg" >Action</Table.Column>
-//       </Table.Header>
-//       <Table.Body>
-//          {/* {bookings && bookings.map((bookedData) => (  */}
-      
-//           <Table.Row >
-//             <Table.Cell>
-//               {/* <Image
-//                 src={bookedData.tutorImage}
-//                 alt={bookedData.tutorName}
-//                 width={50}
-//                 height={50}
-//                 className="rounded-full object-cover"
-//               /> */}
-//             </Table.Cell>
-//             <Table.Cell>name</Table.Cell>
-//             <Table.Cell>user</Table.Cell>
-//             {/* <Table.Cell>{bookedData._id}</Table.Cell> */}
-//             <Table.Cell>useremail</Table.Cell>
-//             <Table.Cell className="" > status</Table.Cell> 
-//             {/* <Table.Cell className="" > {Success || Cancelled}</Table.Cell> */}
-//             {/* <Table.Cell> <Button bookingId = {bookedData._id} /> </Table.Cell> */}
-//             {/* <Table.Cell> <CancelledButton bookingId = {bookedData._id} status={bookedData.tutorStatus}  /> </Table.Cell> */}
-//             <Table.Cell>   </Table.Cell>
-//           </Table.Row>
-//         {/* ))} */}
-//       </Table.Body>
-//     </Table.Content>
-//   </Table.ScrollContainer>
-// </Table>
+const products = [
+  { id: 1, name: 'Wireless Headphones', sales: 12450, quantity: 245 },
+  { id: 2, name: 'Smart Watch', sales: 9800, quantity: 180 },
+  { id: 3, name: 'USB-C Hub', sales: 7600, quantity: 320 },
+  { id: 4, name: 'Portable SSD', sales: 6300, quantity: 95 },
+  { id: 5, name: 'Bluetooth Speaker', sales: 5100, quantity: 210 },
+];
+
+export default function Dashboard() {
+  return (
+    <div className="p-6 max-w-7xl mx-auto space-y-6">
+      <h1 className="text-3xl font-bold text-foreground">Sales Analytics</h1>
+
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card>
+          <Card.Header className="pb-0">
+            <h3 className="text-lg font-semibold">Total Sales</h3>
+          </Card.Header>
+          <div className="p-4">
+            <p className="text-3xl font-bold text-primary">
+              ${summary.totalSales.toLocaleString()}
+            </p>
+          </div>
+        </Card>
+
+        <Card>
+          <Card.Header className="pb-0">
+            <h3 className="text-lg font-semibold">Total Orders</h3>
+          </Card.Header>
+          <div className="p-4">
+            <p className="text-3xl font-bold text-secondary">
+              {summary.totalOrders.toLocaleString()}
+            </p>
+          </div>
+        </Card>
+
+        <Card>
+          <Card.Header className="pb-0">
+            <h3 className="text-lg font-semibold">Total Users</h3>
+          </Card.Header>
+          <div className="p-4">
+            <p className="text-3xl font-bold text-success">
+              {summary.averageOrderValue.toLocaleString()}
+            </p>
+          </div>
+        </Card>
+      </div>
+
+      {/* Monthly Sales Trend */}
+      <Card>
+        <Card.Header>
+          <h2 className="text-xl font-semibold">Monthly Sales Trend</h2>
+        </Card.Header>
+        <div className="p-4">
+          <ResponsiveContainer width="100%" height={300}>
+            <AreaChart data={trend}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip />
+              <Area
+                type="monotone"
+                dataKey="sales"
+                stroke="#8884d8"
+                fill="#8884d8"
+                fillOpacity={0.3}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </Card>
+
+      {/* Top Selling Products Table + Bar Chart */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card>
+          <Card.Header>
+            <h2 className="text-xl font-semibold">Top Selling Products</h2>
+          </Card.Header>
+          <div className="p-4 overflow-x-auto">
+            {/* সরাসরি HTML Table – কোনো Collection Error নেই */}
+            <table className="w-full text-sm text-left text-gray-600">
+              <thead className="text-xs uppercase bg-gray-100">
+                <tr>
+                  <th className="px-4 py-2">Product</th>
+                  <th className="px-4 py-2 text-right">Sales ($)</th>
+                  <th className="px-4 py-2 text-right">Qty</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((item) => (
+                  <tr key={item.id} className="border-b hover:bg-gray-50">
+                    <td className="px-4 py-2 font-medium text-gray-900">
+                      {item.name}
+                    </td>
+                    <td className="px-4 py-2 text-right">
+                      ${item.sales.toLocaleString()}
+                    </td>
+                    <td className="px-4 py-2 text-right">
+                      {item.quantity}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+
+        <Card>
+          <Card.Header>
+            <h2 className="text-xl font-semibold">Sales by Product</h2>
+          </Card.Header>
+          <div className="p-4">
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={products}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="sales" fill="#82ca9d" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+}
