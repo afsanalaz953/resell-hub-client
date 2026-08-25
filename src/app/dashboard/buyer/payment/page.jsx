@@ -9,14 +9,14 @@ const BuyerPaymentPage = async () => {
     headers: await headers(),
   });
   const user = session?.user;
-  const customerEmail = user?.email; // session থেকে ইমেইল
+  const buyerEmail = user?.email; // session থেকে ইমেইল
 
   let payments = [];
 
-  if (customerEmail) {
+  if (buyerEmail) {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/buyer/payment?customerEmail=${encodeURIComponent(customerEmail)}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/buyer/payment?buyerEmail=${encodeURIComponent(buyerEmail)}`,
         { cache: 'no-store' }
       );
 
@@ -38,6 +38,6 @@ const BuyerPaymentPage = async () => {
             
         </div>
     );
-};
+}; 
 
 export default BuyerPaymentPage;

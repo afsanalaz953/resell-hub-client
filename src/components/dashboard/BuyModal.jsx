@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 "use client";
 
 import { useRouter } from 'next/navigation';
@@ -13,6 +20,12 @@ export function BuyModal({singleProduct, action, method }) {
   const { data: session } = authClient.useSession();
   const user = session?.user;
   const [isLoading, setIsLoading] = useState(false);
+
+  const [quantity, setQuantity] = useState(1);
+  const stock = singleProduct.stock || 0;
+  const price = singleProduct.price || 0;
+  const totalPrice = (price * quantity).toFixed(2);
+
    const [formData, setFormData] = useState({
     name: user?.name || '',
     email: user?.email || '',
@@ -20,11 +33,15 @@ export function BuyModal({singleProduct, action, method }) {
   });
 
   const handleBuying = async (e) => {
-    // e.preventDefault();
-    if (isLoading){
-      e.preventDefault();
-      return;
-    } 
+    e.preventDefault();
+     setIsLoading(true);
+    // if (isLoading){
+    //   e.preventDefault();
+    //   return;
+//  if (isLoading || stock === 0 || quantity > stock) return;
+
+
+   
  
     // if (allTutor.availableSlots <= 0) {
     //   toast.error("No available slots left.", { position: "top-center" });
@@ -39,38 +56,46 @@ export function BuyModal({singleProduct, action, method }) {
     //   return;
     // }
 
-    setIsLoading(true);
+  
+    // 
+  const form = e.target;
+  const formDataObj = new FormData(form);
     const buyingData = {
-      
-      buyerName: formData?.name,
-      buyerEmail: formData?.email,
-      buyerPhone : formData?.phone,
+      buyerName: formDataObj.get('name'),
+       buyerEmail: formDataObj.get('email'),  // ← এখানেও তাই
+    buyerPhone: formDataObj.get('phone'),
+      // buyerName: formData?.name,
+      // buyerEmail: formData?.email,
+      // buyerPhone : formData?.phone,
       productId: singleProduct._id,
       productName: singleProduct.title,
       productImage: singleProduct.image,
       productStatus: singleProduct.status,
       price : singleProduct.price,
+       quantity: quantity,
+  totalPrice: parseFloat((price * quantity).toFixed(2)),
         status: 'pending',
          buyerId: user?.id,   
-      sellerId: singleProduct.sellerId, 
-      sellerName: singleProduct.sellerName,
-      sellerEmail: singleProduct.sellerEmail,
+      sellerId: singleProduct?.sellerId, 
+      sellerName: singleProduct?.sellerName,
+      sellerEmail: singleProduct?.sellerEmail,
     };
 
-console.log(buyingData , "data for orderpage")
-      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders`, {
-        method: "POST",
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(buyingData),
-      });
-      const data = await res.json();
-      console.log(data, "buyingData");
+console.log(buyingData , "data for buyerpaymentpage")
+// try{
+//       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/payments`, {
+//         method: "POST",
+//         headers: { 'content-type': 'application/json' },
+//         body: JSON.stringify(buyingData),
+//       });
+//       const data = await res.json();
+//       console.log(data, "buyingData");
 //       if (!res.ok) throw new Error(data.message || "Booking failed");
 
 //       toast.success(' booking successful!', { duration: 2000, position: 'top-center' });
 //       setIsOpen(false); // মডাল বন্ধ করুন
 //       setTimeout(() => {
-//         router.push('/my-sessions');
+//         // router.push('/my-sessions');
 //         router.refresh();
 //       }, 1500);
 //     } catch (error) {
@@ -83,12 +108,12 @@ console.log(buyingData , "data for orderpage")
  const defaultName = user?.name || '';
   const defaultEmail = user?.email || '';
  const { title} = singleProduct;
- const { price} = singleProduct;
+//  const { price} = singleProduct;
 
   return (
     <div>
       {/* ট্রিগার বাটন – এটাতেই ক্লিক করলে মডাল খুলবে */}
-       <Button className="w-full" onPress={() => setIsOpen(true)}>
+       <Button className="w-full" onClick={() => setIsOpen(true)}>
         Buy Product
       </Button>
      
@@ -112,15 +137,20 @@ console.log(buyingData , "data for orderpage")
             </Modal.Header>
             <Modal.Body className="p-6"> 
               <Surface variant="default">
-                 {/* <form onSubmit={handleBuying} className="flex flex-col gap-4" > */}
-                  <form action={action} method={method} onSubmit={handleBuying}  className="flex flex-col gap-4">
-                       <input type="hidden" name="sellerId" value={singleProduct.sellerId} />
-                       <input type="hidden" name="sellerName" value={singleProduct.sellerName} />
-                       <input type="hidden" name="sellerEmail" value={singleProduct.sellerEmail} />
+                 {/* <form onClick={handleBuying} className="flex flex-col gap-4" > */}
+                  <form action={action} method={method} onClick={handleBuying} className="flex flex-col gap-4">
+                  {/* <form  onSubmit={handleBuying}  className="flex flex-col gap-4"> */}
+                       <input type="hidden" name="sellerId" value={singleProduct?.sellerId} />
+                       <input type="hidden" name="productId" value={singleProduct._id} />
+                       <input type="hidden" name="sellerName" value={singleProduct?.sellerName} />
+                       <input type="hidden" name="sellerEmail" value={singleProduct?.sellerEmail} />
+                       <input type="hidden" name="quantity" value={quantity} />
+                       <input type="hidden" name="totalPrice" value={totalPrice} />
+                    <input type="hidden" name="price" value={price} />
                             {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4"> */}
                              {/* Destination Name */}
                              {/* <div className="md:col-span-2">  */}
-                               <TextField defaultValue = {defaultName } className="w-full" name="name" isRequired>
+                               <TextField defaultValue = {defaultName} className="w-full" name="name" isRequired>
                                  <Label>Buyer name</Label>
                                  <Input   placeholder="Enter your name" className="rounded-2xl" />
                                 
@@ -128,7 +158,7 @@ console.log(buyingData , "data for orderpage")
                            
                
                              {/* Country */}
-                             <TextField defaultValue = {defaultEmail }  className="w-full"  name="email" type="email" isRequired>
+                             <TextField defaultValue = {defaultEmail}  className="w-full"  name="email" type="email" isRequired>
                                <Label>Buyer Email</Label>
                                <Input 
                           
@@ -141,15 +171,37 @@ console.log(buyingData , "data for orderpage")
                    <Input placeholder="Enter your phone number" />
                 </TextField>
               <TextField   defaultValue={title}  className="w-full" name="title">
-                  <Label>product </Label>
+                  <Label>Product Name </Label>
                  <Input 
                   placeholder="product" />
           </TextField> 
-          <TextField   defaultValue={price}  className="w-full" name="price">
+          {/* quantity */}
+<div className="flex items-center gap-4">
+ <TextField className="w-32" label="Quantity">
+  <Input
+    type="number"
+    min={1}
+    max={stock}
+    value={quantity}
+    onChange={(e) => {
+      const val = parseInt(e.target.value) || 1;
+      setQuantity(Math.min(Math.max(val, 1), stock));
+    }}
+  />
+</TextField>
+<span className="text-sm text-gray-500">
+  Stock: {stock}
+</span>
+</div>
+                  <p className="text-lg font-bold text-blue-600">
+                    Total Amount: {totalPrice} $
+                  </p>
+
+          {/* <TextField   defaultValue={price}  className="w-full" name="price">
                   <Label>Price </Label>
                  <Input 
                   placeholder="product" />
-          </TextField>    
+          </TextField>     */}
               <div className='flex gap-12'>
               <Button slot="close" variant="secondary">
                 Cancel
@@ -158,7 +210,20 @@ console.log(buyingData , "data for orderpage")
             {/* <Button onSubmit={onSubmit} type="submit" slot="close"> <Link href={'/my-tutors'}></Link> Book session
                </Button>  */}
  {/* <Link href={'/my-sessions'}>  */}
-  <Button  type="submit" slot="close">Buy</Button>
+  {/* <Button  type="submit" slot="close"
+    isDisabled={stock === 0 || quantity > stock || isLoading}
+                      isLoading={isLoading}
+                    >
+                      {isLoading ? 'Processing...' : 'Buy Product'}
+  
+ </Button> */}
+ <Button  type="submit" slot="close"
+    // isDisabled={stock === 0 || quantity > stock || isLoading}
+    //                   isLoading={isLoading}
+                    >
+                     Buy old product
+  
+ </Button>
   {/* </Link>  */}
                   </div>                   
                 </form>

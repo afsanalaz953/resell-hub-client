@@ -1,16 +1,25 @@
 import React from 'react';
 import { Table } from '@heroui/react';
-import {Button} from "@heroui/react"
+import {Button,Chip} from "@heroui/react"
 import { auth } from "@/lib/auth"; // path to your Better Auth server instance
 import { headers } from "next/headers";
 import Image from "next/image";
 import UserActionButton from "@/components/dashboard/UserBlockedButton";
+import SellerProductSearch from "@/components/dashboard/SellerProductSearch";
 
 
-const ManageUserPage = async() => {
+const ManageUserPage = async({ searchParams }) => {
+      // // ✅ ফিক্স ১: ডাইনামিক রেন্ডার ফোর্স (যাতে searchParams কাজ করে)
+      
+      
+      // const SellerMyproductPage = async ({ searchParams }) => {
+        const sParams = await searchParams;
+      //   const session = await auth.api.getSession({ headers: await headers() });
+      //   const sellerId = session?.user?.id;
+        const search = sParams?.search || '';
       
 
-    const res = await fetch (`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/user`,{
+    const res = await fetch (`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/user?search=${encodeURIComponent(search)}`,{
   cache: 'no-store',
 // //    headers:{
 // //      authorization: `Bearer ${tokenObj.token}`
@@ -32,6 +41,10 @@ console.log(userList, "userlist")
     return (
         <div>
             <h1 className='m-10 text-3xl font-bold text-orange-700'>All Users </h1>
+              <div className='m-10'>
+        <SellerProductSearch />
+      </div>
+
 
             {/* ✅ Empty state check – put it here */}
                 {!userList || userList.length === 0 ? (
@@ -57,7 +70,7 @@ console.log(userList, "userlist")
                                  {/* 4 */}
                                  <Table.Column className="text-lg font-bold" >Role</Table.Column>
                                  {/* 5 */}
-                                 {/* <Table.Column className="text-lg font-bold" >Status</Table.Column> */}
+                                 <Table.Column className="text-lg font-bold" >Status</Table.Column>
                                  {/* 6 */}
                                  <Table.Column  className="text-lg font-bold">Joined</Table.Column>
                                  {/* 7 */}
@@ -65,7 +78,7 @@ console.log(userList, "userlist")
                                  
                                 
                                  {/* 8 */}
-                                 <Table.Column className="text-lg font-bold text-center w-0.5"> Status</Table.Column>
+                                 <Table.Column className="text-lg font-bold text-center w-0.5"> Action</Table.Column>
                                </Table.Header>
                                <Table.Body>
                               {userList && userList.map((adUser) => ( 
@@ -97,10 +110,12 @@ console.log(userList, "userlist")
                                      <Table.Cell>{adUser.role}</Table.Cell>   
                                      {/* <Table.Cell>Active </Table.Cell>   */}
                                      {/* 5 */}
+                                     <Table.Cell className={`chip ${adUser.status === 'blocked' ? 'bg-red-600' : 'bg-green-600'}`} >{adUser.status}</Table.Cell>
                                      <Table.Cell>{new Date(adUser.createdAt).toLocaleDateString()}</Table.Cell>
                                      {/* 6 */}
                                       {/* <Table.Cell>{formProduct.condition}</Table.Cell> */}
                                       {/* 7 */}
+                                      
                                       {/* dynamic status */}
                                      {/* {formProduct.status !== 'Approved' && <div>Pending</div>}
                                       {formProduct.status === 'Approved' && <Table.Cell>{formProduct.status}</Table.Cell>}  */}

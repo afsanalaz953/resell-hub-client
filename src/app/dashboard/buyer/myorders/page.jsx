@@ -8,8 +8,8 @@ const BuyerOrderPage = async() => {
      headers: await headers(), // you need to pass the headers object.
  });
  const user = session?.user;
- const userId = user?.id;
- const customerEmail = user?.email;
+ const buyerId = user?.id;
+ const buyerEmail = user?.email;
 console.log(session, "booking session")
 if (!user) {
     // return <div className="p-5 text-red-500">দয়া করে লগইন করুন</div>;
@@ -20,7 +20,7 @@ if (!user) {
 // const bookings = await fethMyBooking(user?.email);
 //     // console.log(bookings);
 // user id dhore ante hobe
-const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/buyer/myorders/${customerEmail}`, {
+const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/buyer/myorders/${buyerEmail}`, {
   cache: 'no-store',
 
 //   headers:{

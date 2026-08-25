@@ -1,37 +1,90 @@
 "use client";
-import React, { useState } from 'react';
-import { Button, Input, Card, CardHeader } from "@heroui/react";
+import React, { useState, useRef } from 'react';
+import { Button, Input, Card, CardHeader, Avatar } from "@heroui/react";
 import { toast } from 'react-toastify';
 import { authClient } from "@/lib/auth-client";
 
 const EditModal = ({ isOpen, onOpenChange, profile, refetch }) => {
   const [loading, setLoading] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(profile?.image || null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const fileInputRef = useRef(null);
+
   const { userName, image } = profile || {};
 
+  // ইমেজ সিলেক্ট করলে প্রিভিউ দেখানো
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // ImgBB-তে আপলোড
+  const uploadToImgBB = async (file) => {
+    const API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+    if (!API_KEY) {
+      throw new Error('ImgBB API key is missing');
+    }
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const response = await fetch(
+      `https://api.imgbb.com/1/upload?key=${API_KEY}`,
+      { method: 'POST', body: formData }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error?.message || 'Image upload failed');
+    }
+
+    return data.data.url; // ইমেজের URL
+  };
+
+  // ফর্ম সাবমিট
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    const formData = new FormData(e.target);
-    const updatedData = Object.fromEntries(formData.entries());
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get('name');
 
     try {
-      // Better Auth এর বিল্ট-ইন মেথড ব্যবহার করুন
+      let imageUrl = imagePreview || image;
+
+      // নতুন ইমেজ থাকলে ImgBB-তে আপলোড
+      if (imageFile) {
+        setUploadingImage(true);
+        imageUrl = await uploadToImgBB(imageFile);
+        setUploadingImage(false);
+      }
+
+      // Better Auth দিয়ে প্রোফাইল আপডেট
       const { data, error } = await authClient.updateUser({
-        name: updatedData.name,
-        image: updatedData.image,
+        name: name,
+        image: imageUrl,
       });
 
       if (data) {
         toast.success('Profile updated successfully!');
-        onOpenChange(false);        // মডাল বন্ধ
-        await refetch();            // সেশন রিফ্রেশ → UI আপডেট
+        onOpenChange(false);
+        await refetch(); // সেশন রিফ্রেশ
       } else {
         toast.error(error?.message || 'Update failed');
       }
     } catch (error) {
       console.error(error);
-      toast.error('Something went wrong');
+      toast.error(error.message || 'Something went wrong');
+      setUploadingImage(false);
     } finally {
       setLoading(false);
     }
@@ -47,6 +100,40 @@ const EditModal = ({ isOpen, onOpenChange, profile, refetch }) => {
         </CardHeader>
         <div className="pt-6 px-6 pb-6">
           <form onSubmit={handleSubmit} className="space-y-5 w-full">
+
+            {/* প্রোফাইল ইমেজ আপলোড */}
+            <div className="flex flex-col items-center gap-3">
+              <div
+                className="relative cursor-pointer group"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <Avatar
+                  src={imagePreview || image || ''}
+                  size="lg"
+                  className="w-24 h-24 border-2 border-gray-300 group-hover:border-indigo-500 transition-colors"
+                  showFallback
+                  fallback={<span className="text-3xl">👤</span>}
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-white text-xs font-medium">Change</span>
+                </div>
+                {uploadingImage && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full">
+                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  </div>
+                )}
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+              />
+              <p className="text-xs text-gray-500">Click on avatar to change image</p>
+            </div>
+
+            {/* নাম */}
             <Input
               name="name"
               label="Full Name"
@@ -56,14 +143,8 @@ const EditModal = ({ isOpen, onOpenChange, profile, refetch }) => {
               className="bg-gray-50 border-gray-300 focus:border-indigo-500"
               isRequired
             />
-            <Input
-              name="image"
-              label="Avatar URL"
-              labelPlacement="outside"
-              placeholder="https://api.dicebear.com/7.x/adventurer/svg?seed=John"
-              defaultValue={image || ''}
-              className="bg-gray-50 border-gray-300 focus:border-indigo-500"
-            />
+
+            {/* বাটন */}
             <div className="flex justify-end gap-3 pt-2">
               <Button
                 type="button"
@@ -77,9 +158,9 @@ const EditModal = ({ isOpen, onOpenChange, profile, refetch }) => {
                 type="submit"
                 className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold h-11 px-6 shadow-md"
                 radius="lg"
-                isLoading={loading}
+                isLoading={loading || uploadingImage}
               >
-                Save Changes
+                {uploadingImage ? 'Uploading Image...' : 'Save Changes'}
               </Button>
             </div>
           </form>
@@ -97,17 +178,16 @@ export default EditModal;
 
 
 
-// // components/shared/EditModal.tsx
-// // components/shared/EditModal.tsx
+
 // "use client";
 // import React, { useState } from 'react';
-// import { Button, Input, TextArea, Card, CardHeader } from "@heroui/react";
+// import { Button, Input, Card, CardHeader } from "@heroui/react";
 // import { toast } from 'react-toastify';
 // import { authClient } from "@/lib/auth-client";
 
-// const EditModal = ({ isOpen, onOpenChange, profile }) => {
+// const EditModal = ({ isOpen, onOpenChange, profile, refetch }) => {
 //   const [loading, setLoading] = useState(false);
-//   const { userId, userName, image } = profile || {};
+//   const { userName, image } = profile || {};
 
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
@@ -117,26 +197,18 @@ export default EditModal;
 //     const updatedData = Object.fromEntries(formData.entries());
 
 //     try {
-//       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/buyerprofile/${userId}`, {
-//         method: 'PATCH',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify(updatedData),
+//       // Better Auth এর বিল্ট-ইন মেথড ব্যবহার করুন
+//       const { data, error } = await authClient.updateUser({
+//         name: updatedData.name,
+//         image: updatedData.image,
 //       });
 
-//       const data = await res.json();
-//       if (res.ok) {
+//       if (data) {
 //         toast.success('Profile updated successfully!');
-//         onOpenChange(false);
-
-//  // Session রিফ্রেশ করুন
-//       await authClient.refreshSession(); 
-//       // অথবা window.location.reload(); // পুরো পেজ রিলোড
-//       window.location.reload(); 
-
-//         // window.location.reload();
-//         // router.refresh(); 
+//         onOpenChange(false);        // মডাল বন্ধ
+//         await refetch();            // সেশন রিফ্রেশ → UI আপডেট
 //       } else {
-//         toast.error(data.message || 'Update failed');
+//         toast.error(error?.message || 'Update failed');
 //       }
 //     } catch (error) {
 //       console.error(error);
@@ -149,16 +221,13 @@ export default EditModal;
 //   if (!isOpen) return null;
 
 //   return (
-//     // Overlay with subtle blur
 //     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
 //       <Card className="w-full max-w-3xl mx-4 bg-white shadow-2xl rounded-2xl border border-gray-200" radius="lg">
 //         <CardHeader className="flex flex-col gap-1 pb-4 border-b border-gray-200">
 //           <h3 className="text-2xl font-bold text-gray-800">Edit Profile</h3>
-          
 //         </CardHeader>
 //         <div className="pt-6 px-6 pb-6">
 //           <form onSubmit={handleSubmit} className="space-y-5 w-full">
-//             {/* Full Name */}
 //             <Input
 //               name="name"
 //               label="Full Name"
@@ -168,8 +237,6 @@ export default EditModal;
 //               className="bg-gray-50 border-gray-300 focus:border-indigo-500"
 //               isRequired
 //             />
-
-//             {/* Avatar URL */}
 //             <Input
 //               name="image"
 //               label="Avatar URL"
@@ -178,10 +245,6 @@ export default EditModal;
 //               defaultValue={image || ''}
 //               className="bg-gray-50 border-gray-300 focus:border-indigo-500"
 //             />
-
-           
-
-//             {/* Buttons */}
 //             <div className="flex justify-end gap-3 pt-2">
 //               <Button
 //                 type="button"
@@ -208,4 +271,10 @@ export default EditModal;
 // };
 
 // export default EditModal;
+
+
+
+
+
+
 

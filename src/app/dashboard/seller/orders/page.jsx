@@ -93,7 +93,7 @@ console.log(session, sellerId, sellerName, "sellerId")
         <Table.Column className= "font-bold text-lg">Buyer Email</Table.Column>
         <Table.Column className= "font-bold text-lg">Price</Table.Column>
         {/* <Table.Column>booking Id</Table.Column> */}
-        <Table.Column className= "font-bold text-lg" >Status(pending/delivered/cancelled)  </Table.Column>
+        <Table.Column className= "font-bold text-lg" >Status  </Table.Column>
         <Table.Column className= "font-bold text-lg" >Action </Table.Column>
       </Table.Header>
       <Table.Body>

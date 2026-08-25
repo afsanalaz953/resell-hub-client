@@ -56,4 +56,9 @@ additionalFields:{
     },
   },
   plugins: [jwt()],
+ 
+  // for block user login blocking
+
+
+
 });

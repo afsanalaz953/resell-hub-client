@@ -8,7 +8,8 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Chip
+  Chip,
+  Button
 } from "@heroui/react";
 import { div } from "framer-motion/client";
 
@@ -36,10 +37,10 @@ const PaymentTable = ({payments}) => {
         <Table.Column className= "font-bold text-lg"  isRowHeader>Transaction ID</Table.Column>
         <Table.Column className= "font-bold text-lg"  isRowHeader>Product Name</Table.Column>
        <Table.Column className= "font-bold text-lg">Price</Table.Column>
-        {/* <Table.Column>booking Id</Table.Column> */}
+        <Table.Column>Quantity</Table.Column>
         <Table.Column className= "font-bold text-lg" >Status</Table.Column>
           <Table.Column className= "font-bold text-lg">Date</Table.Column>
-        {/* <Table.Column className= "font-bold text-lg" >Action</Table.Column> */}
+        <Table.Column className= "font-bold text-lg" >Action</Table.Column>
       </Table.Header>
       <Table.Body>
          {payments && payments.map((paymentsData) => ( 
@@ -54,15 +55,17 @@ const PaymentTable = ({payments}) => {
                 className="rounded-full object-cover"
               />
             </Table.Cell> */}
-            <Table.Cell>{paymentsData.transactionId}</Table.Cell>
+            <Table.Cell>{paymentsData.paymentIntentId}</Table.Cell>
             <Table.Cell>{paymentsData.metadata?.title}</Table.Cell>
-            {/* <Table.Cell>{bookedData._id}</Table.Cell> */}
-            <Table.Cell>{paymentsData.metadata.price}</Table.Cell>
-            <Table.Cell className="" > {paymentsData. paymentStatus}</Table.Cell> 
-             <Table.Cell>{ paymentsData.createdAt}</Table.Cell>
-            {/* <Table.Cell className="" > {Success || Cancelled}</Table.Cell> */}
+            <Table.Cell>{paymentsData.metadata?.price}</Table.Cell>
+            <Table.Cell>{paymentsData.metadata?.quantity}</Table.Cell>
+            <Table.Cell className="" > {paymentsData.status}</Table.Cell> 
+             <Table.Cell>{new Date (paymentsData.createdAt).toLocaleDateString()}</Table.Cell>
+             <Table.Cell>{new Date (paymentsData.createdAt).toLocaleDateString()}</Table.Cell>
+            {/* <Table.Cell className="" > {Success || Cancelled}</Table.Cell>  */}
             {/* <Table.Cell> <Button bookingId = {bookedData._id} /> </Table.Cell> */}
-            {/* <Table.Cell> <CancelledButton bookingId = {bookedData._id} status={bookedData.tutorStatus}  /> </Table.Cell> */}
+            {/* <Table.Cell> <CancelledButton bookingId = {bookedData._id} 
+            status={bookedData.tutorStatus}  /> </Table.Cell> */}
           </Table.Row>
         ))}
       </Table.Body>

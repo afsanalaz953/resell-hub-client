@@ -1,11 +1,14 @@
+
 import React from 'react';
 import Image from "next/image";
+
 import Link from "next/link";
 import { Button, Chip, Input } from "@heroui/react";
+import { User } from 'lucide-react';
 // import { BookOpen, Clock } from "lucide-react";
-import BuyModal from "@/components/dashboard/BuyModal"
-// import { auth } from '@/lib/auth';
-// import { headers } from 'next/headers';
+import BuyModal from "@/components/dashboard/BuyModal";
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 
 const ProductDetailsPage = async({params}) => {
     const {id} = await params;
@@ -26,8 +29,24 @@ if (!res.ok) {
 }
 const singleProduct = await res.json();
 console.log(singleProduct,"buy single product")
+
+ const userSession = await auth.api.getSession({
+      headers:await headers(),
+    });
+
+    //  totalAmount: totalPrice
+
+    const user = userSession?.user;
+     const buyerEmail = user?.email
+     const buyerName = user?.name
+ 
+
 const {_id, title, category, condition, price, status, 
-    description, image, stock} = singleProduct;
+    description, image, stock,
+       
+  } = singleProduct;
+
+    
     // console.log( id,"Details", tutorDetails); 
 // const safeImage = image && image.trim() !== "" ? image : null;
 
@@ -122,23 +141,43 @@ const {_id, title, category, condition, price, status,
              
             )} */}
             <div>
-  <BuyModal 
+  {/* <BuyModal 
   singleProduct={singleProduct} 
-  action={"/api/payment"}
-  method="POST" 
-/>
-  {/* <form action={"/api/payment"} method="POST">
+action={"/api/payment"} method="POST"
+/> */}
+
+  <form action={"/api/payments"} method="POST">
                   <input type="hidden" name="price" value={price} />
                   <input type="hidden" name="title" value={title} />
                   <input type="hidden" name="productId" value={_id} />
+                  <input type="hidden" name="sellerId" value={singleProduct?.sellerId} />
+                       <input type="hidden" name="sellerName" value={singleProduct?.sellerName} />
+                       <input type="hidden" name="sellerEmail" value={singleProduct?.sellerEmail} />
+                      <input type="hidden" name="buyerEmail" value={buyerEmail} />
+                       <input type="hidden" name="buyerName" value={buyerName} />
+                   <div>
+  <label className="block text-sm font-medium  text-gray-700">Quantity</label>
+  <input
+    type="number"
+    name="quantity"
+    id="quantity"
+    defaultValue={1}
+    min="1"
+    step="1"
+    className="mt-1 mb-6 block w-full bg-slate-200 rounded-md border-blue-800 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+    required
+  />
+</div> 
 
-                  <button
+ 
+                       
+                  <Button
                     type="submit"
                     className="w-full border-2 border-blue-600 text-blue-600 py-3 px-6 rounded-lg hover:bg-blue-50 transition-colors duration-200 font-semibold"
                   >
                     Buy Now
-                  </button>
-                </form> */}
+                  </Button>
+                </form> 
             </div>
  
 
