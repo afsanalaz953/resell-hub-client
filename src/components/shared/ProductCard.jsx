@@ -3,12 +3,17 @@ import { BookOpen, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import WishlistButton from "@/components/shared/WishlistButton";
-
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 
 const ProductCard = async({allProducts}) => {
 
-
+const session = await auth.api.getSession({
+        headers: await headers(),
+      });
+      const user = session?.user;
+      const buyerId = user?.id;
 
 
  if (!allProducts) {
@@ -72,7 +77,7 @@ const ProductCard = async({allProducts}) => {
 
                 <div className="pt-6 mt-auto border-t border-slate-100 flex justify-between items-center">
                     <span className="text-2xl font-black text-orange-600">${price}</span>
-                    <span>  <WishlistButton productData={allProducts} />  </span>
+                    <span>  <WishlistButton productData={allProducts} buyerId={buyerId}  />  </span>
                 </div>
                  <Button
                         

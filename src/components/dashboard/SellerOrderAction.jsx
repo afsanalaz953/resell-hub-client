@@ -29,7 +29,7 @@ const data = await res.json();
 console.log(data);
 // window.location.reload();
 if (res.ok)  {
- toast.success('Product Approved');
+ toast.success('Order Approved');
                 // duration: 2000,
                 // position: 'top-center'})
   // window.location.reload(); 
@@ -43,7 +43,7 @@ if (res.ok)  {
     }
 }
 
-if (normalizedStatus === "pending") {
+if (normalizedStatus === "pending" || normalizedStatus === "paid") {
     return <Chip as="button"  onClick={handleApprove} className='bg-orange-300'>Pending</Chip>;
   }
 
@@ -67,14 +67,6 @@ export default SellerOrderAction ;
 
 
 
-// const AdminStatusUpdate = async(adminproductid, data) => {
-//      await fetch(`/api/products/${adminproductid}`, { method: 'PATCH' });
-//     return (
-//         <div>
-            
-//         </div>
-//     );
-// };
 
 
 
@@ -82,70 +74,4 @@ export default SellerOrderAction ;
 
 
 
-// // components/OrderAction.jsx
-// 'use client';
 
-// import { useState } from 'react';
-// import { Button } from '@heroui/react';
-
-// export default function OrderAction({ orderId, currentStatus }) {
-//   const [loading, setLoading] = useState(false);
-
-//   const handleUpdate = async (newStatus) => {
-//     if (loading || currentStatus !== 'pending') return;
-//     setLoading(true);
-
-//     try {
-//       const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/update`, {
-//         method: 'PATCH',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({ orderId, status: newStatus }),
-//       });
-
-//       if (!response.ok) {
-//         const errorData = await response.json();
-//         throw new Error(errorData.error || 'Update failed');
-//       }
-
-//       window.location.reload();
-//     } catch (error) {
-//       console.error('Failed to update status:', error);
-//       alert('Error updating order. Please try again.');
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   // সব সময় বাটন দেখাবে, কিন্তু pending না হলে ডিসেবল থাকবে
-//   const isPending = currentStatus === 'pending';
-
-//   return (
-//     <div className="flex items-center gap-2">
-//       <Button
-//         size="sm"
-//         color="success"
-//         variant="flat"
-//         isDisabled={!isPending || loading}
-//         isLoading={loading}
-//         onClick={() => handleUpdate('accepted')}
-//       >
-//         Accept
-//       </Button>
-//       <Button
-//         size="sm"
-//         color="danger"
-//         variant="flat"
-//         isDisabled={!isPending || loading}
-//         isLoading={loading}
-//         onClick={() => handleUpdate('rejected')}
-//       >
-//         Reject
-//       </Button>
-//       {!isPending && (
-//         <span className="text-xs text-gray-500 ml-1">
-//           (Already {currentStatus})
-//         </span>
-//       )}
-//     </div>
-//   );
-// }

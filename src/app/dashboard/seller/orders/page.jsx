@@ -1,8 +1,4 @@
 
-
-
-
-
 import React from 'react';
 import { auth } from "@/lib/auth"; // path to your Better Auth server instance
 import { headers } from "next/headers";
@@ -90,8 +86,10 @@ console.log(session, sellerId, sellerName, "sellerId")
         {/* <Table.Column className= "font-bold text-lg">Photo</Table.Column> */}
         <Table.Column className= "font-bold text-lg">Product Name</Table.Column>
         <Table.Column className= "font-bold text-lg"  isRowHeader>Buyer</Table.Column>
-        <Table.Column className= "font-bold text-lg">Buyer Email</Table.Column>
+        {/* <Table.Column className= "font-bold text-lg">Buyer Email</Table.Column> */}
         <Table.Column className= "font-bold text-lg">Price</Table.Column>
+        <Table.Column className= "font-bold text-lg">Quantity</Table.Column>
+        <Table.Column className= "font-bold text-lg">Total Price</Table.Column>
         {/* <Table.Column>booking Id</Table.Column> */}
         <Table.Column className= "font-bold text-lg" >Status  </Table.Column>
         <Table.Column className= "font-bold text-lg" >Action </Table.Column>
@@ -110,14 +108,16 @@ console.log(session, sellerId, sellerName, "sellerId")
               />
     
             </Table.Cell> */}
-            <Table.Cell>{orderedData.productName}</Table.Cell>
+            <Table.Cell>{orderedData.title}</Table.Cell>
             <Table.Cell>{orderedData.buyerName}</Table.Cell>
             {/* <Table.Cell>{bookedData._id}</Table.Cell> */}
-            <Table.Cell>{orderedData.buyerEmail}</Table.Cell>
+            {/* <Table.Cell>{orderedData.customerEmail}</Table.Cell>  */}
             <Table.Cell>$ {orderedData.price}</Table.Cell>
-            <Table.Cell className="" >  <OrderStatusBadge  orderId={orderedData._id}
+            <Table.Cell className="" > {orderedData.quantity}</Table.Cell> 
+            <Table.Cell className="" > {orderedData.totalPrice}</Table.Cell> 
+            <Table.Cell className="text-green-500" >  <OrderStatusBadge  orderId={orderedData._id}
     currentStatus={orderedData.status}  /> </Table.Cell> 
-            {/* <Table.Cell className="" > {orderedData.status}</Table.Cell>  */}
+            
            <Table.Cell className='flex gap-2'> <SellerOrderAction orderId={orderedData._id} status={orderedData.status} />  
            <SellerOrderRejectButton  id={orderedData._id} />
             </Table.Cell> 

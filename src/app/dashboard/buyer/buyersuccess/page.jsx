@@ -76,6 +76,58 @@ export default async function buyersuccess({ searchParams }) {
     console.error('❌ Fetch error:', error.message);
   }
 
+  // payment data end sellerorder data start
+//    if (status === 'complete') {
+ const sellerOrderData = {
+sessionId: session_id,
+  customerEmail,
+   buyerId: paymentData.metadata?.buyerId,      // মেটাডেটা থেকে
+  sellerId: paymentData.metadata?.sellerId,
+  // userId:paymentData.metadata?.userId,
+  productId:paymentData.metadata?.productId,
+  title: paymentData.metadata?.title,
+  price: paymentData.metadata?.price,
+  buyerName: paymentData.buyerName,
+  status: paymentData.status,
+  Date: paymentData.createdAt,
+metaData: paymentData.metadata,
+  quantity: paymentData.metadata?.quantity,
+  totalPrice: paymentData.metadata?.totalPrice,
+  metadata,
+
+//     sessionId: session_id,
+//     buyerEmail: metadata?.buyerEmail,
+//     buyerId: metadata?.buyerId,
+//     sellerId : 
+//     sellerName : 
+//     sellerEmail : 
+//     title : metadata?.title,
+//     price: Number(metadata?.price || 0),
+//     totalPrice: Number(metadata?.totalPrice || 0),
+//     paymentIntentId: payment_intent?.id,
+//     status: 'paid',
+//     createdAt: new Date().toISOString(),
+//     metadata,
+  };
+
+
+  try {
+    const resData = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json' },
+      body: JSON.stringify(sellerOrderData),
+    });
+    if (!resData.ok) {
+      const errorText = await res.text();
+      console.error('❌ Payment API error:', errorText);
+    } else {
+      const saved = await resData.json();
+      console.log('✅ Seller OrderData saved for client:', saved);
+    }
+  } catch (error) {
+    console.error('❌ Fetch error:', error.message);
+  }
+
 
 
     return (

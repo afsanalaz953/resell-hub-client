@@ -4,12 +4,12 @@ import { ToastContainer, toast } from 'react-toastify';
 import { AlertDialog, Button, Chip } from "@heroui/react";
 import { useRouter } from "next/navigation";
 
-const CancelledBookingButton = ({bookingId, status}) => {
+const BuyerAcceptButton = ({bookingId, status}) => {
    const router = useRouter(); 
  const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
    
-const handleCancelBooking = async () =>{ 
+const handleAcceptBooking = async () =>{ 
 //     const {data:tokenData} = await authClient.token()
 //   console.log(tokenData, "tokendata")
 setIsLoading(true);
@@ -20,14 +20,14 @@ method: "PATCH",
 headers:{
     "content-type" : "application/json"},
 //  authorization: `Bearer ${tokenData?.token}`
- body: JSON.stringify({ status: "cancelled" })
+ body: JSON.stringify({ status: "accepted" })
 });
 
 const data = await res.json();
 console.log(data);
 // window.location.reload();
 if (res.ok)  {
- toast.success('Booking cancelled');
+ toast.success('Booking Accepted');
                 // duration: 2000,
                 // position: 'top-center'})
 
@@ -44,16 +44,11 @@ if (res.ok)  {
     }
 }
 
-if(status === "cancelled"){
-     return <Button variant="danger" isDisabled>Cancelled</Button>; 
-}
-// if (status=== "pending") {
-//     return <Chip as="button"  isDisabled className='bg-orange-300'>Pending</Chip>;
-//   }
 
-//   if (status === "accepted") {
-//     return <Chip  className='bg-green-400' variant="flat">Accepted</Chip>;
-//   }
+
+  if (status === "accepted") {
+    return <Chip isDisabled className='bg-green-400' variant="flat">Accepted</Chip>;
+  }
 
 //   return null; // অন্য কোনো স্ট্যাটাসের জন্য কিছু দেখাবেন না
 // };
@@ -72,7 +67,7 @@ return (
         <AlertDialog>
             
              <AlertDialog.Trigger>
-                <Button variant="danger">Cancel</Button> 
+                <Button variant="primary">Accept</Button> 
              </AlertDialog.Trigger>
            <AlertDialog.Backdrop>
                 <AlertDialog.Container>
@@ -96,13 +91,13 @@ return (
                                 Keep Booking
                             </Button>
                             <Button
-                            onClick = { handleCancelBooking }
+                            onClick = { handleAcceptBooking }
                                 slot="close"
                                 color="danger"
                                 className="font-bold"
 
                             >
-                                Yes, Cancel
+                                Yes, Accept
                             </Button>
                              
                         </AlertDialog.Footer>
@@ -113,4 +108,4 @@ return (
     );
 };
 
-export default CancelledBookingButton;
+export default BuyerAcceptButton;

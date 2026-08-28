@@ -13,7 +13,8 @@ import {
 } from "@heroui/react";
 import { div } from "framer-motion/client";
  import CancelledButton from "@/components/dashboard/CancelledButton";
-
+import BuyerAcceptButton from '@/components/dashboard/BuyerAcceptButton';
+import BuyerPendingButton from '@/components/dashboard/BuyerPendingButton';
 
 const OrderTable = ({bookings}) => {
 // const date = new Date(bookedData.createdAt);
@@ -39,8 +40,9 @@ const OrderTable = ({bookings}) => {
       <Table.Header>
         {/* <Table.Column className= "font-bold text-lg">Photo</Table.Column> */}
         <Table.Column className= "font-bold text-lg"  isRowHeader>Product Name</Table.Column>
-        <Table.Column className= "font-bold text-lg">Date</Table.Column>
+        <Table.Column className= "font-bold text-lg">Quantity</Table.Column>
         <Table.Column className= "font-bold text-lg">Price</Table.Column>
+        <Table.Column className= "font-bold text-lg">Total Price</Table.Column>
         {/* <Table.Column>booking Id</Table.Column>  */}
         <Table.Column className= "font-bold text-lg" >Status</Table.Column>
         <Table.Column className= "font-bold text-lg" >Action</Table.Column> 
@@ -59,14 +61,17 @@ const OrderTable = ({bookings}) => {
               />
             </Table.Cell> */}
             <Table.Cell>{bookedData.title}</Table.Cell>
-            <Table.Cell> {new Date(bookedData.createdAt).toLocaleDateString('en-GB')}  </Table.Cell>
+            <Table.Cell> {bookedData.quantity} </Table.Cell>
              {/* <Table.Cell>{bookedData._id}</Table.Cell>  */}
             <Table.Cell>{bookedData.price}</Table.Cell>
+            <Table.Cell>{bookedData.totalPrice}</Table.Cell>
             <Table.Cell className="" > {bookedData.status}</Table.Cell> 
            
               <Table.Cell className="flex gap-3 bg-white p-8">
                 <CancelledButton bookingId = {bookedData._id} status={bookedData.status} />
-                      
+                  <BuyerAcceptButton bookingId = {bookedData._id} status={bookedData.status}   />    
+                  <BuyerPendingButton bookingId = {bookedData._id} status={bookedData.status}   />    
+                   
                        </Table.Cell>
               
           

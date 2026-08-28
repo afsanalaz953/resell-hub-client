@@ -67,12 +67,5 @@ export default AdminStatusUpdate;
 
 
 
-// const AdminStatusUpdate = async(adminproductid, data) => {
-//      await fetch(`/api/products/${adminproductid}`, { method: 'PATCH' });
-//     return (
-//         <div>
-            
-//         </div>
-//     );
-// };
+
 

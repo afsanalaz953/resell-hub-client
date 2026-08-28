@@ -1,10 +1,12 @@
+// "use client"
+
 import { Button, Chip } from "@heroui/react";
 import { BookOpen, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import WishlistDeleteButton from "@/components/dashboard/WishlistDeleteButton";
 
-const WishCard = ({ product }) => {
+const WishCard = ({ product}) => {
   // যদি product না আসে তাহলে কিছু রেন্ডার করব না
   if (!product) return null;
 
@@ -13,12 +15,14 @@ const WishCard = ({ product }) => {
   // product._id -> টপ-লেভেল আইডি
   // product.productData -> বাকি সব তথ্য
   const { productData } = product;
+ 
   console.log(product, "wishproducts")
 
   // productData থাকতে পারে, নাও থাকতে পারে – তাই ডিফল্ট অবজেক্ট দিন
 const {
     _id,                  // ← এই _id ব্যবহার করবেন লিংকে
     title,
+   
     category,
     condition,
     price,

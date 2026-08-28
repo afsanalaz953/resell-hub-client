@@ -19,10 +19,15 @@ export async function POST(request) {
 
      const price = formData.get('price')
       const title = formData.get('title')
+      const orderId = formData.get('orderId')
       const productId = formData.get('productId')
+      const sellerId = formData.get('sellerId')
+      const sellerName = formData.get('sellerName')
+      const sellerEmail = formData.get('sellerEmail')
        const quantity = formData.get('quantity')
-       const totalPrice= parseFloat((price * quantity).toFixed(2))
-         
+      //  const totalPrice= parseFloat((price * quantity).toFixed(2))
+       const totalPrice= formData.get('totalPrice')
+      
 
     // Create Checkout Sessions from body params.
     const session = await stripe.checkout.sessions.create({
@@ -39,14 +44,18 @@ export async function POST(request) {
         },
       ],
       metadata: {
+        
         price: Number(price),
-        totalPrice,
+        totalPrice: Number(totalPrice),
         buyerId: user?.id,
         buyerEmail: user?.email,
         title,
         productId,
-         quantity: Number(quantity),
-         
+        sellerId,
+        sellerName,
+        sellerEmail,
+         quantity: quantity,
+         orderId,
       },
       mode: 'payment',
       // success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,

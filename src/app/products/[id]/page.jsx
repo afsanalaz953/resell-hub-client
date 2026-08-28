@@ -2,11 +2,12 @@
 import React from 'react';
 import Image from "next/image";
 
+
 import Link from "next/link";
 import { Button, Chip, Input } from "@heroui/react";
 import { User } from 'lucide-react';
 // import { BookOpen, Clock } from "lucide-react";
-import BuyModal from "@/components/dashboard/BuyModal";
+import BuyFormClient  from "@/components/dashboard/BuyFormClient";
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 
@@ -25,7 +26,7 @@ cache:"no-store",
 });
 
 if (!res.ok) {
-  throw new Error(`Failed to fetch tutor: ${res.status}`);
+  throw new Error(`Failed to fetch product: ${res.status}`);
 }
 const singleProduct = await res.json();
 console.log(singleProduct,"buy single product")
@@ -141,12 +142,13 @@ const {_id, title, category, condition, price, status,
              
             )} */}
             <div>
-  {/* <BuyModal 
+  <BuyFormClient 
   singleProduct={singleProduct} 
-action={"/api/payment"} method="POST"
-/> */}
+action="/api/payments" 
+method="POST"
+/>
 
-  <form action={"/api/payments"} method="POST">
+  {/* <form action={"/api/payments"} method="POST">
                   <input type="hidden" name="price" value={price} />
                   <input type="hidden" name="title" value={title} />
                   <input type="hidden" name="productId" value={_id} />
@@ -177,7 +179,7 @@ action={"/api/payment"} method="POST"
                   >
                     Buy Now
                   </Button>
-                </form> 
+                </form>  */}
             </div>
  
 
