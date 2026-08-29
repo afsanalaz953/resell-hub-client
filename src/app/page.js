@@ -1,11 +1,11 @@
 import Image from "next/image";
 // import Navbar from "@/components/shared/Navbar"
 
-// import FeaturedTutors from "@/components/homePage/featuredTutors"
+import LatestProducts from '@/components/homePage/LatestProducts'
 // import Tips from "@/components/homePage/Tips"
  import Banner from "@/components/homePage/Banner"
-// import Stats from "@/components/homePage/Stats"
-
+import Categories from "@/components/homePage/Categories"
+import SuccessStory from '@/components/homePage/SuccessStory'
 
 
 
@@ -14,6 +14,9 @@ export default function Home() {
     <div className="">
    
      <Banner />
+     <Categories />
+     <LatestProducts />
+     <SuccessStory />
 
     {/* //  <FeaturedTutors />
     //  <Tips />

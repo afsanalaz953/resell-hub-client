@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 
-const ProductPagination = ({page, total_page}) => {
+const ProductPagination = ({page, total_page }) => {
    
   const router = useRouter();
 
