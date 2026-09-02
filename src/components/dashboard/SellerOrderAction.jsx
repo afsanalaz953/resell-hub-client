@@ -6,9 +6,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import { AlertDialog, Button, Chip } from "@heroui/react";
 import { useRouter } from "next/navigation";
 
-const SellerOrderAction = ({orderId, status, }) => {
+const SellerOrderAction = ({orderId, orderStatus }) => {
    const router = useRouter(); 
-  const normalizedStatus = status?.toLowerCase();
+  // const orderStatus = orderStatus?.toLowerCase();
    
 const handleApprove = async () =>{ 
 //     const {data:tokenData} = await authClient.token()
@@ -21,7 +21,7 @@ headers:{
     "content-type" : "application/json"},
 //  authorization: `Bearer ${tokenData?.token}`
 
- body: JSON.stringify({ status: "Approved" }) 
+ body: JSON.stringify({orderStatus: "approved"}) 
 
 });
 
@@ -43,12 +43,14 @@ if (res.ok)  {
     }
 }
 
-if (normalizedStatus === "pending" || normalizedStatus === "paid") {
-    return <Chip as="button"  onClick={handleApprove} className='bg-orange-300'>Pending</Chip>;
+  // ✅ শুধু pending বা paid থাকলেই Approve বাটন দেখাবে
+if (orderStatus === "pending") {
+    return <Chip as="button"  onClick={handleApprove} className='bg-orange-300'>Approve</Chip>;
   }
-
-  if (normalizedStatus === "approved") {
-    return <Chip className='bg-green-400' variant="flat">Accepted</Chip>;
+  
+// ✅ Approved থাকলে শুধু দেখাবে, clickable নয়
+  if (orderStatus === "approved") {
+    return <Chip className='bg-green-400' isDisabled  variant="flat">Already Approved</Chip>;
   }
 
   return null; // অন্য কোনো স্ট্যাটাসের জন্য কিছু দেখাবেন না

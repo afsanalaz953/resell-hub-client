@@ -1,4 +1,5 @@
 import React from 'react';
+import { redirect } from 'next/navigation';
 import OrderTable from "@/components/dashboard/OrderTable";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
@@ -20,7 +21,8 @@ if (!user) {
 // const bookings = await fethMyBooking(user?.email);
 //     // console.log(bookings);
 // user id dhore ante hobe
-const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/buyer/myorders/${buyerEmail}`, {
+// const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/${buyerEmail}`, {
+ const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?buyerId=${buyerId}`, {
   cache: 'no-store',
 
 //   headers:{

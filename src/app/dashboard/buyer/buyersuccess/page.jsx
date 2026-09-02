@@ -93,6 +93,7 @@ sessionId: session_id,
 metaData: paymentData.metadata,
   quantity: paymentData.metadata?.quantity,
   totalPrice: paymentData.metadata?.totalPrice,
+  orderStatus: 'pending',
   metadata,
 
 //     sessionId: session_id,
@@ -110,7 +111,7 @@ metaData: paymentData.metadata,
 //     metadata,
   };
 
-
+console.log (sellerOrderData, "sellerOrderData")
   try {
     const resData = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders`, {
       method: 'POST',

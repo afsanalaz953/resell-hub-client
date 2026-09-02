@@ -29,7 +29,7 @@ if (!res.ok) {
   throw new Error(`Failed to fetch product: ${res.status}`);
 }
 const singleProduct = await res.json();
-console.log(singleProduct,"buy single product")
+console.log(singleProduct,"single product in idpage")
 
  const userSession = await auth.api.getSession({
       headers:await headers(),
@@ -144,7 +144,7 @@ const {_id, title, category, condition, price, status,
             <div>
   <BuyFormClient 
   singleProduct={singleProduct} 
-action="/api/payments" 
+action="/api/payments"
 method="POST"
 />
 

@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const SellerOrderRejectButton = ({ id, status }) => {
+const SellerOrderRejectButton = ({ id, orderStatus }) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,14 +17,14 @@ const SellerOrderRejectButton = ({ id, status }) => {
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/${id}`,
         { method: "PATCH",
              headers: { "content-type": "application/json" },
-             body: JSON.stringify({ status: "cancelled" })
+             body: JSON.stringify({ orderStatus: "cancelled" })
             }
       );
       
       if (!res.ok) throw new Error("Failed to cancel");
       
-      const data = await res.json();
-      console.log("Cancelled:", data);
+      // const data = await res.json();
+      // console.log("Cancelled:", data);
 
       toast.success("Order Cancelled ✅");
       setIsOpen(false);
@@ -37,9 +37,14 @@ const SellerOrderRejectButton = ({ id, status }) => {
     }
   }
 
-  if(status === "cancelled"){
+  if(orderStatus === "cancelled"){
        return <Button variant="danger" isDisabled>Cancelled</Button>; 
   }
+ // Approve হয়ে গেলে Reject বাটন দেখাবেন না (কারণ আর Reject করা যায় না)
+  if (orderStatus === "approved") {
+    return null;  // অথবা <span className="text-sm">Cannot reject approved order</span>
+  }
+  
   return (
     <>
       <ToastContainer />
@@ -77,7 +82,7 @@ const SellerOrderRejectButton = ({ id, status }) => {
         <AlertDialog>
             
              <AlertDialog.Trigger>
-                <Button variant="danger"  isDisabled={status === "cancelled"} >{status === "cancelled" ? "Cancelled" : "Cancel"}   </Button> 
+                <Button variant="danger"  isDisabled={orderStatus === "cancelled"} >{orderStatus === "cancelled" ? "Cancelled" : "Cancel"}   </Button> 
              </AlertDialog.Trigger>
            <AlertDialog.Backdrop>
                 <AlertDialog.Container>

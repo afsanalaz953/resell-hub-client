@@ -14,7 +14,7 @@ const session = await auth.api.getSession({
   let totalOrdersData = [];
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/buyer/myorders/${buyerEmail}`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?buyerId=${buyerId}`,
       {
         cache: 'no-store',
         // প্রয়োজনে হেডার যোগ করুন

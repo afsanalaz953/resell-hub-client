@@ -15,31 +15,38 @@ const session = await auth.api.getSession({
  });
  const user = session?.user;
 const sellerId = user?.id;
-const sellerName = user?.name
+const sellerName = user?.name;
+const sellerEmail = user?.email;
 console.log(session, sellerId, sellerName, "sellerId")
 // from buyer manageorders
 // const buyerEmail = user?.email; // session থেকে ইমেইল
 // console.log(buyerEmail, "email")
-   let orders = [];
+  //  let orders = [];
 
-  if (sellerId) {
-    try {
-      const res = await fetch(
-        // `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?buyerEmail=${encodeURIComponent(buyerEmail)}`,
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?sellerId=${sellerId}`,
+
+  // if (sellerId) {
+  //   try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/seller/orders?sellerId=${sellerId}`,
         { cache: 'no-store' }
       );
+//       const sellerEmail = user?.email; // session থেকে ইমেইল নিন
 
-      if (!res.ok) {
-        console.error(`API Error: ${res.status}`);
-      } else {
-        orders = await res.json();
+// const res = await fetch(
+//   `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?sellerEmail=${encodeURIComponent(sellerEmail)}`,
+//   { cache: 'no-store' }
+// );
+
+      // if (!res.ok) {
+      //   console.error(`API Error: ${res.status}`);
+      // } else {
+      //   orders = await res.json();
+           const orders = await res.json();
         console.log('✅ Fetched ordersbookings:', orders);
-      }
-    } catch (error) {
-      console.error('❌ Fetch error:', error.message);
-    }
-  }
+    //   }
+    // } catch (error) {
+    //   console.error('❌ Fetch error:', error.message);
+    // }
+  // }
 
 
 // const tokenObjData = await auth.api.getToken({
@@ -86,12 +93,13 @@ console.log(session, sellerId, sellerName, "sellerId")
         {/* <Table.Column className= "font-bold text-lg">Photo</Table.Column> */}
         <Table.Column className= "font-bold text-lg">Product Name</Table.Column>
         <Table.Column className= "font-bold text-lg"  isRowHeader>Buyer</Table.Column>
-        {/* <Table.Column className= "font-bold text-lg">Buyer Email</Table.Column> */}
+        <Table.Column className= "font-bold text-lg">Buyer Email</Table.Column>
         <Table.Column className= "font-bold text-lg">Price</Table.Column>
         <Table.Column className= "font-bold text-lg">Quantity</Table.Column>
         <Table.Column className= "font-bold text-lg">Total Price</Table.Column>
         {/* <Table.Column>booking Id</Table.Column> */}
         <Table.Column className= "font-bold text-lg" >Status  </Table.Column>
+        <Table.Column className= "font-bold text-lg" >Order Status  </Table.Column>
         <Table.Column className= "font-bold text-lg" >Action </Table.Column>
       </Table.Header>
       <Table.Body>
@@ -109,17 +117,18 @@ console.log(session, sellerId, sellerName, "sellerId")
     
             </Table.Cell> */}
             <Table.Cell>{orderedData.title}</Table.Cell>
-            <Table.Cell>{orderedData.buyerName}</Table.Cell>
+            <Table.Cell>{orderedData.metaData?.buyerName}</Table.Cell>
             {/* <Table.Cell>{bookedData._id}</Table.Cell> */}
-            {/* <Table.Cell>{orderedData.customerEmail}</Table.Cell>  */}
+            <Table.Cell>{orderedData.customerEmail}</Table.Cell> 
             <Table.Cell>$ {orderedData.price}</Table.Cell>
             <Table.Cell className="" > {orderedData.quantity}</Table.Cell> 
             <Table.Cell className="" > {orderedData.totalPrice}</Table.Cell> 
+           
             <Table.Cell className="text-green-500" >  <OrderStatusBadge  orderId={orderedData._id}
     currentStatus={orderedData.status}  /> </Table.Cell> 
-            
-           <Table.Cell className='flex gap-2'> <SellerOrderAction orderId={orderedData._id} status={orderedData.status} />  
-           <SellerOrderRejectButton  id={orderedData._id} />
+             <Table.Cell className="" > {orderedData.orderStatus}</Table.Cell> 
+           <Table.Cell className='flex gap-2'> <SellerOrderAction orderId={orderedData._id} orderStatus={orderedData.orderStatus} />  
+           <SellerOrderRejectButton  id={orderedData._id}  orderStatus={orderedData.orderStatus} />
             </Table.Cell> 
            
             {/* <Table.Cell className="" > {Success || Cancelled}</Table.Cell> */}

@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { AlertDialog, Button, Chip } from "@heroui/react";
 import { useRouter } from "next/navigation";
 
-const CancelledBookingButton = ({bookingId, status}) => {
+const CancelledBookingButton = ({id, orderStatus}) => {
    const router = useRouter(); 
  const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -15,19 +15,19 @@ const handleCancelBooking = async () =>{
 setIsLoading(true);
 
 try{    
-const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/booking/${bookingId}`,{
+const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/${id}`,{
 method: "PATCH",
 headers:{
     "content-type" : "application/json"},
 //  authorization: `Bearer ${tokenData?.token}`
- body: JSON.stringify({ status: "cancelled" })
+ body: JSON.stringify({ orderStatus: "cancelled" })
 });
 
 const data = await res.json();
-console.log(data);
+console.log(data, 'buyercancelledData');
 // window.location.reload();
 if (res.ok)  {
- toast.success('Booking cancelled');
+ toast.success('Order cancelled');
                 // duration: 2000,
                 // position: 'top-center'})
 
@@ -44,9 +44,13 @@ if (res.ok)  {
     }
 }
 
-if(status === "cancelled"){
+if(orderStatus === "cancelled"){
      return <Button variant="danger" isDisabled>Cancelled</Button>; 
 }
+if (orderStatus !== 'pending') {
+  return <Button variant="danger" isDisabled>Cancel</Button>; // অথবা <span>Cannot cancel</span>
+}
+
 // if (status=== "pending") {
 //     return <Chip as="button"  isDisabled className='bg-orange-300'>Pending</Chip>;
 //   }
@@ -79,7 +83,7 @@ return (
                     <AlertDialog.Dialog className="sm:max-w-100">
                         <AlertDialog.CloseTrigger />
                         <AlertDialog.Header>
-                            <AlertDialog.Icon status="danger" />
+                            <AlertDialog.Icon orderStatus="danger" />
                             <AlertDialog.Heading>Confirm Cancellation</AlertDialog.Heading>
                         </AlertDialog.Header>
                         <AlertDialog.Body>

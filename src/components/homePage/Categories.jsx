@@ -63,7 +63,7 @@ const Categories = ({ selectedCategory }) => {
           color={!selectedCategory ? 'primary' : 'default'}
           variant={!selectedCategory ? 'solid' : 'bordered'}
           onPress={() => handleCategoryClick('')}
-          className="capitalize"
+          className="capitalize  ml-20"
         >
         {selectedCategory ? 'Clear Filter' : 'All Products'}
         </Button>
@@ -75,12 +75,14 @@ const Categories = ({ selectedCategory }) => {
           key={cat}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
+          className=''
+        
         >
           <Button
             color={selectedCategory === cat ? 'primary' : 'default'}
             variant={selectedCategory === cat ? 'solid' : 'bordered'}
             onPress={() => handleCategoryClick(cat)}
-            className="capitalize"
+            className="capitalize ml-4 text-center w-full justify-center "
           >
             {cat}
           </Button>

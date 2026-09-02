@@ -19,7 +19,7 @@ export async function POST(request) {
 
      const price = formData.get('price')
       const title = formData.get('title')
-      const orderId = formData.get('orderId')
+      // const orderId = formData.get('orderId')
       const productId = formData.get('productId')
       const sellerId = formData.get('sellerId')
       const sellerName = formData.get('sellerName')
@@ -48,6 +48,7 @@ export async function POST(request) {
         price: Number(price),
         totalPrice: Number(totalPrice),
         buyerId: user?.id,
+        buyerName: user?.name,
         buyerEmail: user?.email,
         title,
         productId,
@@ -55,7 +56,7 @@ export async function POST(request) {
         sellerName,
         sellerEmail,
          quantity: quantity,
-         orderId,
+        //  orderId,
       },
       mode: 'payment',
       // success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,

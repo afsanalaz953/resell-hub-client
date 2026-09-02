@@ -24,7 +24,7 @@ const LatestProducts = async () => {
           <ProductCard allProducts={product} key={index} />
         ))}
       </div>
-      <div className='container'>
+      <div className='container mt-4'>
         <Link href = '/products'>
         <Button className='text-lg p-6 ml-125 mx-auto bg-white text-orange-600 rounded-2xl 
          border-2'> View all Products <span > <FaArrowRight /></span></Button>

@@ -40,7 +40,7 @@ const PaymentTable = ({payments}) => {
         <Table.Column>Quantity</Table.Column>
         <Table.Column className= "font-bold text-lg" >Status</Table.Column>
           <Table.Column className= "font-bold text-lg">Date</Table.Column>
-        <Table.Column className= "font-bold text-lg" >Action</Table.Column>
+        <Table.Column className= "font-bold text-lg" >Total Price</Table.Column>
       </Table.Header>
       <Table.Body>
          {payments && payments.map((paymentsData) => ( 
@@ -61,7 +61,7 @@ const PaymentTable = ({payments}) => {
             <Table.Cell>{paymentsData.metadata?.quantity}</Table.Cell>
             <Table.Cell className="" > {paymentsData.status}</Table.Cell> 
              <Table.Cell>{new Date (paymentsData.createdAt).toLocaleDateString()}</Table.Cell>
-             <Table.Cell>{new Date (paymentsData.createdAt).toLocaleDateString()}</Table.Cell>
+             <Table.Cell>{paymentsData.metadata?.totalPrice}</Table.Cell>
             {/* <Table.Cell className="" > {Success || Cancelled}</Table.Cell>  */}
             {/* <Table.Cell> <Button bookingId = {bookedData._id} /> </Table.Cell> */}
             {/* <Table.Cell> <CancelledButton bookingId = {bookedData._id} 

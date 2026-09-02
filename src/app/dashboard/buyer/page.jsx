@@ -6,13 +6,15 @@ import { CiMoneyCheck1 } from "react-icons/ci";
 import BuyerOverviewWishcard from '@/components/dashboard/BuyerOverviewWishcard'
 import BuyerOverviewOrderscard from '@/components/dashboard/BuyerOverviewOrderscard'
 import BuyerOverviewPaycard from '@/components/dashboard/BuyerOverviewPaycard'
+import RecentPurchase from '@/components/dashboard/RecentPurchase'
+import OverviewWishData  from'@/components/dashboard/OverviewWishData'
 import { motion } from "framer-motion";
 
 
 const BuyerOverviewPage = () => {
     return (
-         <div className='container mx-auto w-full bg-[#EFF6FF]'>
-                buyer overview
+         <div className='container text-orange-700 mx-auto w-full bg-[#EFF6FF]'>
+                Buyer overview
                   <div className='grid md:grid-cols-2 lg:grid-cols-3  gap-4 mt-4 px-20 py-10'> 
                    {/* card1 */}
         {/* <div className="card bg-slate-100 w-70 h-70 shadow-md border-0 rounded-2xl justify-start items-left" /> */}
@@ -63,6 +65,13 @@ const BuyerOverviewPage = () => {
            </div>
          {/* </motion.div> */}
          </div>
+<div className='container w-full bg-slate-200 shadow-accent-soft'>
+  <RecentPurchase />
+</div>
+<div>
+  <OverviewWishData />
+</div>
+
          </div>
     );
 };
