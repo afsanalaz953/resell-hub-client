@@ -4,8 +4,10 @@ import {Button,Chip} from "@heroui/react"
 import { auth } from "@/lib/auth"; // path to your Better Auth server instance
 import { headers } from "next/headers";
 import Image from "next/image";
+import Link from 'next/link';
 import UserActionButton from "@/components/dashboard/UserBlockedButton";
 import SellerProductSearch from "@/components/dashboard/SellerProductSearch";
+import { $brand } from 'better-auth';
 
 
 const ManageUserPage = async({ searchParams }) => {
@@ -17,14 +19,17 @@ const ManageUserPage = async({ searchParams }) => {
       //   const session = await auth.api.getSession({ headers: await headers() });
       //   const sellerId = session?.user?.id;
         const search = sParams?.search || '';
-      
+     const tokenObj = await auth.api.getToken({
+       headers: await headers()
+     })
+      console.log(tokenObj, "adminUserToken") 
 
     const res = await fetch (`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/user?search=${encodeURIComponent(search)}`,{
   cache: 'no-store',
-// //    headers:{
-// //      authorization: `Bearer ${tokenObj.token}`
+   headers:{
+     authorization: `Bearer ${tokenObj.token}`
       
-//  }
+ }
 });
  if (!res.ok) {
     const errorText = await res.text();
@@ -49,8 +54,8 @@ console.log(userList, "userlist")
             {/* ✅ Empty state check – put it here */}
                 {!userList || userList.length === 0 ? (
                    <div className="text-center   bg-orange-100 rounded-lg shadow">
-                     <p className="text-gray-600 text-lg"> No products available yet.</p>
-                     <p className="text-gray-500">Click “Add Products” to get started.</p>
+                     <p className="text-gray-600 text-lg"> No user available yet.</p>
+                     <p className="text-gray-500">Log in to get started.</p>
                    </div>
                  ) :( <div className=' lg:w-full md:`w-[760px]` shadow-lg'> 
                    {/* <div className='shadow-lg'> */}
@@ -124,8 +129,8 @@ console.log(userList, "userlist")
                                       
                                         <UserActionButton userId={adUser._id} 
   isBlocked={adUser.isBlocked}    />
-                                     {/* <UpdateModal product = {adUser} />
-                                   <SellerProductDeleteButton  productId = {formProduct._id} /> */}
+          {/* <Link href={`/dashboard/${adUser?.role}/${adUser?._id}`}><Button>View</Button></Link>                           {/* <UpdateModal product = {adUser} /> */}
+                                   {/* <SellerProductDeleteButton  productId = {formProduct._id} /> */}
                                       
                                   </Table.Cell>
                                    </Table.Row>

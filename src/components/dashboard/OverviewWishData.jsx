@@ -35,7 +35,7 @@ const OverviewWishData = async () => {
 
         <div className="grid grid-cols-3 gap-2 w-full">
           {wishlistData.length === 0 ? (
-            <p className="text-gray-500">No items in wishlist</p>
+            <p className="text-blue-500">No items in wishlist</p>
           ) : (
             wishlistData.map((wishItem, index) => (
                 // <div>
@@ -63,9 +63,9 @@ const OverviewWishData = async () => {
                       : 'N/A'}
                   </p>
                 </Card.Content>
-                <Card.Footer className="text-sm text-gray-400 flex-col justify-start items-start">
-                  <div>Buyer: {wishItem.buyerName || 'Unknown'}</div>
-                  <div>Buyer Email: {wishItem.buyerEmail || 'N/A'}</div>
+                <Card.Footer className="text-sm text-black flex-col justify-start items-start">
+                  <div>Seller: {wishItem.productData.sellerName || 'Unknown'}</div>
+                  <div>Seller Email: {wishItem.productData.sellerEmail || 'N/A'}</div>
                 </Card.Footer>
               </Card>
                

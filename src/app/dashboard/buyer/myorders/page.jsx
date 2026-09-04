@@ -12,6 +12,13 @@ const BuyerOrderPage = async() => {
  const buyerId = user?.id;
  const buyerEmail = user?.email;
 console.log(session, "booking session")
+
+ const tokenObj = await auth.api.getToken({
+       headers: await headers()
+     })
+console.log(tokenObj, "buyerOrderBookingToken")
+
+
 if (!user) {
     // return <div className="p-5 text-red-500">দয়া করে লগইন করুন</div>;
     redirect('/login');  // চাইলে redirect না করে মেসেজ দেখাতে পারেন
@@ -25,15 +32,15 @@ if (!user) {
  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?buyerId=${buyerId}`, {
   cache: 'no-store',
 
-//   headers:{
-//     authorization: `Bearer ${tokenObjData.token}`
-//      }    
+  headers:{
+    authorization: `Bearer ${tokenObj.token}`
+     }    
 });
 const bookings = await res.json();
 
  console.log(bookings, "bookings Data")
-  
 
+ 
 
     return (
         <div>

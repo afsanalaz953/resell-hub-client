@@ -8,10 +8,20 @@ import Image from "next/image";
 
 
 const ProductManagePage = async() => {
+const tokenObj = await auth.api.getToken({
+       headers: await headers()
+     })
+      console.log(tokenObj, "adminProductToken")
+
 
 // const AllProducts = async() => {
 const res = await fetch (`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/products/all`,
- { cache: 'no-store' }
+ { cache: 'no-store',
+headers:{
+      authorization: `Bearer ${tokenObj.token}`
+   }
+
+  }
 )
 const adminProductsData = await res.json();
 
@@ -67,7 +77,7 @@ console.log(adminProductsData, "adminproducts");
                                           {/* 2 */}
                                           <Table.Cell>
                                             <Link href={`/products/${adminProducts._id}`}
-                                            className='hover:text-blue-800 hover:underline'>
+                                            className='hover:text-blue-800 hover:underline text-orange-600'>
                                             {adminProducts.title}
                                             </Link>
                                             </Table.Cell>
@@ -87,7 +97,7 @@ console.log(adminProductsData, "adminproducts");
                                         <AdminStatusUpdate adminproductid = {adminProducts._id} 
                                         status={adminProducts.status} />
                                         {/* {adminProducts.status} */}
-                                         <AdminRejected rejectedproductid = {adminProducts._id} />
+                                         <AdminRejected rejectedproductid = {adminProducts._id} status={adminProducts.status}  />
                                        </Table.Cell>
                                         </Table.Row>
                                         

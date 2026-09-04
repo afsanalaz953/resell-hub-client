@@ -24,8 +24,8 @@ const LatestOrderCard = ({ order }) => {       // prop নাম 'order' (এক
         </p>
       </Card.Content>
       <Card.Footer className="text-sm text-gray-400 flex-col justify-start items-start">
-       <div>Buyer: {order.metadata?.buyerName} </div> 
-     <div> Buyer Email: {order.metadata?.buyerEmail}</div>
+       <div>Seller: {order.metadata?.sellerName} </div> 
+     <div> Seller Email: {order.metadata?.sellerEmail}</div>
       </Card.Footer>
     </Card>
   );

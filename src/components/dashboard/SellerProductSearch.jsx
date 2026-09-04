@@ -39,7 +39,7 @@ const SellerProductSearch = () => {
         value={searchTerm}
         onChange={handleSearch}
         type="text"
-        placeholder="Search for products"
+        placeholder="Search"
         className="flex-1 h-14 px-4 outline-none bg-transparent text-slate-700 placeholder:text-slate-400"
       />
     </div>

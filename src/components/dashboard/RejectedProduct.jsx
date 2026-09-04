@@ -3,9 +3,11 @@ import { AlertDialog, Button, Chip } from "@heroui/react";
 import { ToastContainer, toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
 
-const AdminRejected = ({rejectedproductid}) => {
+const AdminRejected = ({rejectedproductid, status}) => {
      const router = useRouter(); 
     console.log(rejectedproductid)
+    // status চেক করুন (ছোট হাতের অক্ষরে)
+  const isApproved = status?.toLowerCase() === "approved";
 const handleDeleteButton = async () =>{
 
  toast.success('adding product deleted ', {
@@ -37,7 +39,10 @@ router.refresh();
             >
                 Cancel
             </Button> */}
-               <Button className="bg-orange-600" type= "submit">Reject</Button>
+         
+      <Button className="bg-orange-600" type="submit" isDisabled={isApproved}>Reject</Button>
+    
+               {/* <Button className="bg-orange-600" type= "submit">Reject</Button> */}
 
             <AlertDialog.Backdrop>
                 <AlertDialog.Container>

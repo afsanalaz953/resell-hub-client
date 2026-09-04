@@ -46,9 +46,9 @@ console.log (user, "user");
                     <li><Link href={"/products"} className={`${isActive ("/products") ? " border-b-4 border-b-green-600" : ""}`} >Products</Link></li>
                     {user && (
                       <>
-                       <li><Link href={"/categories"} className={`${isActive ("/categories") ? " border-b-4 border-b-green-600" : ""}`} >Categories</Link></li>
+                       {/* <li><Link href={"/categories"} className={`${isActive ("/categories") ? " border-b-4 border-b-green-600" : ""}`} >Categories</Link></li> */}
                     <li><Link href={`/dashboard/${user?.role}`} className={`${isActive (`/dashboard/${user?.role}`) ? " border-b-4 border-b-green-600" : ""}`} >Dashboard</Link></li> 
-                    <li><Link href={"/pricing"} className={`${isActive ("/pricing") ? " border-b-4 border-b-green-600" : ""}`} >Pricing</Link></li>
+                    {/* <li><Link href={"/pricing"} className={`${isActive ("/pricing") ? " border-b-4 border-b-green-600" : ""}`} >Pricing</Link></li> */}
                       </>
                     )}
                     {/* <li><Link href={"/profile"} className={`${isActive ("/profile") ? " border-b-4 border-b-green-600" : ""}`} >My Profile</Link></li>

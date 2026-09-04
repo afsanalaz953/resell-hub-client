@@ -12,6 +12,12 @@ import { headers } from "next/headers";
 
 
 const Wishlistpage = async() => {
+const tokenObj = await auth.api.getToken({
+       headers: await headers()
+     })
+      console.log(tokenObj, "wishToken")
+
+
 const session = await auth.api.getSession({
      headers: await headers(), // you need to pass the headers object.
  });
@@ -25,9 +31,9 @@ const session = await auth.api.getSession({
 const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/wishlist?buyerId=${buyerId}`, {
   cache: 'no-store',
 
-//   headers:{
-//     authorization: `Bearer ${tokenObjData.token}`
-//      }    
+  headers:{
+    authorization: `Bearer ${tokenObj.token}`
+     }    
 });
 const wishlistData = await res.json();
 

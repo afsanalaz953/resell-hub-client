@@ -5,12 +5,20 @@ import Link from 'next/link'
 import { stripe } from '@/lib/stripe'
 import { motion } from "framer-motion";
 import SuccessTable from '@/components/dashboard/SuccessTable'
+import { headers } from 'next/headers';
+import { auth } from "@/lib/auth";
 
 export default async function buyersuccess({ searchParams }) {
   const { session_id } = await searchParams
 
   if (!session_id)
     throw new Error('Please provide a valid session_id (`cs_test_...`)')
+
+ const tokenObj = await auth.api.getToken({
+       headers: await headers()
+     })
+      console.log(tokenObj, 'sucessToken')
+
 
   const {
     status,
@@ -62,7 +70,9 @@ export default async function buyersuccess({ searchParams }) {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/payments`, {
       method: 'POST',
-      headers: { 'Content-Type':'application/json' },
+      headers: { 'Content-Type':'application/json', 
+        authorization: `Bearer ${tokenObj.token}`
+      },
       body: JSON.stringify(paymentData),
     });
     if (!res.ok) {

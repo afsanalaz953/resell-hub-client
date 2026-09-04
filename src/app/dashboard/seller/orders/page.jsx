@@ -23,12 +23,20 @@ console.log(session, sellerId, sellerName, "sellerId")
 // console.log(buyerEmail, "email")
   //  let orders = [];
 
+  const tokenObj = await auth.api.getToken({
+       headers: await headers()
+     })
+      console.log(tokenObj, "sellerordertoken")
+
 
   // if (sellerId) {
   //   try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/seller/orders?sellerId=${sellerId}`,
-        { cache: 'no-store' }
-      );
+        { cache: 'no-store',
+          headers:{
+      authorization: `Bearer ${tokenObj.token}`
+   }
+         });
 //       const sellerEmail = user?.email; // session থেকে ইমেইল নিন
 
 // const res = await fetch(

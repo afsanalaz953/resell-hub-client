@@ -7,10 +7,17 @@ import Link from "next/link";
 
 
 const AdminOrderManagePage = async() => {
+  const tokenObj = await auth.api.getToken({
+       headers: await headers()
+     })
+      console.log(tokenObj, "adminOrderToken")
        
     const res = await fetch( `${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/allorders`,
-        { cache: 'no-store' }
-      );
+        { cache: 'no-store',
+headers:{
+      authorization: `Bearer ${tokenObj.token}`
+   }
+});
 const adminorders = await res.json();
         console.log('✅ Fetched adminmanageor:', adminorders);
 
@@ -18,17 +25,16 @@ const adminorders = await res.json();
 
     return (
         <div>
-            Orders manage by admin
+            <h1 className='text-3xl text-orange-600 m-4 font-bold'>All Orders</h1> 
              <div className='my-10 rounded  lg:w-full md:`w-[760px]` shadow-lg'>
                              <Table   layout="fixed"  className=" bg-gray-200">
                                             <Table.ScrollContainer>
                                               <Table.Content aria-label="Team members" className=''>
                                                 <Table.Header className= "rounded ">
                                                   {/* 1 */}
-                                                  <Table.Column className="text-lg font-bold">Photo</Table.Column>
-                                                  {/* 2 */}
-                                                  <Table.Column   isRowHeader className="text-lg font-bold">Product Name</Table.Column>
-                                              
+                                                  <Table.Column className="text-lg font-bold">Ordered Date</Table.Column>
+                                                  <Table.Column className="text-lg font-bold ">Product Name</Table.Column>
+                                                 
                                                  {/* 3 */}
                                                   <Table.Column  className="text-lg font-bold">Buyer Name</Table.Column>
                                                   
@@ -37,6 +43,10 @@ const adminorders = await res.json();
                                                 
                                                   {/* 5 */}
                                                   <Table.Column className="text-lg font-bold" >Price</Table.Column>
+                                                   {/* 2 */}
+                                                  <Table.Column   isRowHeader className="text-lg font-bold">Quantity</Table.Column>
+                                                  <Table.Column   isRowHeader className="text-lg font-bold">Total Price</Table.Column>
+                                              
                                                   {/* 6 */}
                                                  <Table.Column className="text-lg font-bold" >ProductStatus</Table.Column>
                                                    {/* <Table.Column className="text-lg font-bold" >Date</Table.Column> */}
@@ -51,7 +61,7 @@ const adminorders = await res.json();
                                                     
                                                       <Table.Row key={adorders?._id} >
                                                         {/* 1 */}
-                                                      <Table.Cell>
+                                                      {/* <Table.Cell>
                                                         <Image
                                                           src={adorders.productImage|| ""}
                                                           alt={adorders.productName}
@@ -60,21 +70,25 @@ const adminorders = await res.json();
                                                           className="rounded-full object-cover"
                                                           unoptimized={true} 
                                                         />
-                                                      </Table.Cell>
+                                                      </Table.Cell> */}
                                                       {/* 2 */}
+                                                      <Table.Cell>{new Date(adorders.Date).toLocaleDateString()}</Table.Cell>
                                                       <Table.Cell>
-                                                        <Link href={`/products/${adorders._id}`}
-                                                        className='hover:text-blue-800 hover:underline'>
-                                                        {adorders.productName}
+                                                        <Link href={`/products/${adorders.productId}`}
+                                                        className='hover:text-orange-800 hover:underline text-orange-600'>
+                                                        {adorders.title}
                                                         </Link>
                                                         </Table.Cell>
                                                       {/* 3 */}
-                                                       <Table.Cell>{adorders.buyerName}</Table.Cell>
-                                                       <Table.Cell>{adorders.sellerName}</Table.Cell>
+                                                       
+                                                       <Table.Cell>{adorders.metadata?.buyerName}</Table.Cell>
+                                                       <Table.Cell>{adorders.metadata?.sellerName}</Table.Cell>
                                                      
                                                         {/* 4 */}
                                                         <Table.Cell>$ {adorders.price}</Table.Cell> 
-                                                      <Table.Cell>{adorders.productStatus}</Table.Cell>   
+                                                        <Table.Cell>{adorders.quantity}</Table.Cell> 
+                                                        <Table.Cell>$ {adorders.totalPrice}</Table.Cell> 
+                                                      <Table.Cell>{adorders.orderStatus}</Table.Cell>   
                                                       {/* 5 */}
                                                       {/* <Table.Cell className='text-orange-600 font-bold'>{adorders.createdAt}</Table.Cell> */}
                                                       {/* 6 */}

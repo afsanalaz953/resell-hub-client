@@ -7,6 +7,7 @@ import React from 'react';
 import { useState } from "react";
 import Image from "next/image";
 import {authClient} from "@/lib/auth-client"
+// import { getTokenServer } from '@/lib/getTokenServer';
 
 
 
@@ -14,7 +15,7 @@ import {authClient} from "@/lib/auth-client"
 //     // const [description, setDescription] = useState("");
 //   //  const [category, setCategory] = useState("");
 //   // const [condition, setCondition] = useState("");
-  
+ 
      const [imageUrl, setImageUrl] = useState(null);
    const [uploading, setUploading] = useState(false);
    const [uploadError, setUploadError] = useState(null);
@@ -76,6 +77,11 @@ const onSubmit = async(e) =>{
      const userName = session?.user?.name;
      const userEmail = session?.user?.email;
 
+    //  form submit a token dite hobe, full body te noi
+//  const token = await getTokenServer();
+ const { data:tokenData } = await authClient.token(); 
+console.log(tokenData, "addProductToken")
+
 //      // ইউজার আইডি পেলোডে যুক্ত করা (কোনো কনফ্লিক্ট নেই)
     const product = {
       ...formValues,
@@ -98,7 +104,8 @@ const onSubmit = async(e) =>{
  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/seller/products`, {
             method: 'POST',
          headers: {
-             'content-type': 'application/json'
+             'content-type': 'application/json',
+             authorization:`Bearer ${tokenData?.token}`
             },
             body: JSON.stringify(product)
          })

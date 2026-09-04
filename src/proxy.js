@@ -1,5 +1,5 @@
  import { NextResponse } from 'next/server'
- import {auth} from "./lib/auth"
+ import {auth} from "@/lib/auth"
  import {headers} from "next/headers"
  
 // // This function can be marked `async` if using `await` inside
@@ -7,9 +7,10 @@
     const session = await auth.api.getSession({
         headers:await headers()
    })
-if (session?.user?.role == "seller" && session?.user?.plan == "free"){
-   return NextResponse.redirect(new URL('/pricing', request.url))  
-}
+  
+// if (session?.user?.role == "seller" && session?.user?.plan == "free"){
+//    return NextResponse.redirect(new URL('/pricing', request.url))  
+// }
  if(!session){
         return NextResponse.redirect(new URL('/login', request.url))
     }
@@ -29,5 +30,5 @@ if (session?.user?.role == "seller" && session?.user?.plan == "free"){
 
  
   export const config = {
-    matcher: ['/profile' ],
+    matcher: ['/dashboard' ],
    }
