@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
  import AdminOrderStatusUpdate  from "@/components/dashboard/AdminOrderStatus";
  import AdminOrderRejected from "@/components/dashboard/AdminOrderRejected"
-
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 
 const AdminOrderManagePage = async() => {
   const tokenObj = await auth.api.getToken({

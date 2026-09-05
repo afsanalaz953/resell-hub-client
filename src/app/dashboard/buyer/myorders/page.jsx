@@ -10,6 +10,7 @@ const BuyerOrderPage = async() => {
  });
  const user = session?.user;
  const buyerId = user?.id;
+
  const buyerEmail = user?.email;
 console.log(session, "booking session")
 
@@ -33,7 +34,7 @@ if (!user) {
   cache: 'no-store',
 
   headers:{
-    authorization: `Bearer ${tokenObj.token}`
+    authorization: `Bearer ${tokenObj?.token}`
      }    
 });
 const bookings = await res.json();

@@ -5,6 +5,8 @@ import Image from "next/image";
  import Link from "next/link";
  import AdminStatusUpdate  from "@/components/dashboard/AdminStatusUpdate";
  import AdminRejected from "@/components/dashboard/RejectedProduct"
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 
 
 const ProductManagePage = async() => {

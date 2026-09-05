@@ -6,6 +6,8 @@ import {authClient} from "@/lib/auth-client";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { useState } from 'react';
 import {Button} from "@heroui/react";
+import { Router } from 'next/router';
+
 // import {ForgotPasswordModal } from "@/components/ForgotPasswordModal"
 
 
@@ -22,7 +24,11 @@ const { register, handleSubmit,  formState: { errors }} = useForm ();
 
 const [isShowPassword, setIsShowPassword] = useState(false);
  const [isForgotDialogOpen, setIsForgotDialogOpen] = useState(false);
-const handleGoogleSignin = async () => {
+
+const [resetEmail, setResetEmail] = useState("");
+const [resetMessage, setResetMessage] = useState("");
+
+ const handleGoogleSignin = async () => {
 const data = await authClient.signIn.social({
  provider: "google",
  });
@@ -39,6 +45,7 @@ const {data:res, error} = await authClient.signIn.email({
     //  user: {role },
     rememberMe: true,
     callbackURL: "/",   
+        redirect: false, 
 });
 
 console.log(data, "data");
@@ -47,11 +54,22 @@ console.log(data, "data");
 console.log (res, error);
 
 if (error) {
-    alert(error.message)
+    alert(error.message);
+    // ata chilo na age return
+    return;
 }
- if (res) {
+
+const session = await authClient.getSession();
+  if (session?.user?.isBlocked === true) {
+    await authClient.signOut();
+    alert("Your account is blocked. Please contact support.");
+    return;
+  }
+
+//  if (res) {
+ Router.push("/");
     alert("Signin Successful")
- } 
+//  } 
 };
 
 // new for forgot password

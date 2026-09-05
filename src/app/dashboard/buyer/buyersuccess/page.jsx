@@ -123,9 +123,12 @@ metaData: paymentData.metadata,
 
 console.log (sellerOrderData, "sellerOrderData")
   try {
-    const resData = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders`, {
+    const resData = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/buyer/orders`, {
       method: 'POST',
-      headers: { 'Content-Type':'application/json' },
+      headers: { 'Content-Type':'application/json',
+        authorization: `Bearer ${tokenObj.token}`
+
+       },
       body: JSON.stringify(sellerOrderData),
     });
     if (!resData.ok) {

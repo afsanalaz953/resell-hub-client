@@ -4,6 +4,10 @@ import { headers } from "next/headers";
 import { Card } from "@heroui/react";
 
 const OverviewWishData = async () => {
+  const tokenObj = await auth.api.getToken({
+       headers: await headers()
+     })
+      console.log(tokenObj)
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -13,9 +17,13 @@ const OverviewWishData = async () => {
   let wishlistData = [];
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/wishlist?buyerId=${buyerId}`,
+      // `${process.env.NEXT_PUBLIC_SERVER_URL}/api/wishlist?buyerId=${buyerId}`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/wishlist`,
       {
         cache: 'no-store',
+        headers:{
+      authorization: `Bearer ${tokenObj?.token}`
+   }
       }
     );
     if (!res.ok) throw new Error('Failed to fetch wishlist');

@@ -3,6 +3,12 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
 const BuyerOverviewOrderscard = async() => {
+const tokenObj = await auth.api.getToken({
+       headers: await headers()
+     })
+      console.log(tokenObj, "overviewOrder")
+
+
 const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -17,7 +23,9 @@ const session = await auth.api.getSession({
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?buyerId=${buyerId}`,
       {
         cache: 'no-store',
-        // প্রয়োজনে হেডার যোগ করুন
+        headers:{
+      authorization: `Bearer ${tokenObj.token}`
+   }
       }
     );
     totalOrdersData  = await res.json();

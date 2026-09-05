@@ -3,6 +3,12 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
 const BuyerOverviewPaycard = async() => {
+ const tokenObj = await auth.api.getToken({
+       headers: await headers()
+     })
+      console.log(tokenObj, 'overviewpayToken')
+
+
 const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -17,6 +23,9 @@ const session = await auth.api.getSession({
        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/buyer/payment?buyerEmail=${encodeURIComponent(buyerEmail)}`,
       {
         cache: 'no-store',
+        headers:{
+      authorization: `Bearer ${tokenObj?.token}`
+   }
         // প্রয়োজনে হেডার যোগ করুন
       }
     );

@@ -3,14 +3,30 @@ import LatestOrderCard from "@/components/dashboard/LatestOrderCard";
 import Link from 'next/link';
 import { Button } from "@heroui/react";
 import { FaArrowRight } from "react-icons/fa";
+import { auth } from '@/lib/auth';
+import { headers } from "next/headers";
 
 const LatestOrders = async () => {
+ const tokenObj = await auth.api.getToken({
+       headers: await headers()
+     })
+      console.log(tokenObj, "overviewLatestToken")
+
+  const session = await auth.api.getSession({
+  headers: await headers()
+});
+const buyerId = session?.user?.id;    
+
   let latestOrders = [];
   let error = null;
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/latest`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/latest?buyerId=${buyerId}`, {
+      // `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?buyerId=${buyerId}`
       cache: "no-store",
+      headers:{
+      authorization: `Bearer ${tokenObj?.token}`
+   }
     });
 
     if (!res.ok) {

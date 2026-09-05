@@ -38,8 +38,9 @@ console.log(singleProduct,"single product in idpage")
     //  totalAmount: totalPrice
 
     const user = userSession?.user;
-     const buyerEmail = user?.email
-     const buyerName = user?.name
+     const buyerEmail = user?.email;
+     const buyerName = user?.name;
+     const userRole = user?.role; 
  
 
 const {_id, title, category, condition, price, status, 
@@ -142,12 +143,18 @@ const {_id, title, category, condition, price, status,
              
             )} */}
             <div>
+{userRole === 'buyer' ? (       
   <BuyFormClient 
   singleProduct={singleProduct} 
 action="/api/payments"
  token={token} 
 method="POST"
 />
+) : (
+              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-center">
+                ⛔ Only Buyer can Purchase the Product 
+                {userRole === 'seller' && ' You are a Seller (Seller)।'}
+                {!userRole && ' Please login'}
 
   {/* <form action={"/api/payments"} method="POST">
                   <input type="hidden" name="price" value={price} />
@@ -182,14 +189,15 @@ method="POST"
                   </Button>
                 </form>  */}
             </div>
- 
-
+   )}
+ </div>
                    
-                </div>
+               
         </div>
              </div>
           
         </div>
+          </div>
     );
 };
 

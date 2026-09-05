@@ -1,6 +1,7 @@
 // components/WishlistButton.jsx
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import { Heart } from "lucide-react";
 import { useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
@@ -8,11 +9,18 @@ import { ToastContainer, toast } from 'react-toastify';
 // import { headers } from "next/headers";
 
 const WishlistButton = ({ productData, productId, buyerId }) => {
+
+ 
+
+
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const toggleWishlist = async (e) => {
     e.stopPropagation();
+
+     const { data: tokenData } = await authClient.token();
+      const token = tokenData?.token; // অথবা tokenData যদি সরাসরি স্ট্রিং হয়
 
     // যদি ইতিমধ্যে লোডিং চলে, তাহলে আরেকটি কল ব্লক করুন
     if (loading) return;
@@ -42,7 +50,9 @@ const WishlistButton = ({ productData, productId, buyerId }) => {
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/wishlist`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json",
+             ...(token ? { Authorization: `Bearer ${token}` } : {}),
+           },
           body: JSON.stringify({
             productData: productData,
             productId: productData._id,
