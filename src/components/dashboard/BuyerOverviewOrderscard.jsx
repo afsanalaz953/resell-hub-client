@@ -13,18 +13,18 @@ const session = await auth.api.getSession({
     headers: await headers(),
   });
   const user = session?.user;
-  const buyerId = user?.id;
+  const userId = user?.id;
    const buyerEmail = user?.email;
 
   // উইশলিস্ট ডেটা ফেচ (ঠিক উইশলিস্ট পেজের মতো)
   let totalOrdersData = [];
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?buyerId=${buyerId}`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/buyer/myorders`,
       {
         cache: 'no-store',
         headers:{
-      authorization: `Bearer ${tokenObj.token}`
+      Authorization: `Bearer ${tokenObj.token}`
    }
       }
     );

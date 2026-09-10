@@ -33,10 +33,10 @@ console.log(session, sellerId, sellerName, "sellerId")
   //   try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/seller/orders?sellerId=${sellerId}`,
         { cache: 'no-store',
-          headers:{
-      authorization: `Bearer ${tokenObj.token}`
-   }
-         });
+     headers:{
+   authorization: `Bearer ${tokenObj.token}`
+  }
+    });
 //       const sellerEmail = user?.email; // session থেকে ইমেইল নিন
 
 // const res = await fetch(
@@ -125,7 +125,7 @@ console.log(session, sellerId, sellerName, "sellerId")
     
             </Table.Cell> */}
             <Table.Cell>{orderedData.title}</Table.Cell>
-            <Table.Cell>{orderedData.metaData?.buyerName}</Table.Cell>
+            <Table.Cell>{orderedData?.buyerName}</Table.Cell>
             {/* <Table.Cell>{bookedData._id}</Table.Cell> */}
             <Table.Cell>{orderedData.customerEmail}</Table.Cell> 
             <Table.Cell>$ {orderedData.price}</Table.Cell>

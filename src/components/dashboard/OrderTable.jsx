@@ -106,8 +106,8 @@ const OrderTable = ({bookings}) => {
       <Table.Header>
         {/* <Table.Column className= "font-bold text-lg">Photo</Table.Column> */}
         <Table.Column className= "font-bold text-lg">Product Name</Table.Column>
-        <Table.Column className= "font-bold text-lg"  isRowHeader>Buyer</Table.Column>
-        <Table.Column className= "font-bold text-lg">Buyer Email</Table.Column>
+        <Table.Column className= "font-bold text-lg"  isRowHeader>Seller</Table.Column>
+        <Table.Column className= "font-bold text-lg">Seller Email</Table.Column>
         <Table.Column className= "font-bold text-lg">Price</Table.Column>
         <Table.Column className= "font-bold text-lg">Quantity</Table.Column>
         <Table.Column className= "font-bold text-lg">Total Price</Table.Column>
@@ -131,9 +131,9 @@ const OrderTable = ({bookings}) => {
     
             </Table.Cell> */}
             <Table.Cell>{orderedData.title}</Table.Cell>
-            <Table.Cell>{orderedData.metaData?.buyerName}</Table.Cell>
+            <Table.Cell>{orderedData.sellerName}</Table.Cell>
             {/* <Table.Cell>{bookedData._id}</Table.Cell> */}
-            <Table.Cell>{orderedData.customerEmail}</Table.Cell> 
+            <Table.Cell>{orderedData.sellerEmail}</Table.Cell> 
             <Table.Cell>$ {orderedData.price}</Table.Cell>
             <Table.Cell className="" > {orderedData.metadata?.quantity}</Table.Cell> 
             <Table.Cell className="" > {orderedData.metadata?.totalPrice}</Table.Cell> 

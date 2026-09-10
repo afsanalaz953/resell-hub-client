@@ -6,12 +6,17 @@ import { ToastContainer, toast } from 'react-toastify';
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from 'next/navigation';
 
-const BuyFormClient = ({ singleProduct, action, method }) => {
+const BuyFormClient = ({ singleProduct, action, method, token }) => {
+
+
+console.log(token, 'modalToken')
+
+
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const { data: session } = authClient.useSession();
   const user = session?.user;
-  // const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [quantity, setQuantity] = useState(1);
   // const [orderId, setOrderId] = useState(''); // ← অর্ডার আইডি সংরক্ষণের জন্য স্টেট
 
@@ -26,14 +31,52 @@ const BuyFormClient = ({ singleProduct, action, method }) => {
   // ফর্ম রেফারেন্স – পরে সাবমিট করার জন্য
   // const formRef = useRef(null);
 
-  // const handleBuying = async (e) => {
-  //   e.preventDefault(); // ডিফল্ট সাবমিট বন্ধ
+  const handleBuying = async (e) => {
+    e.preventDefault(); // ডিফল্ট সাবমিট বন্ধ
+setIsLoading(true);
+  // শুধু ফর্ম সাবমিট করছি, অর্ডার বা স্টক আপডেট এখানে নেই
+  e.target.submit();
+};
 
   //     const form = e.target;
-  //   const formData = new FormData(form);
+  // //   const formData = new FormData(form);
     
-    // setIsLoading(true);
-  
+  //   setIsLoading(true);
+  // //  try {
+  //   // ১. স্টক আপডেট করি (quantity অনুযায়ী)
+  //   const stockRes = await fetch(
+  //     `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/${singleProduct._id}`,
+  //     {
+  //       method: 'PATCH',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ quantity }), // ← আপনার ব্যাকএন্ড এটা পাবে
+  //     }
+  //   );
+
+  //   // if (!stockRes.ok) {
+  //   //   const err = await stockRes.json();
+  //   //   throw new Error(err.message || "Stock update failed");
+  //   // }
+
+    
+
+  //   //   toast.success('Stock updated! Redirecting to payment...', {
+  //   //     duration: 2000,
+  //   //     position: 'top-center',
+  //   //   });
+
+  //     // ২. ফর্মটি পেমেন্ট গেটওয়েতে সাবমিট করি (সব হিডেন ইনপুটসহ)
+  //     form.submit();
+
+    // } catch (error) {
+    //   console.error('Buying error:', error);
+    //   toast.error(error.message || 'Network error. Please try again.', {
+    //     position: 'top-center',
+    //   });
+    //   setIsLoading(false); // শুধু error হলেই লোডিং বন্ধ
+    // }
+  // };
+
 
     // অর্ডার ডেটা তৈরি
     // const orderData = {
@@ -102,8 +145,6 @@ const BuyFormClient = ({ singleProduct, action, method }) => {
 
 
 
-
-  
   return (
     <div>
       <Button className="w-full" onClick={() => setIsOpen(true)}>
@@ -128,9 +169,10 @@ const BuyFormClient = ({ singleProduct, action, method }) => {
                     
                     action={action}
                     method={method}
-                    // onSubmit={handleBuying}
+                    onSubmit={handleBuying}
                     className="flex flex-col gap-4"
                   >
+                     <input type="hidden" name="token" value={token || ''} />
                     {/* অর্ডার আইডি হিডেন ফিল্ড – value স্টেট বা DOM দিয়ে সেট হবে */}
                     <input   label="Buyer Name" type="hidden" name="buyerName" value={defaultName} />
                     <input   label="Buyer Email" type="hidden" name="buyerEmail" value={defaultEmail} />
@@ -176,7 +218,7 @@ const BuyFormClient = ({ singleProduct, action, method }) => {
                             setQuantity(Math.min(Math.max(val, 1), stock));
                           }}
                         />
-                        {/* <TextField
+<TextField
   className="w-32"
   label="Quantity"          // এই লেবেলটি এখন ইনপুটের সাথে যুক্ত হবে
   type="number"
@@ -187,7 +229,7 @@ const BuyFormClient = ({ singleProduct, action, method }) => {
     const val = parseInt(e.target.value) || 1;
     setQuantity(Math.min(Math.max(val, 1), stock));
   }}
-/> */}
+/>
                       </TextField>
                     </div>
 
@@ -201,7 +243,7 @@ const BuyFormClient = ({ singleProduct, action, method }) => {
                       </Button>
                       <Button
                         type="submit"
-                        slot="close"
+                     
                         // isDisabled={isLoading}
                         // isLoading={isLoading}
                       >

@@ -1,11 +1,13 @@
 import React from 'react';
 import DashboardSidebar from "@/components/dashboard/DashboardSidebar"
 import DashboardNavbar from "@/components/dashboard/DashboardNavbar";
+import { div } from 'framer-motion/m';
+import Footer from '@/components/shared/Footer'
 
 
 export default function DashboardLayout({ children }) {
   return (
-    
+  
      <div className="  h-full bg-background container mx-auto " >
       <div className=''>
         {/* <Logo />
@@ -21,12 +23,10 @@ export default function DashboardLayout({ children }) {
  <main  className='p-2'> {children} </main>
 </div>
 
-   
- 
-
-
-
      </div>
+
+
+  
 
   );
 }

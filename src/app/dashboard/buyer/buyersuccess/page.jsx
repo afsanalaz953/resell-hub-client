@@ -70,7 +70,7 @@ export default async function buyersuccess({ searchParams }) {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/payments`, {
       method: 'POST',
-      headers: { 'Content-Type':'application/json', 
+      headers: { 'Content-Type':'application/json',
         authorization: `Bearer ${tokenObj.token}`
       },
       body: JSON.stringify(paymentData),
@@ -86,61 +86,183 @@ export default async function buyersuccess({ searchParams }) {
     console.error('❌ Fetch error:', error.message);
   }
 
-  // payment data end sellerorder data start
-//    if (status === 'complete') {
- const sellerOrderData = {
-sessionId: session_id,
-  customerEmail,
-   buyerId: paymentData.metadata?.buyerId,      // মেটাডেটা থেকে
-  sellerId: paymentData.metadata?.sellerId,
-  // userId:paymentData.metadata?.userId,
-  productId:paymentData.metadata?.productId,
-  title: paymentData.metadata?.title,
-  price: paymentData.metadata?.price,
-  buyerName: paymentData.buyerName,
-  status: paymentData.status,
-  Date: paymentData.createdAt,
-metaData: paymentData.metadata,
-  quantity: paymentData.metadata?.quantity,
-  totalPrice: paymentData.metadata?.totalPrice,
-  orderStatus: 'pending',
-  metadata,
+  // orderData by stock updating
+  if (status === 'complete') {
+  // স্ট্রাইপ থেকে মেটাডেটা ও পেমেন্ট ইনটেন্ট নিন
+  const { metadata, payment_intent } = await stripe.checkout.sessions.retrieve(session_id, {
+    expand: ['payment_intent']
+  });
 
-//     sessionId: session_id,
-//     buyerEmail: metadata?.buyerEmail,
-//     buyerId: metadata?.buyerId,
-//     sellerId : 
-//     sellerName : 
-//     sellerEmail : 
-//     title : metadata?.title,
-//     price: Number(metadata?.price || 0),
-//     totalPrice: Number(metadata?.totalPrice || 0),
-//     paymentIntentId: payment_intent?.id,
-//     status: 'paid',
-//     createdAt: new Date().toISOString(),
-//     metadata,
-  };
+  // কনসোলে লগ করে দেখুন ডেটা আসছে কিনা
+  console.log('✅ Metadata from Stripe:', metadata);
+  console.log('Product ID:', metadata?.productId);
+  console.log('Quantity:', metadata?.quantity);
 
-console.log (sellerOrderData, "sellerOrderData")
-  try {
-    const resData = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/buyer/orders`, {
-      method: 'POST',
-      headers: { 'Content-Type':'application/json',
+  // ১. স্টক আপডেট
+   let orderExists = false;
+   try {
+    const checkRes = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?sessionId=${session_id}`, {
+      method: 'GET',
+      headers: { 
+        'Content-Type': 'application/json',
         authorization: `Bearer ${tokenObj.token}`
-
-       },
-      body: JSON.stringify(sellerOrderData),
+      },
+      cache: 'no-store' // যাতে ক্যাশ থেকে পুরোনো ডেটা না আসে
     });
-    if (!resData.ok) {
-      const errorText = await res.text();
-      console.error('❌ Payment API error:', errorText);
-    } else {
-      const saved = await resData.json();
-      console.log('✅ Seller OrderData saved for client:', saved);
+
+     if (checkRes.ok) {
+      const existingOrders = await checkRes.json();
+      // আপনার ব্যাকএন্ড API রেসপন্স ফরম্যাট অনুযায়ী নিচের লাইনটি চেক করুন
+      // যদি অ্যারে রিটার্ন করে: existingOrders.length > 0
+      // যদি অবজেক্ট রিটার্ন করে: existingOrders.sessionId === session_id
+      if (existingOrders && (Array.isArray(existingOrders) ? existingOrders.length > 0 : existingOrders.sessionId === session_id)) {
+        orderExists = true;
+        console.log('⚠️ Order already exists for this sessionId. Skipping creation.');
+      }
     }
   } catch (error) {
-    console.error('❌ Fetch error:', error.message);
+    console.error('❌ Error checking existing order:', error.message);
   }
+// Stock update
+if (!orderExists) {
+  try {
+    const stockRes = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/${metadata.productId}`,
+      {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json',
+        //      authorization: `Bearer ${tokenObj.token}`,
+         },
+        body: JSON.stringify({ quantity: Number(metadata.quantity) }),
+      }
+    );
+
+    if (!stockRes.ok) {
+      const errorText = await stockRes.text();
+      throw new Error(`Stock update failed: ${errorText}`);
+    }
+    console.log('✅ Stock updated successfully');
+  } catch (error) {
+    console.error('❌ Stock update error:', error.message);
+    // চাইলে এখানে রিটার্ন করে দিতে পারেন, যাতে অর্ডার না হয়
+    // return redirect('/error?message=stock-update-failed');
+  }
+
+  // ২. অর্ডার তৈরি (সরাসরি metadata ব্যবহার করুন)
+  try {
+    const sellerOrderData = {
+      sessionId: session_id,
+      customerEmail,
+      buyerId: metadata?.buyerId,
+      buyerName: metadata?.buyerName,
+      sellerId: metadata?.sellerId,
+     sellerName:metadata?.sellerName,
+      sellerEmail: metadata?.sellerEmail,
+      productId: metadata?.productId,
+      title: metadata?.title,
+      price: metadata?.price,
+      quantity: metadata?.quantity,
+      totalPrice: metadata?.totalPrice,
+      orderStatus: 'pending',
+      status: 'paid',
+      metadata,
+    };
+
+    console.log('📦 buyerOrder payload:', sellerOrderData);
+
+    const resData = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json',
+         authorization: `Bearer ${tokenObj.token}`
+       },
+     
+      body: JSON.stringify(sellerOrderData),
+    });
+
+    if (!resData.ok) {
+      const errorText = await resData.text();
+      throw new Error(`Order save failed: ${errorText}`);
+    }
+    const saved = await resData.json();
+    console.log('✅ Order saved:', saved);
+  } catch (error) {
+    console.error('❌ Order save error:', error.message);
+  }
+ } else {
+      console.log('⏩ Order already exists. Skipping stock update and order creation.');
+  }
+ 
+
+//    try {
+//     const stockRes = await fetch(
+//       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/${metadata.productId}`,
+//       {
+//         method: 'PATCH',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ quantity: Number(metadata.quantity) }),
+//       }
+//     );
+//     if (!stockRes.ok) console.error('Stock update failed');
+//   } catch (error) {
+//     console.error('Stock update error:', error);
+//   }
+// }
+
+//   // payment data end sellerorder data start
+//   //  if (paymentData.status ===  'paid') {
+//  const sellerOrderData = {
+// sessionId: session_id,
+//   customerEmail,
+//    buyerId: metadata?.buyerId,      // মেটাডেটা থেকে
+//   sellerId: metadata?.sellerId,
+//   // userId:paymentData.metadata?.userId,
+//   productId:metadata?.productId,
+//   title: metadata?.title,
+//   price: metadata?.price,
+//   buyerName: metadata?.buyerName,
+//   status:'paid',
+//   // Date: paymentData.createdAt,
+// metaData: metadata,
+//   quantity: metadata?.quantity,
+//   totalPrice: metadata?.totalPrice,
+//   orderStatus: 'pending',
+//   metadata,
+
+// //     sessionId: session_id,
+// //     buyerEmail: metadata?.buyerEmail,
+// //     buyerId: metadata?.buyerId,
+// //     sellerId : 
+// //     sellerName : 
+// //     sellerEmail : 
+// //     title : metadata?.title,
+// //     price: Number(metadata?.price || 0),
+// //     totalPrice: Number(metadata?.totalPrice || 0),
+// //     paymentIntentId: payment_intent?.id,
+// //     status: 'paid',
+// //     createdAt: new Date().toISOString(),
+// //     metadata,
+//   };
+
+// console.log (sellerOrderData, "sellerOrderData")
+//   try {
+//     const resData = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/buyer/orders`, {
+//       method: 'POST',
+//       headers: { 'Content-Type':'application/json',
+//         // authorization: `Bearer ${tokenObj.token}`
+
+//        },
+//       body: JSON.stringify(sellerOrderData),
+//     });
+//     if (!resData.ok) {
+//       const errorText = await res.text();
+//       console.error('❌ Payment API error:', errorText);
+//     } else {
+//       const saved = await resData.json();
+//       console.log('✅ Seller OrderData saved for client:', saved);
+//     }
+//   } catch (error) {
+//     console.error('❌ Fetch error:', error.message);
+//   }
 
 
 
@@ -189,4 +311,5 @@ console.log (sellerOrderData, "sellerOrderData")
 
     )
   }
+}
 }

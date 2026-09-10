@@ -79,8 +79,8 @@ const onSubmit = async(e) =>{
 
     //  form submit a token dite hobe, full body te noi
 //  const token = await getTokenServer();
- const { data:tokenData } = await authClient.token(); 
-console.log(tokenData, "addProductToken")
+//  const { data:tokenData } = await authClient.token(); 
+// console.log(tokenData, "addProductToken")
 
 //      // ইউজার আইডি পেলোডে যুক্ত করা (কোনো কনফ্লিক্ট নেই)
     const product = {
@@ -105,7 +105,7 @@ console.log(tokenData, "addProductToken")
             method: 'POST',
          headers: {
              'content-type': 'application/json',
-             authorization:`Bearer ${tokenData?.token}`
+            //  authorization:`Bearer ${tokenData?.token}`
             },
             body: JSON.stringify(product)
          })

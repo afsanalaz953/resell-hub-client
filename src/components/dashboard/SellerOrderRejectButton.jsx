@@ -47,7 +47,7 @@ const SellerOrderRejectButton = ({ id, orderStatus }) => {
   
   return (
     <>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
        {/* <Button className="bg-orange-600" onPress={() => setIsOpen(true)}>
           Cancel
         </Button>
@@ -82,7 +82,7 @@ const SellerOrderRejectButton = ({ id, orderStatus }) => {
         <AlertDialog>
             
              <AlertDialog.Trigger>
-                <Button variant="danger"  isDisabled={orderStatus === "cancelled"} >{orderStatus === "cancelled" ? "Cancelled" : "Cancel"}   </Button> 
+                <Button variant="danger"  isdisabled={orderStatus === "cancelled"} >{orderStatus === "cancelled" ? "Cancelled" : "Cancel"}   </Button> 
              </AlertDialog.Trigger>
            <AlertDialog.Backdrop>
                 <AlertDialog.Container>

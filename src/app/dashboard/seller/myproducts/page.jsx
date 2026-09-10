@@ -18,10 +18,10 @@ const SellerMyproductPage = async ({ searchParams }) => {
   const sellerId = session?.user?.id;
   const search = sParams?.search || '';
 
-  const tokenObj = await auth.api.getToken({
-       headers: await headers()
-     })
-      console.log(tokenObj, "sellerproductToken")
+  // const tokenObj = await auth.api.getToken({
+  //      headers: await headers()
+  //    })
+  //     console.log(tokenObj, "sellerproductToken")
 
   // ✅ ফিক্স ২: সঠিক API এন্ডপয়েন্ট ব্যবহার (আপনার পুরানো /productlist)
   const url = new URL(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/seller/productlist`);
@@ -33,9 +33,9 @@ const SellerMyproductPage = async ({ searchParams }) => {
     const res = await fetch(url.toString(), {
       cache: 'no-store',
       next: { revalidate: 0 }, // ক্যাশ বন্ধ
-      headers:{
-      authorization: `Bearer ${tokenObj.token}`
-   }
+  //     headers:{
+  //     authorization: `Bearer ${tokenObj.token}`
+  //  }
     });
     if (!res.ok) throw new Error(await res.text());
     const data = await res.json();

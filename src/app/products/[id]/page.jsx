@@ -41,7 +41,7 @@ console.log(singleProduct,"single product in idpage")
      const buyerEmail = user?.email;
      const buyerName = user?.name;
      const userRole = user?.role; 
- 
+  // const isSlotAvailable = availableStock > 0;
 
 const {_id, title, category, condition, price, status, 
     description, image, stock,
@@ -153,7 +153,7 @@ method="POST"
 ) : (
               <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-center">
                 ⛔ Only Buyer can Purchase the Product 
-                {userRole === 'seller' && ' You are a Seller (Seller)।'}
+                {userRole === 'seller' && ' You are a Seller '}
                 {!userRole && ' Please login'}
 
   {/* <form action={"/api/payments"} method="POST">

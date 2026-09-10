@@ -6,7 +6,7 @@ import {authClient} from "@/lib/auth-client";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { useState } from 'react';
 import {Button} from "@heroui/react";
-import { Router } from 'next/router';
+import { useRouter } from "next/navigation";
 
 // import {ForgotPasswordModal } from "@/components/ForgotPasswordModal"
 
@@ -15,6 +15,7 @@ import { Router } from 'next/router';
 
 
 const LoginPage = () => {
+  const router = useRouter();
 const { register, handleSubmit,  formState: { errors }} = useForm ();
 //     register,
 //     handleSubmit,
@@ -45,7 +46,7 @@ const {data:res, error} = await authClient.signIn.email({
     //  user: {role },
     rememberMe: true,
     callbackURL: "/",   
-        redirect: false, 
+        // redirect: false, 
 });
 
 console.log(data, "data");
@@ -59,17 +60,30 @@ if (error) {
     return;
 }
 
-const session = await authClient.getSession();
-  if (session?.user?.isBlocked === true) {
-    await authClient.signOut();
-    alert("Your account is blocked. Please contact support.");
-    return;
-  }
+// const session = await authClient.getSession();
+//   if (session?.user?.isBlocked === true) {
+//     await authClient.signOut();
+//     alert("Your account is blocked. Please contact support.");
+//     return;
+//   }
 
-//  if (res) {
- Router.push("/");
+if (res?.user?.isBlocked === true) {
+  await authClient.signOut();
+   setTimeout(() => {
+    alert("Your account is blocked. Please contact support.");
+    router.push("/login")
+  }, 100);
+  
+  return;
+}
+//   alert("Your account is blocked. Please contact support.");
+//   return;
+// }
+
+ if (res) {
+ router.push("/login");
     alert("Signin Successful")
-//  } 
+ } 
 };
 
 // new for forgot password
@@ -151,7 +165,8 @@ const handleSendResetLink = async () => {
 <div className="divider mt-2 text-sm text-gray-400">OR, Continue With</div>
 
 <fieldset className="fiedset">
-  <input type="text"  className="input font-bold text-black text-center text-lg" placeholder="Google" onClick={handleGoogleSignin} />
+  <input type="text"  className="input font-bold text-black text-center text-lg" 
+  placeholder="Google" onClick={handleGoogleSignin} />
 </fieldset>
 
 <p className='text-sm mt-4'> Donot have an account</p>

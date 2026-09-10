@@ -1,16 +1,23 @@
 "use client"
-import React from 'react';
+
 import Logo from "@/components/shared/Logo";
 import {Button} from "@heroui/react";
 import ThemeToggle from "@/components/shared/ThemeToggle"
 import DropDownHober from "@/components/homePage/DropDownHober"
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
-import { authClient } from "@/lib/auth-client"
+import { authClient } from "@/lib/auth-client";
+import React, { useState, useEffect } from 'react';
 
 
 
 const DashboardNavbar = () => {
+const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+
 // const { data: session,  isPending } = authClient.useSession();
  const { data: session } = authClient.useSession();
 console.log (session, "session")
@@ -49,9 +56,13 @@ console.log (user, "user");
                <div className='rounded-full flex gap-2 '> 
          <DropDownHober />
          <div className='flex flex-col '>
-<h2 className='text-orange-600'>{user?.name}</h2> 
+<h2 className='text-orange-600'>{mounted ? user?.name : ''} 
+   {/* {mounted ? user?.name : ''} */}
+   </h2> 
          <span className= {`font-bold ${role === "seller" ? "text-orange-400" : 
-        role === "buyer" ? "text-orange-400" : "text-orange-600"}`}> {role} </span>
+        role === "buyer" ? "text-orange-400" : "text-orange-600"}`}>   {mounted ? role : ''} 
+        {/* {mounted ? role : ''} */}
+         </span>
          </div>
 
          <div className='m-6'>

@@ -42,7 +42,7 @@ const tokenObj = await auth.api.getToken({
 
     return (
         <div>
-<h1>Payment History</h1>
+<h1>Payment History ({payments.length})</h1>
       <PaymentTable payments={payments} /> 
             
         </div>

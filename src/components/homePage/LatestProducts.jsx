@@ -4,11 +4,35 @@ import ProductCard from "@/components/shared/ProductCard";
 import Link from 'next/link'
 import {Button} from "@heroui/react"
 import { FaArrowRight } from "react-icons/fa";
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 
 const LatestProducts = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/latest`, {
+//  const tokenObj = await auth.api.getToken({
+//        headers: await headers()
+//      })
+
+      const userSession = await auth.api.getSession({
+           headers:await headers(),
+         });
+
+         const user = userSession?.user;
+const userId = user?.id;
+const buyerId = userId;
+
+     const buyerEmail = user?.email;
+     const buyerName = user?.name;
+     const userRole = user?.role;
+     
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/products`, {
     cache: "no-store",
+  //   headers:{
+  //     authorization: `Bearer ${tokenObj?.token}`
+  //  }
   });
+ 
+
 
   if (!res.ok) {
     throw new Error(`Failed to fetch latest products: ${res.status}`);

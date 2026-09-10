@@ -14,7 +14,7 @@ const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/allorde
   
 method: "DELETE",
 headers:{
-    "content-type" : "application/json"
+    "Content-Type" : "application/json"
 }
 })
 

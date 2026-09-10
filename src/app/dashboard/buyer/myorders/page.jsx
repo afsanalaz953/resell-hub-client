@@ -9,9 +9,14 @@ const BuyerOrderPage = async() => {
      headers: await headers(), // you need to pass the headers object.
  });
  const user = session?.user;
- const buyerId = user?.id;
+  if (!user) {
+    redirect('/login');
+  }
+// const userId = user?.id;
+//  const buyerId = userId;
 
- const buyerEmail = user?.email;
+//  const buyerEmail = user?.email;
+ 
 console.log(session, "booking session")
 
  const tokenObj = await auth.api.getToken({
@@ -20,32 +25,41 @@ console.log(session, "booking session")
 console.log(tokenObj, "buyerOrderBookingToken")
 
 
-if (!user) {
-    // return <div className="p-5 text-red-500">দয়া করে লগইন করুন</div>;
-    redirect('/login');  // চাইলে redirect না করে মেসেজ দেখাতে পারেন
-  }
+// if (!user) {
+//     // return <div className="p-5 text-red-500">দয়া করে লগইন করুন</div>;
+//     redirect('/login');  // চাইলে redirect না করে মেসেজ দেখাতে পারেন
+//   }
 
 // from ticket
 // const bookings = await fethMyBooking(user?.email);
 //     // console.log(bookings);
 // user id dhore ante hobe
 // const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders/${buyerEmail}`, {
- const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders?buyerId=${buyerId}`, {
+ 
+ let bookings = [];
+ try{
+const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/buyer/myorders`, {
   cache: 'no-store',
 
   headers:{
-    authorization: `Bearer ${tokenObj?.token}`
+    Authorization: `Bearer ${tokenObj?.token}`
      }    
 });
-const bookings = await res.json();
-
+   if (!res.ok) {
+      console.error('❌ Order fetch failed:', res.status);
+    } else {
+ bookings = await res.json();
+  }
+  } catch (error) {
+    console.error('❌ Order fetch error:', error.message);
+  }
  console.log(bookings, "bookings Data")
 
  
 
     return (
         <div>
-           <h1>My Order List</h1> 
+           <h1>My Order List  ({bookings.length}) </h1> 
            <div>
               <OrderTable bookings={bookings} />
               {/* ai props ta same same hobe both component and page. 

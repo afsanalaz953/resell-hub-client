@@ -21,19 +21,18 @@ const session = await auth.api.getSession({
  const userId = user?.id;
  const buyerId = userId;
  
-if (!userId || !tokenObj?.token) {
-    return (
-      <div className="text-center text-red-500 text-xl mt-10">
+ if (!userId || !tokenObj?.token) {
+     return (
+     <div className="text-center text-red-500 text-xl mt-10">
         please log in
-      </div>
+       </div>
     );
   }
 
 // ৪. API কল করুন (এরর হ্যান্ডলিং যোগ করলাম)
   let wishlistData = [];
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/wishlist`, {
-      // ?buyerId=${userId}
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/wishlist`,{
       cache: 'no-store',
       headers: {
         authorization: `Bearer ${tokenObj?.token}`
@@ -48,7 +47,7 @@ if (!userId || !tokenObj?.token) {
     const data = await res.json();
     wishlistData = Array.isArray(data) ? data : []; // অ্যারে নিশ্চিত করুন
   } catch (error) {
-    console.error("উইশলিস্ট আনতে সমস্যা:", error);
+    console.error("Error in wishlist:", error);
     wishlistData = [];
   }
 
@@ -61,7 +60,7 @@ if (!userId || !tokenObj?.token) {
 
       {wishlistData.length === 0 ? (
         <p className="text-gray-500 text-center text-lg">
-          আপনার উইশলিস্ট খালি।
+          Empty Wishlist
         </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">

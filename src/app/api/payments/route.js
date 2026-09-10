@@ -15,6 +15,13 @@ export async function POST(request) {
     });
 
     const user = userSession?.user;
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Unauthorized,fm route – Please login' },
+        { status: 401 }
+      );
+    }
+
     const formData = await request.formData();
 
      const price = formData.get('price')
@@ -67,7 +74,7 @@ export async function POST(request) {
     return NextResponse.redirect(session.url, 303)
   } catch (err) {
     return NextResponse.json(
-      { error: err.message },
+      { error: err.message || 'Payment initiation failed' },
       { status: err.statusCode || 500 }
     )
   }

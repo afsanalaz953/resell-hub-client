@@ -23,7 +23,8 @@ const BuyerProfilePage = () => {
           <h2 className="card-title font-bold text-3xl">{user?.name}</h2>
           <p className='text-lg'>{user?.email}</p>
           <div className="card-actions flex gap-4">
-            <Button as={Link} href="/" variant="light">Home</Button>
+            {/* <Button as={Link} href="/" color="success">Home</Button> */}
+            <Button type="submit"  className='w-full bg-amber-600' ><Link href ={"/"} >Home </Link> </Button>
             <Button 
               color="primary" 
               onPress={() => setIsModalOpen(true)}

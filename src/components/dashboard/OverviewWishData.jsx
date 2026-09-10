@@ -18,7 +18,7 @@ const OverviewWishData = async () => {
   try {
     const res = await fetch(
       // `${process.env.NEXT_PUBLIC_SERVER_URL}/api/wishlist?buyerId=${buyerId}`,
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/wishlist`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/wishlist/latest`,
       {
         cache: 'no-store',
         headers:{

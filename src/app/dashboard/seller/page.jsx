@@ -6,7 +6,7 @@ import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 // import { Table } from '@heroui/react';
 import SellerProfilePage from '@/components/dashboard/SellerProfilePage'
 
-const SellerDashboardHomepage = () => {
+const SellerDashboardpage = () => {
     return (
     <div className='container mx-auto w-full bg-[#EFF6FF]'>
     
@@ -71,5 +71,5 @@ const SellerDashboardHomepage = () => {
     );
 };
 
-export default SellerDashboardHomepage;
+export default SellerDashboardpage;
 

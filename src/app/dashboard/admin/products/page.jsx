@@ -86,7 +86,7 @@ console.log(adminProductsData, "adminproducts");
                                           {/* 3 */}
                                           <Table.Cell>{adminProducts.category}</Table.Cell>
                                             {/* 4 */}
-                                          <Table.Cell>{adminProducts.stock}</Table.Cell>   
+                                          <Table.Cell>{adminProducts?.stock}</Table.Cell>   
                                           {/* 5 */}
                                           <Table.Cell className='text-orange-600 font-bold'>$ {adminProducts.price}</Table.Cell>
                                           {/* 6 */}
@@ -97,7 +97,7 @@ console.log(adminProductsData, "adminproducts");
                                          <Table.Cell className="flex gap-2 bg-white p-2">
                                           {/* <UpdateModal product = {formProduct} /> */}
                                         <AdminStatusUpdate adminproductid = {adminProducts._id} 
-                                        status={adminProducts.status} />
+                                        status={adminProducts.status}   />
                                         {/* {adminProducts.status} */}
                                          <AdminRejected rejectedproductid = {adminProducts._id} status={adminProducts.status}  />
                                        </Table.Cell>

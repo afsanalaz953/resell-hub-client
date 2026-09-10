@@ -11,8 +11,8 @@ const session = await auth.api.getSession({
     headers: await headers(),
   });
   const user = session?.user;
-  const userId = user?.id;
-  const buyerId = userId;
+  // const userId = user?.id;
+  const buyerId = user?.id;
 
   // উইশলিস্ট ডেটা ফেচ (ঠিক উইশলিস্ট পেজের মতো)
   let wishlistData = [];

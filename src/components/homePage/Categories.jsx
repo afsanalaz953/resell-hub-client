@@ -13,7 +13,9 @@ const Categories = ({ selectedCategory }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/categories`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/categories`,{
+           
+        })
         if (!res.ok) throw new Error('Failed to fetch categories');
         const data = await res.json();
         let catNames = data;
