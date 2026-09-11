@@ -114,6 +114,7 @@ const OrderTable = ({bookings}) => {
         {/* <Table.Column>booking Id</Table.Column> */}
         <Table.Column className= "font-bold text-lg" >Status  </Table.Column>
         <Table.Column className= "font-bold text-lg" >Order Status  </Table.Column>
+        <Table.Column className= "font-bold text-lg" >Order Date  </Table.Column>
         <Table.Column className= "font-bold text-lg" >Action </Table.Column>
       </Table.Header>
       <Table.Body>
@@ -141,6 +142,7 @@ const OrderTable = ({bookings}) => {
             <Table.Cell className="text-green-500" >  <OrderStatusBadge orderId={orderedData._id}
     currentStatus={orderedData.status}  /> </Table.Cell> 
              <Table.Cell className="" > {orderedData.orderStatus}</Table.Cell> 
+             <Table.Cell className="" > {new Date(orderedData.createdAt).toLocaleDateString('en-GB')}</Table.Cell> 
            {/* <Table.Cell className='flex gap-2'> <BuyerAcceptButton orderId={orderedData._id} orderStatus={orderedData.orderStatus} />  
            < CancelledButton id={orderedData._id} />
             </Table.Cell>  */}

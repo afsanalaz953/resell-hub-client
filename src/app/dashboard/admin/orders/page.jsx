@@ -8,13 +8,17 @@ import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 import SellerProductSearch from '@/components/dashboard/SellerProductSearch';
 
-const AdminOrderManagePage = async() => {
+const AdminOrderManagePage = async({ searchParams }) => {
+   const params = await searchParams;          // Next.js 15 এ await লাগে
+  const search = params?.search || "";
+  
+  
   const tokenObj = await auth.api.getToken({
        headers: await headers()
      })
       console.log(tokenObj, "adminOrderToken")
        
-    const res = await fetch( `${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/allorders`,
+    const res = await fetch( `${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/allorders?search=${encodeURIComponent(search)}`,
         { cache: 'no-store',
 headers:{
       authorization: `Bearer ${tokenObj.token}`
@@ -27,7 +31,7 @@ const adminorders = await res.json();
 
     return (
         <div>
-            <h1 className='text-3xl text-orange-600 m-4 font-bold'>All Orders</h1> 
+            <h1 className='text-3xl text-orange-600 m-4 font-bold'>All Orders ( {adminorders.length})</h1> 
 
  <div className='m-10'>
         <SellerProductSearch />
@@ -38,7 +42,7 @@ const adminorders = await res.json();
                                               <Table.Content aria-label="Team members" className=''>
                                                 <Table.Header className= "rounded ">
                                                   {/* 1 */}
-                                                  <Table.Column className="text-lg font-bold">Ordered Date</Table.Column>
+                                                  {/* <Table.Column className="text-lg font-bold">Ordered Date</Table.Column> */}
                                                   <Table.Column className="text-lg font-bold ">Product Name</Table.Column>
                                                  
                                                  {/* 3 */}
@@ -78,7 +82,13 @@ const adminorders = await res.json();
                                                         />
                                                       </Table.Cell> */}
                                                       {/* 2 */}
-                                                      <Table.Cell>{new Date(adorders.createdAt).toLocaleDateString()}</Table.Cell>
+                                                      {/* <Table.Cell>{new Date(adorders?.createdAt).toLocaleDateString()}</Table.Cell> */}
+                                                      {/* <Table.Cell>
+{adorders?.createdAt 
+    ? new Date(adorders.createdAt).toLocaleDateString() 
+    : 'N/A'}
+                                                        
+                                                      </Table.Cell> */}
                                                       <Table.Cell>
                                                         <Link href={`/products/${adorders.productId}`}
                                                         className='hover:text-orange-800 hover:underline text-orange-600'>
