@@ -6,6 +6,7 @@ import Link from "next/link";
  import AdminOrderRejected from "@/components/dashboard/AdminOrderRejected"
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
+import SellerProductSearch from '@/components/dashboard/SellerProductSearch';
 
 const AdminOrderManagePage = async() => {
   const tokenObj = await auth.api.getToken({
@@ -27,6 +28,10 @@ const adminorders = await res.json();
     return (
         <div>
             <h1 className='text-3xl text-orange-600 m-4 font-bold'>All Orders</h1> 
+
+ <div className='m-10'>
+        <SellerProductSearch />
+      </div>
              <div className='my-10 rounded  lg:w-full md:`w-[760px]` shadow-lg'>
                              <Table   layout="fixed"  className=" bg-gray-200">
                                             <Table.ScrollContainer>
@@ -73,7 +78,7 @@ const adminorders = await res.json();
                                                         />
                                                       </Table.Cell> */}
                                                       {/* 2 */}
-                                                      <Table.Cell>{new Date(adorders.Date).toLocaleDateString()}</Table.Cell>
+                                                      <Table.Cell>{new Date(adorders.createdAt).toLocaleDateString()}</Table.Cell>
                                                       <Table.Cell>
                                                         <Link href={`/products/${adorders.productId}`}
                                                         className='hover:text-orange-800 hover:underline text-orange-600'>

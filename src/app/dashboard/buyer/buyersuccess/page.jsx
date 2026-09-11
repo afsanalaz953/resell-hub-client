@@ -166,6 +166,7 @@ if (!orderExists) {
       orderStatus: 'pending',
       status: 'paid',
       metadata,
+      createdAt: new Date(), 
     };
 
     console.log('📦 buyerOrder payload:', sellerOrderData);

@@ -77,10 +77,17 @@ const onSubmit = async(e) =>{
      const userName = session?.user?.name;
      const userEmail = session?.user?.email;
 
+  
+
     //  form submit a token dite hobe, full body te noi
-//  const token = await getTokenServer();
-//  const { data:tokenData } = await authClient.token(); 
-// console.log(tokenData, "addProductToken")
+
+ const { data:tokenData } = await authClient.token(); 
+console.log(tokenData, "addProductToken")
+
+    if (!userId || !tokenData?.token) {
+  toast.error("Please login first");
+  return;
+}
 
 //      // ইউজার আইডি পেলোডে যুক্ত করা (কোনো কনফ্লিক্ট নেই)
     const product = {
@@ -104,14 +111,16 @@ const onSubmit = async(e) =>{
  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/seller/products`, {
             method: 'POST',
          headers: {
-             'content-type': 'application/json',
-            //  authorization:`Bearer ${tokenData?.token}`
+             'Content-Type': 'application/json',
+             authorization:`Bearer ${tokenData?.token}`
             },
             body: JSON.stringify(product)
          })
 
  const productData = await res.json();
   console.log( 'data after post', productData);
+
+ 
    
   if (res.ok) {
  toast.success('product added, see my-product-list ', {

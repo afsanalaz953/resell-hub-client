@@ -18,10 +18,11 @@ const sellerId = user?.id;
 const sellerName = user?.name;
 const sellerEmail = user?.email;
 console.log(session, sellerId, sellerName, "sellerId")
+
 // from buyer manageorders
 // const buyerEmail = user?.email; // session থেকে ইমেইল
 // console.log(buyerEmail, "email")
-  //  let orders = [];
+//    let orders = [];
 
   const tokenObj = await auth.api.getToken({
        headers: await headers()

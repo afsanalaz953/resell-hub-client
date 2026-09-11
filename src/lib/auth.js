@@ -22,7 +22,9 @@ export const auth = betterAuth({
 additionalFields:{
   role:{
     type: "string", 
-    defaultValue:"buyer"
+     required: false,  
+    defaultValue:"buyer",
+      input: true, 
   },
    isBlocked: {
         type: "boolean",

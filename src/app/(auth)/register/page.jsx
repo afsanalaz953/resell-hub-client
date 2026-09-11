@@ -31,7 +31,7 @@ const { register, handleSubmit,formState: { errors }} = useForm();
     password: password, // required
     role:role,
   
-    autoSignIn: false,
+    // autoSignIn: false,
     callbackURL: "/login",
   
     
