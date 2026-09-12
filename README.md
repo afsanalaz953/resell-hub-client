@@ -32,4 +32,4 @@ MongoDb
 
 
 Live Link
-https://express-assi-client.vercel.app
+https://resell-hub-client-eta.vercel.app
